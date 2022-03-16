@@ -1,0 +1,35 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public abstract class WaveBase : MonoBehaviour
+{
+    public List<Action> waves = new List<Action>();
+    protected InGameManager manager;
+
+    protected void InitWavesFunc(params Action[] _waves)
+    {
+        foreach (var wave in _waves)
+        {
+            waves.Add(wave);
+        }
+    }
+
+    protected void SummonMonster(MonsterSize size, Vector3 position, Entity entity)
+    {
+
+    }
+
+    protected void SummonScaffol(Vector3 position)
+    {
+
+    }
+
+    protected void SummonGroundTrap()
+    {
+
+    }
+
+    public abstract void InitWaves(InGameManager _manager);
+}
