@@ -18,17 +18,17 @@ public abstract class WaveBase : MonoBehaviour
 
     protected void SummonMonster(MonsterSize size, Vector3 position, Entity entity)
     {
-
+        manager.SummonMonster(size, position, entity);
     }
 
     protected void SummonScaffol(Vector3 position)
     {
-
+        manager.SummonScaffol(position);
     }
 
     protected void SummonGroundTrap()
     {
-
+        manager.SummonGroundTrap();
     }
 
     public abstract void InitWaves(InGameManager _manager);

@@ -34,6 +34,21 @@ public class InGameManager : Singleton<InGameManager>
         WaveFunc = Waves[waveIdx].waves;
     }
 
+    public void SummonMonster(MonsterSize size, Vector3 position, Entity entity)
+    {
+
+    }
+
+    public void SummonScaffol(Vector3 position)
+    {
+
+    }
+
+    public void SummonGroundTrap()
+    {
+
+    }
+
     IEnumerator CombatCoroutine()
     {
         foreach (var item in WaveFunc)
