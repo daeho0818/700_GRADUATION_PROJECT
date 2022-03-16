@@ -23,7 +23,7 @@ public abstract class WaveBase : MonoBehaviour
 
     protected void SummonScaffol(Vector3 position)
     {
-        manager.SummonScaffol(position);
+        manager.SummonScaffold(position);
     }
 
     protected void SummonGroundTrap()

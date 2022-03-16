@@ -25,9 +25,9 @@ public class Scaffold : MonoBehaviour
 
     void Update()
     {
-        
+
     }
-    
+
     void MoveDebug()
     {
         StartCoroutine(DebugCoroutine());
@@ -53,19 +53,23 @@ public class Scaffold : MonoBehaviour
 
     public void Appear(float duration, Vector3 position)
     {
-        position.y = DefaultPos.y;
-        transform.position = position;
-        transform.DOMoveY(position.y, duration).SetEase(Ease.Linear).OnComplete(()=> {
+        Vector3 tempPos = position;
+        tempPos.y = DefaultPos.y;
+        transform.position = tempPos;
+
+        transform.DOMoveY(position.y, duration).SetEase(Ease.Linear).OnComplete(() =>
+        {
             ScaffoldAppear();
         });
     }
 
-    public void Disappear(float duration)
+    public Scaffold Disappear(float duration, Action onComplete = null)
     {
-        StartCoroutine(ScaffoldShake(duration));
+        StartCoroutine(ScaffoldShake(duration, onComplete));
+        return this;
     }
 
-    IEnumerator ScaffoldShake(float duration)
+    IEnumerator ScaffoldShake(float duration, Action action = null)
     {
         float time = 0f;
         while (time <= duration)
@@ -84,15 +88,20 @@ public class Scaffold : MonoBehaviour
             item.transform.localPosition = Vector3.zero;
         }
 
-        ScaffoldDisappear(() => {
-            transform.DOMoveY(DefaultPos.y, 0.5f).SetEase(Ease.Linear);
+        ScaffoldDisappear(() =>
+        {
+            transform.DOMoveY(DefaultPos.y, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                action?.Invoke();
+            });
         });
     }
 
     public void ScaffoldAppear()
     {
         Ground[0].transform.DOLocalRotate(Vector3.zero, 0.2f);
-        Ground[1].transform.DOLocalRotate(Vector3.zero - ReverseRot, 0.2f).OnComplete(()=> {
+        Ground[1].transform.DOLocalRotate(Vector3.zero - ReverseRot, 0.2f).OnComplete(() =>
+        {
             groundCollider.enabled = true;
         });
     }
@@ -101,7 +110,8 @@ public class Scaffold : MonoBehaviour
     {
         groundCollider.enabled = false;
         Ground[0].transform.DOLocalRotate(DefaultRot, 0.2f);
-        Ground[1].transform.DOLocalRotate(DefaultRot - ReverseRot, 0.2f).OnComplete(()=> {
+        Ground[1].transform.DOLocalRotate(DefaultRot - ReverseRot, 0.2f).OnComplete(() =>
+        {
             endAction();
         });
     }

@@ -17,6 +17,11 @@ public class InGameManager : Singleton<InGameManager>
     public bool waveEnd;
     public int waveIdx;
 
+    [SerializeField] int allocSize;
+    [SerializeField] Scaffold scaffoldPrefab;
+    Stack<Scaffold> DeactiveScaffold = new Stack<Scaffold>();
+    Stack<Scaffold> ActiveScaffold = new Stack<Scaffold>();
+
     void Start()
     {
         waveIdx = 0;
@@ -26,6 +31,24 @@ public class InGameManager : Singleton<InGameManager>
     void Update()
     {
 
+    }
+
+    void AllocScaffold()
+    {
+        for (int i = 0; i < allocSize; i++)
+        {
+            Scaffold temp = Instantiate(scaffoldPrefab);
+            temp.gameObject.SetActive(false);
+            DeactiveScaffold.Push(temp);
+        }
+    }
+
+    public void DeactiveAllScaffold(float duration)
+    {
+        foreach (var item in ActiveScaffold)
+        {
+            item.Disappear(duration, () => { item.gameObject.SetActive(false); });
+        }
     }
 
     public void InitWave()
@@ -39,7 +62,7 @@ public class InGameManager : Singleton<InGameManager>
 
     }
 
-    public void SummonScaffol(Vector3 position)
+    public void SummonScaffold(Vector3 position)
     {
 
     }
