@@ -16,9 +16,10 @@ public abstract class WaveBase : MonoBehaviour
         }
     }
 
-    protected void SummonMonster(MonsterSize size, Vector3 position, Entity entity)
+    protected Entity SummonMonster(MonsterSize size, Vector3 position, Entity entity)
     {
-        manager.SummonMonster(size, position, entity);
+        Entity temp = manager.SummonMonster(size, position, entity);
+        return temp;
     }
 
     protected void SummonScaffol(Vector3 position)
@@ -29,6 +30,11 @@ public abstract class WaveBase : MonoBehaviour
     protected void SummonGroundTrap()
     {
         manager.SummonGroundTrap();
+    }
+
+    protected void NextWave()
+    {
+        manager.waveEnd = true;
     }
 
     public abstract void InitWaves(InGameManager _manager);

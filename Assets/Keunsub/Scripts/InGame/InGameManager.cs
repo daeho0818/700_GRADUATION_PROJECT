@@ -17,10 +17,26 @@ public class InGameManager : Singleton<InGameManager>
     public bool waveEnd;
     public int waveIdx;
 
+
+    [SerializeField] Transform initPos;
     [SerializeField] int allocSize;
+
+    #region Scaffold
     [SerializeField] Scaffold scaffoldPrefab;
     Stack<Scaffold> DeactiveScaffold = new Stack<Scaffold>();
     Stack<Scaffold> ActiveScaffold = new Stack<Scaffold>();
+    #endregion
+
+    #region Cage
+    [SerializeField] MonsterCage bigCagePrefab;
+    [SerializeField] MonsterCage midiumCagePrefab;
+    [SerializeField] MonsterCage smallCagePrefab;
+    Stack<MonsterCage> BigCage = new Stack<MonsterCage>();
+    Stack<MonsterCage> MidiumCage = new Stack<MonsterCage>();
+    Stack<MonsterCage> SmallCage = new Stack<MonsterCage>();
+    #endregion
+
+    Coroutine combatCoroutine;
 
     void Start()
     {
@@ -33,11 +49,30 @@ public class InGameManager : Singleton<InGameManager>
 
     }
 
+    void AllocCage()
+    {
+        for (int i = 0; i < allocSize; i++)
+        {
+            MonsterCage bigTmp = Instantiate(bigCagePrefab, initPos.position, Quaternion.identity);
+            MonsterCage midiumTmp = Instantiate(midiumCagePrefab, initPos.position, Quaternion.identity);
+            MonsterCage smallTmp = Instantiate(smallCagePrefab, initPos.position, Quaternion.identity);
+
+            bigTmp.gameObject.SetActive(false);
+            midiumTmp.gameObject.SetActive(false);
+            smallTmp.gameObject.SetActive(false);
+
+            BigCage.Push(bigTmp);
+            MidiumCage.Push(midiumTmp);
+            SmallCage.Push(smallTmp);
+
+        }
+    }
+
     void AllocScaffold()
     {
         for (int i = 0; i < allocSize; i++)
         {
-            Scaffold temp = Instantiate(scaffoldPrefab);
+            Scaffold temp = Instantiate(scaffoldPrefab, initPos.position, Quaternion.identity);
             temp.gameObject.SetActive(false);
             DeactiveScaffold.Push(temp);
         }
@@ -57,14 +92,32 @@ public class InGameManager : Singleton<InGameManager>
         WaveFunc = Waves[waveIdx].waves;
     }
 
-    public void SummonMonster(MonsterSize size, Vector3 position, Entity entity)
+    public Entity SummonMonster(MonsterSize size, Vector3 position, Entity entity)
     {
+        MonsterCage temp = null;
+        switch (size)
+        {
+            case MonsterSize.SMALL:
+                temp = SmallCage.Pop();
+                break;
+            case MonsterSize.MIDIUM:
+                temp = MidiumCage.Pop();
+                break;
+            case MonsterSize.BIG:
+                temp = BigCage.Pop();
+                break;
+        }
 
+        Entity retMonster = temp.Appear(entity, position, 0.5f);
+        return retMonster;
     }
 
     public void SummonScaffold(Vector3 position)
     {
-
+        Scaffold temp = DeactiveScaffold.Pop();
+        temp.gameObject.SetActive(true);
+        temp.Appear(0.5f, position);
+        ActiveScaffold.Push(temp);
     }
 
     public void SummonGroundTrap()
@@ -72,11 +125,25 @@ public class InGameManager : Singleton<InGameManager>
 
     }
 
+    public void GameStart()
+    {
+        combatCoroutine = StartCoroutine(CombatCoroutine());
+    }
+
+    public void GameOver()
+    {
+        StopCoroutine(combatCoroutine);
+    }
+
     IEnumerator CombatCoroutine()
     {
-        foreach (var item in WaveFunc)
+        //door close
+        //intro
+        //delay
+
+        foreach (var wave in WaveFunc)
         {
-            item();
+            wave();
 
             while (!waveEnd)
             {
