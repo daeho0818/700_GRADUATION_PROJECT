@@ -69,7 +69,6 @@ public class MonsterCage : MonoBehaviour
     void SummonMonster(Entity monster)
     {
         monster?.gameObject.SetActive(true);
-        Debug.Log("Monster Spawn");
         //cage door open animation;
         //monster spawn
     }
