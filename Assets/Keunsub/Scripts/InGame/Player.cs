@@ -25,13 +25,13 @@ public class Player : MonoBehaviour
     void Update()
     {
         JumpLogic();
+        JumpHold();
         CheckGround();
     }
 
     void FixedUpdate()
     {
         MoveLogic();
-        JumpHold();
     }
 
     void JumpLogic()
@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
         {
             if (jumpTimeCounter > 0 && isJumping && RB.velocity != Vector2.zero)
             {
+                //RB.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
                 RB.velocity = Vector2.up * jumpForce;
                 jumpTimeCounter -= Time.deltaTime;
             }

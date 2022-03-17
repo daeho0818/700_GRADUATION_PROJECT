@@ -17,7 +17,7 @@ public class CameraFollow : MonoBehaviour
         thisCamera = GetComponent<Camera>();
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         FollowProcess();
     }
