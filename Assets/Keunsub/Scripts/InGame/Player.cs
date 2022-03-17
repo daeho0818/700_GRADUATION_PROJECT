@@ -6,20 +6,90 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] float moveSpeed;
+    [SerializeField] float jumpForce;
+    Rigidbody2D RB;
+    bool isGround;
+    [SerializeField] Transform feetPos;
+    [SerializeField] float checkRadius;
+    [SerializeField] LayerMask whatIsGround;
+    [SerializeField] float jumpTime;
+    float jumpTimeCounter;
+    bool isJumping;
+    bool doubleJumpAble;
 
     void Start()
     {
-        
+        RB = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
+        JumpLogic();
+        CheckGround();
+    }
+
+    void FixedUpdate()
+    {
         MoveLogic();
+        JumpHold();
+    }
+
+    void JumpLogic()
+    {
+        if (Input.GetKeyDown(KeyCode.Z) && isGround && !isJumping)
+        {
+            RB.velocity = Vector2.up * jumpForce;
+            jumpTimeCounter = jumpTime;
+            isJumping = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Z) && !isGround && doubleJumpAble)
+        {
+            RB.velocity = Vector2.up * jumpForce * 1.5f;
+            jumpTimeCounter = 0f;
+            isJumping = false;
+            doubleJumpAble = false;
+        }
+    }
+
+    void JumpHold()
+    {
+        if (Input.GetKey(KeyCode.Z))
+        {
+            if (jumpTimeCounter > 0 && isJumping && RB.velocity != Vector2.zero)
+            {
+                RB.velocity = Vector2.up * jumpForce;
+                jumpTimeCounter -= Time.deltaTime;
+            }
+            else
+            {
+                isJumping = false;
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            jumpTimeCounter = 0f;
+            isJumping = false;
+        }
+    }
+
+    void CheckGround()
+    {
+        bool ground = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+        if(ground != isGround)
+        {
+            doubleJumpAble = true;
+            isGround = ground;
+        }
+        else
+        {
+            isGround = ground;
+        }
     }
 
     void MoveLogic()
     {
-        if(Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
