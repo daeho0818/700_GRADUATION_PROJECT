@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LimitX: {x: -5, y: 5}
-  LimitY: {x: 0, y: 6}
+  LimitY: {x: 0, y: 5}
   moveSpeed: 5
   target: {fileID: 873386090}
 --- !u!1 &34770185
