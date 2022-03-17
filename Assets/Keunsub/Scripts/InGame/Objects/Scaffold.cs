@@ -77,7 +77,7 @@ public class Scaffold : MonoBehaviour
 
             foreach (var item in Ground)
             {
-                item.transform.localPosition = UnityEngine.Random.insideUnitSphere / 10f;
+                item.transform.localPosition = UnityEngine.Random.insideUnitSphere / 20f;
             }
 
             time += Time.deltaTime;
