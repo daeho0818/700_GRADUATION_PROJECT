@@ -22,7 +22,7 @@ public abstract class WaveBase : MonoBehaviour
         return temp;
     }
 
-    protected void SummonScaffol(Vector3 position)
+    protected void SummonScaffold(Vector3 position)
     {
         manager.SummonScaffold(position);
     }
@@ -35,6 +35,11 @@ public abstract class WaveBase : MonoBehaviour
     protected void NextWave()
     {
         manager.waveEnd = true;
+    }
+
+    protected void DeactiveAllScafold(float duration)
+    {
+        manager.DeactiveAllScaffold(duration);
     }
 
     public abstract void InitWaves(InGameManager _manager);

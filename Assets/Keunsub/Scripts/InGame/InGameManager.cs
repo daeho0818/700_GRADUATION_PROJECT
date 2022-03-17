@@ -40,8 +40,12 @@ public class InGameManager : Singleton<InGameManager>
 
     void Start()
     {
+        AllocCage();
+        AllocScaffold();
         waveIdx = 0;
         InitWave();
+
+        GameStart();
     }
 
     void Update()
@@ -53,9 +57,13 @@ public class InGameManager : Singleton<InGameManager>
     {
         for (int i = 0; i < allocSize; i++)
         {
-            MonsterCage bigTmp = Instantiate(bigCagePrefab, initPos.position, Quaternion.identity);
-            MonsterCage midiumTmp = Instantiate(midiumCagePrefab, initPos.position, Quaternion.identity);
-            MonsterCage smallTmp = Instantiate(smallCagePrefab, initPos.position, Quaternion.identity);
+            MonsterCage bigTmp = Instantiate(bigCagePrefab, initPos.position, Quaternion.identity, transform);
+            MonsterCage midiumTmp = Instantiate(midiumCagePrefab, initPos.position, Quaternion.identity, transform);
+            MonsterCage smallTmp = Instantiate(smallCagePrefab, initPos.position, Quaternion.identity, transform);
+
+            bigTmp.Init();
+            midiumTmp.Init();
+            smallTmp.Init();
 
             bigTmp.gameObject.SetActive(false);
             midiumTmp.gameObject.SetActive(false);
@@ -72,7 +80,8 @@ public class InGameManager : Singleton<InGameManager>
     {
         for (int i = 0; i < allocSize; i++)
         {
-            Scaffold temp = Instantiate(scaffoldPrefab, initPos.position, Quaternion.identity);
+            Scaffold temp = Instantiate(scaffoldPrefab, initPos.position, Quaternion.identity, transform);
+            temp.Init();
             temp.gameObject.SetActive(false);
             DeactiveScaffold.Push(temp);
         }
@@ -140,6 +149,8 @@ public class InGameManager : Singleton<InGameManager>
         //door close
         //intro
         //delay
+
+        yield return new WaitForSeconds(2f);
 
         foreach (var wave in WaveFunc)
         {

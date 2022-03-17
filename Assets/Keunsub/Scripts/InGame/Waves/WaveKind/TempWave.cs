@@ -18,24 +18,36 @@ public class TempWave : WaveBase
 
     IEnumerator FirstWaveCoroutine()
     {
-        List<Entity> curEnemy = new List<Entity>();
-        int nextWaveMonsterCount = 5;
-        yield return null;
-
-        int monsterCount = 15;
-        for (int i = 0; i < monsterCount; i++)
+        int cnt = 15;
+        for (int i = 0; i < cnt; i++)
         {
-            Entity temp = SummonMonster(MonsterSize.SMALL, Vector3.zero, null);
-            curEnemy.Add(temp);
-            yield return new WaitForSeconds(0.2f);
+            SummonScaffold(new Vector3(i - 10, 0, 0));
         }
 
-        while (curEnemy.Count > nextWaveMonsterCount) yield return null;
+        yield return new WaitForSeconds(4f);
+
+        DeactiveAllScafold(0.5f);
+
+        yield return new WaitForSeconds(3f);
         NextWave();
     }
 
     void SecondWave()
     {
+        StartCoroutine(SecondWaveCoroutine());
+    }
 
+    IEnumerator SecondWaveCoroutine()
+    {
+        yield return null;
+        int count = 4;
+        for (int i = 0; i < count; i++)
+        {
+            SummonScaffold(new Vector3(i, i - 2, 0));
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(4f);
+        NextWave();
     }
 }

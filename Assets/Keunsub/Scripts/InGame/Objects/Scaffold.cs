@@ -10,17 +10,12 @@ public class Scaffold : MonoBehaviour
     [SerializeField] Transform[] Ground;
     Vector3 DefaultRot = new Vector3(0, 0, -90);
     Vector3 ReverseRot = new Vector3(0, 180, 0);
-    Vector3 DefaultPos = Vector3.zero;
+    [SerializeField] Vector3 DefaultPos;
     Collider2D groundCollider;
 
     void Start()
     {
-        DefaultPos = transform.position;
-        groundCollider = GetComponent<Collider2D>();
-        groundCollider.enabled = false;
-
-        SetDefaultRot();
-        MoveDebug();
+       
     }
 
     void Update()
@@ -31,6 +26,15 @@ public class Scaffold : MonoBehaviour
     void MoveDebug()
     {
         StartCoroutine(DebugCoroutine());
+    }
+
+    public void Init()
+    {
+        DefaultPos = transform.position;
+        groundCollider = GetComponent<Collider2D>();
+        groundCollider.enabled = false;
+
+        SetDefaultRot();
     }
 
     IEnumerator DebugCoroutine()
@@ -51,13 +55,13 @@ public class Scaffold : MonoBehaviour
         Ground[1].transform.rotation = Quaternion.Euler(DefaultRot - ReverseRot);
     }
 
-    public void Appear(float duration, Vector3 position)
+    public void Appear(float duration, Vector3 targetPosition)
     {
-        Vector3 tempPos = position;
+        Vector3 tempPos = targetPosition;
         tempPos.y = DefaultPos.y;
         transform.position = tempPos;
 
-        transform.DOMoveY(position.y, duration).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOMoveY(targetPosition.y, duration).SetEase(Ease.Linear).OnComplete(() =>
         {
             ScaffoldAppear();
         });

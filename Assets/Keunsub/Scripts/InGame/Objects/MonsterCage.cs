@@ -12,9 +12,7 @@ public class MonsterCage : MonoBehaviour
 
     void Start()
     {
-        defaultPos = transform.position;
-        anim = GetComponent<Animator>();
-        DebugCode();
+        
     }
 
     void Update()
@@ -25,6 +23,12 @@ public class MonsterCage : MonoBehaviour
     void DebugCode()
     {
         StartCoroutine(DebugCoroutine());
+    }
+
+    public void Init()
+    {
+        defaultPos = transform.position;
+        anim = GetComponent<Animator>();
     }
 
     IEnumerator DebugCoroutine()
