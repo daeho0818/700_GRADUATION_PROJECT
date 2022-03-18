@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public float maxHp;
+    public float maxMp;
+    public float defence; //0~1, 데미지에 곱하기
+    public float damage;
+    public float skillDamage;
+    public float moveSpeed;
+    public float jumpForce;
+    public bool invincible;
+    public bool miss; //공격 받을 때 장신구로부터 검사를 받고 공격 끝날 때 false로 바꿈
+    public float attackSpeed;
+    public float Hp;
+    public float Mp;
 
-    [SerializeField] float moveSpeed;
-    [SerializeField] float jumpForce;
     Rigidbody2D RB;
     bool isGround;
+    
     [SerializeField] Transform feetPos;
     [SerializeField] float checkRadius;
     [SerializeField] LayerMask whatIsGround;
@@ -18,13 +29,75 @@ public class Player : MonoBehaviour
     bool doubleJumpAble;
     [SerializeField] CameraFollow cam;
 
+    [HideInInspector] public JewelryBase[] CurJewelry = new JewelryBase[2];
+
+    private void Awake()
+    {
+        GetDataInManager();
+        JewelryAwake();
+    }
+
+    #region JewelryFunc
+    void JewelryAwake()
+    {
+        foreach (var item in CurJewelry)
+        {
+            item?.AtAwake();
+        }
+    }
+
+    void JewelryStart()
+    {
+        foreach (var item in CurJewelry)
+        {
+            item?.AtStart();
+        }
+    }
+
+    void JewelryUpdate()
+    {
+        foreach (var item in CurJewelry)
+        {
+            item?.AtUpdate();
+        }
+    }
+
+    void JewelryEnd()
+    {
+        foreach (var item in CurJewelry)
+        {
+            item?.AtEnd();
+        }
+    }
+    #endregion
+
     void Start()
     {
         RB = GetComponent<Rigidbody2D>();
+
+        JewelryStart();
+    }
+
+    void GetDataInManager()
+    {
+        maxHp = InGameManager.Instance.Hp;
+        maxMp = InGameManager.Instance.Mp;
+        moveSpeed = InGameManager.Instance.MoveSpeed;
+        jumpForce = InGameManager.Instance.JumpForce;
+        defence = InGameManager.Instance.Defence;
+        damage = InGameManager.Instance.Damage;
+        skillDamage = InGameManager.Instance.SkillDamage;
+        attackSpeed = InGameManager.Instance.AttackSpeed;
+
+        Hp = maxHp;
+        Mp = maxMp;
     }
 
     void Update()
     {
+        JewelryUpdate(); //항상 먼저 실행됨
+
+
         JumpLogic();
         JumpHold();
         CheckGround();

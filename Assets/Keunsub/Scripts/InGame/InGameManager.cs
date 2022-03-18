@@ -41,6 +41,16 @@ public class InGameManager : Singleton<InGameManager>
 
     [HideInInspector] public bool GameActive;
 
+    [Header("Status")]
+    public float Hp;
+    public float Mp;
+    public float MoveSpeed;
+    public float JumpForce;
+    public float Defence;
+    public float Damage;
+    public float SkillDamage = 1;
+    public float AttackSpeed;
+
     void Start()
     {
         AllocCage();
