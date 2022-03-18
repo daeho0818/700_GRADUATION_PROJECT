@@ -24,10 +24,10 @@ public class Boss_Orc : Monster
             StartCoroutine(AttackPattern1(20));
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
-            StartCoroutine(AttackPattern2(10, Vector3.right));
+            StartCoroutine(AttackPattern2(30, Vector3.right));
 
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            StartCoroutine(AttackPattern2(10, Vector3.left));
+            StartCoroutine(AttackPattern2(30, Vector3.left));
     }
 
     /// <summary>
@@ -67,6 +67,9 @@ public class Boss_Orc : Monster
             // 시작 지점과 목표 지점 x 죄표 사이의 거리
             Vector2.Distance(transform.position * Vector2.right, target * Vector2.right);
 
+        renderer.flipX = !dir_is_right;
+
+        // 포물선 그리며 점프
         while (transform.position.x != target.x)
         {
             yield return null;
@@ -77,24 +80,39 @@ public class Boss_Orc : Monster
             move_distance = new Vector2(distance, 0).x - Mathf.Abs(start_position.x - transform.position.x);
             height = moved_distance * move_distance;
 
-            transform.position = new Vector2(transform.position.x, start_position.y + height / (distance / 2));
+            transform.position = new Vector2(transform.position.x, start_position.y + 
+                                                      (target.y > start_position.y ? height / (distance / 6) : height / (distance / 2))); // 더 위로 점프해야할 경우 (수정하기)
         }
 
-        colliders[1].offset = new Vector2(Mathf.Abs(colliders[1].offset.x) * (dir_is_right ? 1 : -1), 0);
+        colliders[1].transform.localPosition = new Vector2(Mathf.Abs(colliders[1].transform.localPosition.x) * (dir_is_right ? 1 : -1), 0);
         colliders[1].enabled = true;
 
         yield return new WaitForSeconds(0.5f);
 
         colliders[1].enabled = false;
 
+        // 추격 후 바위 솟아오름
+        #region
         var rock = Instantiate(rock_prefab);
-        var fragment = Instantiate(fragment_prefab);
 
-        Vector2 spawn_position = new Vector2(target_platform.position.x, player.position.y) + // 플랫폼 위치 - - - ①
+        Vector2 spawn_position = (Vector2)target_platform.position + // 플랫폼 위치 - - - ①
             new Vector2(target_platform.localScale.x / 2 * (dir_is_right ? 1 : -1), 0) + // ①에서 구한 플랫폼 위치의 맨 끝 - - - ②
             new Vector2(rock.transform.localScale.x / 2 * (dir_is_right ? -1 : 1), 0); // ②에서 구한 맨 끝에서 조금 안쪽으로 이동 (화면을 벗어나기 때문) - - - ③
 
-        rock.transform.position = fragment.transform.position = spawn_position;
+        rock.transform.position = spawn_position;
+
+        Vector2 rock_target_position = new Vector2(rock.transform.position.x, player.transform.position.y);
+        while (Vector2.Distance(rock.transform.position, rock_target_position) >= 0.01f)
+        {
+            rock.transform.position = Vector2.MoveTowards(rock.transform.position, rock_target_position, 0.05f);
+            yield return null;
+        }
+        #endregion
+
+        // 바위 솟아오른 후 맵 끝으로 파동 날아감
+        #region
+        var fragment = Instantiate(fragment_prefab);
+        fragment.transform.position = rock_target_position;
 
         RaycastHit2D[] hits;
         Vector2 origin;
@@ -109,6 +127,13 @@ public class Boss_Orc : Monster
             yield return null;
         }
         while (hits.Length > 0);
+        #endregion
+
+        Destroy(fragment);
+
+        yield return new WaitForSeconds(2);
+
+        Destroy(rock);
     }
 
     /// <summary>
@@ -125,10 +150,11 @@ public class Boss_Orc : Monster
         // 공격 대기 시간
         yield return new WaitForSeconds(2);
 
+        renderer.flipX = direction.x < 0;
         colliders[2].enabled = true;
         do
         {
-            origin = transform.position + new Vector3(direction.x * transform.localScale.x / 2, 0) + direction * 2;
+            origin = transform.position + direction * 5;
 
             hits = Physics2D.RaycastAll(origin, Vector2.down, 5, LayerMask.GetMask("Platform"));
             Debug.DrawRay(origin, Vector2.down * 5, Color.red, 0.1f);
@@ -139,7 +165,7 @@ public class Boss_Orc : Monster
         while (hits.Length > 0);
         colliders[2].enabled = false;
 
-        colliders[3].offset = new Vector2(Mathf.Abs(colliders[2].offset.x) * direction.x, colliders[2].offset.y);
+        colliders[3].transform.localPosition = new Vector2(Mathf.Abs(colliders[3].transform.localPosition.x) * direction.x, colliders[3].transform.localPosition.y);
         colliders[3].enabled = true;
 
         yield return new WaitForSeconds(0.5f);
