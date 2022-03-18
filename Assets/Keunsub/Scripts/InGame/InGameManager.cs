@@ -38,14 +38,14 @@ public class InGameManager : Singleton<InGameManager>
 
     Coroutine combatCoroutine;
 
+    [HideInInspector] public bool GameActive;
+
     void Start()
     {
         AllocCage();
         AllocScaffold();
         waveIdx = 0;
         InitWave();
-
-        GameStart();
     }
 
     void Update()
@@ -137,6 +137,7 @@ public class InGameManager : Singleton<InGameManager>
     public void GameStart()
     {
         combatCoroutine = StartCoroutine(CombatCoroutine());
+        GameActive = true;
     }
 
     public void GameOver()

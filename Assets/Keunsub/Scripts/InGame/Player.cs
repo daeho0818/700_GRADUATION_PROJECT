@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     float jumpTimeCounter;
     bool isJumping;
     bool doubleJumpAble;
+    [SerializeField] CameraFollow cam;
 
     void Start()
     {
@@ -99,6 +100,19 @@ public class Player : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, -180, 0);
             transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("CameraRoom"))
+        {
+            cam.followType = collision.GetComponent<RoomTrigger>().type;
+
+            if(cam.followType == CameraFollowType.FollowArena && !InGameManager.Instance.GameActive)
+            {
+                InGameManager.Instance.GameStart();
+            }
         }
     }
 }
