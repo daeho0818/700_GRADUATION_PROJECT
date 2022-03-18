@@ -11,6 +11,7 @@ public class Monster : Entity
     protected override void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
+        renderer = GetComponent<SpriteRenderer>();
     }
 
     protected override void Update()
