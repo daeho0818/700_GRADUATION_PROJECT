@@ -57,7 +57,7 @@ public class Boss_Orc : Monster
         // 이동 방향에 따른 이동 위치 설정
         Vector2 target = new Vector2(target_platform.position.x, player.position.y) + // 플랫폼 위치 - - - ①
             new Vector2(target_platform.localScale.x / 2 * (dir_is_right ? -1 : 1), 0) + // ①에서 구한 플랫폼 위치의 맨 끝 - - - ②
-            new Vector2(transform.localScale.x / 2 * (dir_is_right ? 1 : -1), 0); // ②에서 구한 맨 끝에서 조금 안쪽으로 이동 (플랫폼에 절반만 걸친 상태이기 때문) - - - ③
+            new Vector2(transform.localScale.x / 2 * (dir_is_right ? 4 : -4), 0); // ②에서 구한 맨 끝에서 조금 안쪽으로 이동 (플랫폼에 절반만 걸친 상태이기 때문) - - - ③
 
         Vector2 start_position = transform.position;
         float moved_distance;
@@ -81,7 +81,7 @@ public class Boss_Orc : Monster
             height = moved_distance * move_distance;
 
             transform.position = new Vector2(transform.position.x, start_position.y + 
-                                                      (target.y > start_position.y ? height / (distance / 6) : height / (distance / 2))); // 더 위로 점프해야할 경우 (수정하기)
+                                                      (target.y > start_position.y ? (height / (distance / 2)) * 2.5f : height / (distance / 2))); // 더 위로 점프해야할 경우 (수정하기)
         }
 
         colliders[1].transform.localPosition = new Vector2(Mathf.Abs(colliders[1].transform.localPosition.x) * (dir_is_right ? 1 : -1), 0);

@@ -46,6 +46,8 @@ public class Boss_Crystal : Monster
                                                   Vector3.up * platforms[target_platform_index].localScale.y / 2 + // 플랫폼의 세로 절반 크기 - - - ②
                                                   Vector3.up * transform.localScale.y / 2; // 보스의 세로 절반 크기 - - - ③
 
+        yield return new WaitForSeconds(2);
+
         // 모은 손에서 양쪽으로 수정이 길어지며 공격
         var crystal_left = Instantiate(crystal_prefab, transform);
         var crystal_right = Instantiate(crystal_prefab, transform);
@@ -56,11 +58,11 @@ public class Boss_Crystal : Monster
         float start_time = Time.time;
         while (Time.time - start_time <= 0.5f)
         {
-            crystal_left.transform.localPosition += Vector3.left * 10 * Time.deltaTime;
-            crystal_left.transform.localScale += Vector3.right * 20 * Time.deltaTime;
+            crystal_left.transform.localPosition += Vector3.left * 20 * Time.deltaTime;
+            crystal_left.transform.localScale += Vector3.right * 40 * Time.deltaTime;
 
-            crystal_right.transform.localPosition += Vector3.right * 10 * Time.deltaTime;
-            crystal_right.transform.localScale += Vector3.right * 20 * Time.deltaTime;
+            crystal_right.transform.localPosition += Vector3.right * 20 * Time.deltaTime;
+            crystal_right.transform.localScale += Vector3.right * 40 * Time.deltaTime;
 
             yield return null;
         }
