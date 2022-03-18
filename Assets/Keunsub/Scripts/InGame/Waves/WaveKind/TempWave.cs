@@ -26,9 +26,9 @@ public class TempWave : WaveBase
 
         yield return new WaitForSeconds(4f);
 
-        DeactiveAllScafold(0.5f);
+        DeactiveAllScafold(3f);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         NextWave();
     }
 
@@ -48,6 +48,9 @@ public class TempWave : WaveBase
         }
 
         yield return new WaitForSeconds(4f);
+        DeactiveAllScafold(3f);
+        yield return new WaitForSeconds(5f);
+        
         NextWave();
     }
 }

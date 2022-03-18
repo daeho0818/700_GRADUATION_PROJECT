@@ -89,9 +89,12 @@ public class InGameManager : Singleton<InGameManager>
 
     public void DeactiveAllScaffold(float duration)
     {
-        foreach (var item in ActiveScaffold)
+        int count = ActiveScaffold.Count;
+        for (int i = 0; i < count; i++)
         {
-            item.Disappear(duration, () => { item.gameObject.SetActive(false); });
+            Scaffold temp = ActiveScaffold.Pop();
+            temp.Disappear(duration, () => { temp.gameObject.SetActive(false); });
+            DeactiveScaffold.Push(temp);
         }
     }
 
