@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,12 @@ public class InGameManager : Singleton<InGameManager>
     void Update()
     {
 
+    }
+
+    public List<Scaffold> GetActiveScaffold()
+    {
+        var platformList = ActiveScaffold.ToList();
+        return platformList;
     }
 
     void AllocCage()
