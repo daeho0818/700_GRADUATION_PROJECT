@@ -847,8 +847,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0026f48498b0e4ea8eb32e155e1e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHp: 0
+  maxMp: 0
+  defence: 0
+  damage: 0
+  skillDamage: 0
   moveSpeed: 5
   jumpForce: 10
+  invincible: 0
+  miss: 0
+  attackSpeed: 0
+  Hp: 0
+  Mp: 0
   feetPos: {fileID: 873219079}
   checkRadius: 0.3
   whatIsGround:
@@ -856,6 +866,9 @@ MonoBehaviour:
     m_Bits: 64
   jumpTime: 0.35
   cam: {fileID: 16733454}
+  CurJewelry:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &954408722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,6 +1204,14 @@ MonoBehaviour:
   midiumCagePrefab: {fileID: 747965466103452102, guid: d8f951c0bcf736941bc27ea57da163b4, type: 3}
   smallCagePrefab: {fileID: 1193694770917645800, guid: f731fa5a60ec85d4b9acfdcf7e01daf9, type: 3}
   GameActive: 0
+  Hp: 0
+  Mp: 0
+  MoveSpeed: 5
+  JumpForce: 10
+  Defence: 0
+  Damage: 0
+  SkillDamage: 1
+  AttackSpeed: 0
 --- !u!4 &1914610027
 Transform:
   m_ObjectHideFlags: 0
