@@ -136,8 +136,8 @@ public class InGameManager : Singleton<InGameManager>
                 temp = BigCage.Pop();
                 break;
         }
-
-        Entity retMonster = temp.Appear(entity, position, 0.5f);
+        temp.gameObject.SetActive(true);
+        Entity retMonster = temp.Appear(entity, position, 0.5f, () => { temp.DisAppear(1f, ()=> { temp.gameObject.SetActive(false); }); });
         return retMonster;
     }
 
