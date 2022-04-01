@@ -19,10 +19,17 @@ public class TempWave : WaveBase
     IEnumerator FirstWaveCoroutine()
     {
         int cnt = 15;
+        GameObject testMonster = new GameObject("monster (clone)");
+        Entity entity = testMonster.AddComponent<Monster>();
+
+        Entity flying = SummonMonster(MonsterSize.MIDIUM, Vector3.zero, entity);
         for (int i = 0; i < cnt; i++)
         {
             SummonScaffold(new Vector3(i - 10, 0, 0));
         }
+
+        while (!flying.IsDestroy)
+            yield return null;
 
         yield return new WaitForSeconds(4f);
 

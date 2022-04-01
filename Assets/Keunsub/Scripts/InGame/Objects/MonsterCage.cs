@@ -42,7 +42,7 @@ public class MonsterCage : MonoBehaviour
         }
     }
 
-    public Entity Appear(Entity monster, Vector3 position, float duration)
+    public Entity Appear(Entity monster, Vector3 position, float duration, Action endAction = null)
     {
         Vector3 temp = position;
         temp.y = defaultPos.y;
@@ -57,14 +57,15 @@ public class MonsterCage : MonoBehaviour
 
         transform.DOMoveY(position.y, duration).SetEase(Ease.OutBack).OnComplete(() => {
             SummonMonster(monsterTmp);
+            endAction?.Invoke();
         });
 
         return monsterTmp;
     }
 
-    public void DisAppear(Action endAction = null)
+    public void DisAppear(float delay = 0f, Action endAction = null)
     {
-        transform.DOMoveY(defaultPos.y, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOMoveY(defaultPos.y, 0.5f).SetDelay(delay).SetEase(Ease.Linear).OnComplete(() =>
         {
             endAction?.Invoke();
         });
