@@ -70,6 +70,7 @@ public class Boss_Orc : Monster
         renderer.flipX = !dir_is_right;
 
         // 포물선 그리며 점프
+        #region
         while (transform.position.x != target.x)
         {
             yield return null;
@@ -90,6 +91,7 @@ public class Boss_Orc : Monster
         yield return new WaitForSeconds(0.5f);
 
         colliders[1].enabled = false;
+        #endregion
 
         // 추격 후 바위 솟아오름
         #region

@@ -16,5 +16,6 @@ public class Monster : Entity
 
     protected override void Update()
     {
+        OnDestroy?.Invoke();
     }
 }

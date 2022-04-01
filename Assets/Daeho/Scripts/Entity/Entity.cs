@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class Entity : MonoBehaviour
 {
     public float Hp { get; set; }
     public bool IsDestroy => Hp == 0;
+
+    public Action OnHit =null;
+    public Action OnDestroy = null;
 
     [Tooltip("엔티티 콜라이더들 (1. 몸 | 2. 공격 1 | 3. 공격 2 | 4 공격 3 | ...)")]
     [SerializeField] protected Collider2D[] colliders;
