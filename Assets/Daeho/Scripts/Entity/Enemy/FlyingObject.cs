@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : Entity
+public class FlyingObject : Enemy
 {
     protected override void Awake()
     {
+        base.Awake();
     }
 
     protected override void Start()
     {
-        rigid = GetComponent<Rigidbody2D>();
-        renderer = GetComponent<SpriteRenderer>();
+        base.Start();
     }
 
     protected override void Update()
     {
-        OnDestroy?.Invoke();
+        base.Update();
     }
 }

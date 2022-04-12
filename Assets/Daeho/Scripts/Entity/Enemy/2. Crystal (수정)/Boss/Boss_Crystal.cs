@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss_Crystal : Monster
+public class Boss_Crystal : GroundObject
 {
     [SerializeField] Transform[] platforms;
     [SerializeField] GameObject crystal_prefab;

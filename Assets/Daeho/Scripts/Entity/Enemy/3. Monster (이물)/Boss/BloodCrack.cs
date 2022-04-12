@@ -9,6 +9,6 @@ public class BloodCrack : MonoBehaviour
     /// </summary>
     public void Explosion()
     {
-
+        transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y * 1.5f);
     }
 }

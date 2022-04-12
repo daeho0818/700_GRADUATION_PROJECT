@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss_Orc : Monster
+public class Boss_Orc : GroundObject
 {
     [SerializeField] GameObject rock_prefab;
     [SerializeField] GameObject fragment_prefab;
