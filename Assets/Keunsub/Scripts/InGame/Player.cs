@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     Coroutine attackCoroutine;
     bool doubleJumpAble;
     Animator anim;
-    [SerializeField] CameraFollow cam;
+    [SerializeField] TitleCameraFollow cam;
 
     [HideInInspector] public JewelryBase[] CurJewelry = new JewelryBase[2];
 
@@ -89,14 +89,14 @@ public class Player : MonoBehaviour
 
     void GetDataInManager()
     {
-        maxHp = InGameManager.Instance.Hp;
-        maxMp = InGameManager.Instance.Mp;
-        moveSpeed = InGameManager.Instance.MoveSpeed;
-        jumpForce = InGameManager.Instance.JumpForce;
-        defence = InGameManager.Instance.Defence;
-        damage = InGameManager.Instance.Damage;
-        skillDamage = InGameManager.Instance.SkillDamage;
-        attackSpeed = InGameManager.Instance.AttackSpeed;
+        maxHp = StatusManager.Instance.Hp;
+        maxMp = StatusManager.Instance.Mp;
+        moveSpeed = StatusManager.Instance.MoveSpeed;
+        jumpForce = StatusManager.Instance.JumpForce;
+        defence = StatusManager.Instance.Defence;
+        damage = StatusManager.Instance.Damage;
+        skillDamage = StatusManager.Instance.SkillDamage;
+        attackSpeed = StatusManager.Instance.AttackSpeed;
 
         Hp = maxHp;
         Mp = maxMp;
@@ -116,6 +116,14 @@ public class Player : MonoBehaviour
         CheckGround();
 
         SetAnimatorState();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("CameraRoom"))
+        {
+            cam.SetFollowTarget(transform, collision.transform, collision.GetComponent<TitleRoom>().thisType, collision.GetComponent<TitleRoom>().clamp);
+        }
     }
 
     void AttackLogic()
@@ -142,13 +150,13 @@ public class Player : MonoBehaviour
     IEnumerator ComboCoroutine()
     {
         comboAble = false;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(attackSpeed / 2f);
         comboAble = true;
     }
 
     IEnumerator AttackCoroutine()
     {
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(attackSpeed);
         isAttack = false;
         attackState = 0;
         attackCoroutine = null;
