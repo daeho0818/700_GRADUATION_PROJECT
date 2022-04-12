@@ -61,7 +61,7 @@ public class GroundObject : Enemy
             {
                 yield return new WaitForSeconds(Random.Range(delay_min, delay_max));
 
-                target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0));
+                target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
             }
         }
     }

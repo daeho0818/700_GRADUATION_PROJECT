@@ -13,7 +13,7 @@ public class PowerStone : JewelryBase
         int randChance = Random.Range(0, 100);
         if(randChance == 0)
         {
-            enemy.Hp -= 10f;
+            enemy.hp -= 10f;
         }
     }
 
