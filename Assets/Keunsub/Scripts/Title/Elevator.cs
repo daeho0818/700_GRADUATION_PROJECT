@@ -10,6 +10,7 @@ public class Elevator : MonoBehaviour
     Animator anim;
     bool moving;
     bool isStop = true;
+    int cnt = 0;
 
     void Start()
     {
@@ -31,10 +32,20 @@ public class Elevator : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !moving && isStop)
         {
-            moving = true;
-            isStop = false;
-            Wall.SetActive(true);
-            anim.SetTrigger("0");
+            if(cnt % 2 == 0)
+            {
+                moving = true;
+                isStop = false;
+                Wall.SetActive(true);
+                anim.SetTrigger("0");
+            }
+            else
+            {
+                moving = true;
+                isStop = false;
+                Wall.SetActive(true);
+                anim.SetTrigger("1");
+            }
         }
     }
 
@@ -42,10 +53,7 @@ public class Elevator : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !moving && isStop)
         {
-            moving = true;
-            isStop = false;
-            Wall.SetActive(true);
-            anim.SetTrigger("1");
+            cnt++;
         }
     }
 

@@ -46,7 +46,7 @@ public class TitleCameraFollow : MonoBehaviour
                 break;
         }
 
-        transform.position = followPos;
+        transform.position = Vector3.Lerp(transform.position, followPos, Time.deltaTime * 15f);
     }
 
     Vector3 ClampHorizontal(Vector3 pos)
