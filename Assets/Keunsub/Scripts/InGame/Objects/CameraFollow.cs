@@ -2,14 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CameraFollowType
-{
-    FollowAnyway,
-    FollowHorizontal,
-    FollowVertical,
-    FollowArena
-}
-
 [RequireComponent(typeof(Camera))]
 public class CameraFollow : MonoBehaviour
 {
@@ -18,8 +10,6 @@ public class CameraFollow : MonoBehaviour
 
     [SerializeField] float moveSpeed;
     [SerializeField] Transform target;
-
-    public CameraFollowType followType;
     Camera thisCamera;
 
     void Start()
@@ -29,42 +19,7 @@ public class CameraFollow : MonoBehaviour
 
     void FixedUpdate()
     {
-        switch (followType)
-        {
-            case CameraFollowType.FollowAnyway:
-                FollowAnyway();
-                break;
-            case CameraFollowType.FollowHorizontal:
-                FollowHorizontal(-6f);
-                break;
-            case CameraFollowType.FollowVertical:
-                FollowVertical(-22f);
-                break;
-            case CameraFollowType.FollowArena:
-                FollowArena();
-                break;
-        }
-    }
-
-    void FollowHorizontal(float y)
-    {
-        transform.position = Vector3.Lerp(transform.position, target.position + new Vector3(0, 0, -10f), Time.deltaTime * moveSpeed);
-
-        float yClamp = y;
-        transform.position = new Vector3(transform.position.x, yClamp, -10f);
-    }
-
-    void FollowVertical(float x)
-    {
-        transform.position = Vector3.Lerp(transform.position, target.position + new Vector3(0, 0, -10f), Time.deltaTime * moveSpeed);
-
-        float xClamp = x;
-        transform.position = new Vector3(transform.position.x, xClamp, -10f);
-    }
-
-    void FollowAnyway()
-    {
-        transform.position = Vector3.Lerp(transform.position, target.position + new Vector3(0, 0, -3), Time.deltaTime * moveSpeed);
+        FollowArena();
     }
 
     void FollowArena()

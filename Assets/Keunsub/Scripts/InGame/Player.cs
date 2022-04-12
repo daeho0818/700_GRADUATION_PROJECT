@@ -18,15 +18,23 @@ public class Player : MonoBehaviour
     public float Mp;
 
     Rigidbody2D RB;
-    bool isGround;
-    
+
     [SerializeField] Transform feetPos;
     [SerializeField] float checkRadius;
     [SerializeField] LayerMask whatIsGround;
     [SerializeField] float jumpTime;
     float jumpTimeCounter;
+
+    bool isGround;
     bool isJumping;
+    bool isRunning;
+    bool isAttack;
+    bool comboAble = true;
+    int attackState = 0; //1: atk1, 2: atk2, 3: atk3
+
+    Coroutine attackCoroutine;
     bool doubleJumpAble;
+    Animator anim;
     [SerializeField] CameraFollow cam;
 
     [HideInInspector] public JewelryBase[] CurJewelry = new JewelryBase[2];
@@ -35,6 +43,7 @@ public class Player : MonoBehaviour
     {
         GetDataInManager();
         JewelryAwake();
+        anim = GetComponent<Animator>();
     }
 
     #region JewelryFunc
@@ -97,15 +106,65 @@ public class Player : MonoBehaviour
     {
         JewelryUpdate(); //항상 먼저 실행됨
 
+        AttackLogic();
 
-        JumpLogic();
-        JumpHold();
+        if (!isAttack)
+        {
+            JumpLogic();
+            JumpHold();
+        }
         CheckGround();
+
+        SetAnimatorState();
+    }
+
+    void AttackLogic()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (!isAttack)
+            {
+                attackState = 1;
+                isAttack = true;
+                attackCoroutine = StartCoroutine(AttackCoroutine());
+                StartCoroutine(ComboCoroutine());
+            }
+            else if (isAttack && attackState < 3 && attackCoroutine != null && comboAble && isGround)
+            {
+                attackState++;
+                StopCoroutine(attackCoroutine);
+                StartCoroutine(ComboCoroutine());
+                attackCoroutine = StartCoroutine(AttackCoroutine());
+            }
+        }
+    }
+
+    IEnumerator ComboCoroutine()
+    {
+        comboAble = false;
+        yield return new WaitForSeconds(0.2f);
+        comboAble = true;
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        yield return new WaitForSeconds(0.4f);
+        isAttack = false;
+        attackState = 0;
+        attackCoroutine = null;
+    }
+
+    void SetAnimatorState()
+    {
+        anim.SetBool("IsRunning", isRunning);
+        anim.SetBool("IsAttack", isAttack);
+        anim.SetInteger("attackState", attackState);
     }
 
     void FixedUpdate()
     {
-        MoveLogic();
+        if (!isAttack)
+            MoveLogic();
     }
 
     void JumpLogic()
@@ -151,7 +210,7 @@ public class Player : MonoBehaviour
     void CheckGround()
     {
         bool ground = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-        if(ground != isGround)
+        if (ground != isGround)
         {
             doubleJumpAble = true;
             isGround = ground;
@@ -168,24 +227,17 @@ public class Player : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            isRunning = true;
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
         {
             transform.rotation = Quaternion.Euler(0, -180, 0);
             transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            isRunning = true;
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag("CameraRoom"))
+        else
         {
-            cam.followType = collision.GetComponent<RoomTrigger>().type;
-
-            if(cam.followType == CameraFollowType.FollowArena && !InGameManager.Instance.GameActive)
-            {
-                InGameManager.Instance.GameStart();
-            }
+            isRunning = false;
         }
     }
 }
