@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
-public class InGameUIManager : MonoBehaviour
+public class InGameUIManager : Singleton<InGameUIManager>
 {
 
     [Header("GaugeObject")]
@@ -14,6 +15,9 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] Image MpBack;
     [SerializeField] Image MpGauge;
     [SerializeField] Image MpOutline;
+
+    [Header("UI Object")]
+    [SerializeField] Image black;
 
     Rect hpContent;
     Rect hpOutline;
@@ -44,5 +48,52 @@ public class InGameUIManager : MonoBehaviour
         MpBack.rectTransform.rect.Set(mpContent.x, mpContent.y, mpContent.width + mpLevel * 100f, mpContent.height);
         MpGauge.rectTransform.rect.Set(mpContent.x, mpContent.y, mpContent.width + mpLevel * 100f, mpContent.height);
         MpOutline.rectTransform.rect.Set(mpOutline.x, mpOutline.y, mpOutline.width + mpLevel * 100f, mpOutline.height);
+    }
+
+    public void SceneMoveFade(Action action)
+    {
+        StartCoroutine(SceneMoveCoroutine(action));
+    }
+
+    IEnumerator SceneMoveCoroutine(Action action = null)
+    {
+        yield return StartCoroutine(FadeIn(0.5f));
+        action?.Invoke();
+        yield return StartCoroutine(FadeOut(0.5f));
+    }
+
+    IEnumerator FadeOut(float duration)
+    {
+
+        float timer = duration;
+        Color color = black.color;
+        while (timer > 0f)
+        {
+            color.a = timer / duration;
+            black.color = color;
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        color.a = 0f;
+        black.color = color;
+        black.gameObject.SetActive(false);
+    }
+
+    IEnumerator FadeIn(float duration)
+    {
+        black.gameObject.SetActive(true);
+        float timer = 0f;
+        Color color = black.color;
+        while (timer < duration)
+        {
+            color.a = timer / duration;
+            black.color = color;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        color.a = timer / duration;
+        black.color = color;
     }
 }

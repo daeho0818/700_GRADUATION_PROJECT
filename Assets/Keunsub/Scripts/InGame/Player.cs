@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("CameraRoom"))
+        if(collision.CompareTag("CameraRoom") && GameManager.Instance.curMap == 0)
         {
             cam.SetFollowTarget(transform, collision.transform, collision.GetComponent<TitleRoom>().thisType, collision.GetComponent<TitleRoom>().clamp);
         }

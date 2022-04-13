@@ -46,6 +46,8 @@ public class Elevator : MonoBehaviour
                 Wall.SetActive(true);
                 anim.SetTrigger("1");
             }
+
+            collision.transform.SetParent(transform);
         }
     }
 
@@ -54,6 +56,7 @@ public class Elevator : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !moving && isStop)
         {
             cnt++;
+            collision.transform.SetParent(null);
         }
     }
 

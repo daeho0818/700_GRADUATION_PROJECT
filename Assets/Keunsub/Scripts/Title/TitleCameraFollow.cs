@@ -21,7 +21,8 @@ public class TitleCameraFollow : MonoBehaviour
 
     void FixedUpdate()
     {
-        FollowTarget();
+        if (stand != null)
+            FollowTarget();
     }
 
     public void SetFollowTarget(Transform _target, Transform _stand, RoomType roomType, Vector2 clamp)
