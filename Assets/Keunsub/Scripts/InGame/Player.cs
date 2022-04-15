@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     bool isAttack;
     bool comboAble = true;
     int attackState = 0; //1: atk1, 2: atk2, 3: atk3
+    public bool isShop;
 
     Coroutine attackCoroutine;
     bool doubleJumpAble;
@@ -126,6 +127,29 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Store") && GameManager.Instance.curMap == 0)
+        {
+            InGameUIManager.Instance.Interaction.SetActive(true);
+
+            if (!isShop && Input.GetKeyDown(KeyCode.F))
+            {
+                isShop = true;
+                int index = int.Parse(collision.name);
+                InGameUIManager.Instance.StatusUpgradeOn(index);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Store") && GameManager.Instance.curMap == 0)
+        {
+            InGameUIManager.Instance.Interaction.SetActive(false);
+        }
+    }
+
     void AttackLogic()
     {
         if (Input.GetKeyDown(KeyCode.X))
@@ -171,7 +195,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isAttack)
+        if (!isAttack && !isShop)
             MoveLogic();
     }
 

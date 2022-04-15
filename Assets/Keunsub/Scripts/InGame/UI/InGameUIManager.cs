@@ -6,7 +6,8 @@ using System;
 
 public class InGameUIManager : Singleton<InGameUIManager>
 {
-
+    public Player player;
+    RectTransform RT;
     [Header("GaugeObject")]
     [SerializeField] Image HpBack;
     [SerializeField] Image HpGauge;
@@ -18,6 +19,10 @@ public class InGameUIManager : Singleton<InGameUIManager>
 
     [Header("UI Object")]
     [SerializeField] Image black;
+    public GameObject Interaction;
+
+    [Header("Title Object")]
+    [SerializeField] StatusUpgrade statusUpgrade;
 
     Rect hpContent;
     Rect hpOutline;
@@ -26,6 +31,8 @@ public class InGameUIManager : Singleton<InGameUIManager>
 
     void Start()
     {
+        RT = GetComponent<RectTransform>();
+
         hpContent = HpBack.rectTransform.rect;
         hpOutline = HpOutline.rectTransform.rect;
         mpContent = MpBack.rectTransform.rect;
@@ -36,6 +43,27 @@ public class InGameUIManager : Singleton<InGameUIManager>
 
     void Update()
     {
+        SetInteractionPos();
+    }
+
+    void SetInteractionPos()
+    {
+        Interaction.transform.position = Camera.main.WorldToScreenPoint(player.transform.position + new Vector3(0, -1f, 0));
+    }
+
+    public void StatusUpgradeOn(int idx)
+    {
+        switch (idx)
+        {
+            case 0:
+                statusUpgrade.gameObject.SetActive(true);
+                statusUpgrade.UIon();
+                break;
+            case 1: //quest
+                break;
+            case 2: //jewerly
+                break;
+        }
         
     }
 
