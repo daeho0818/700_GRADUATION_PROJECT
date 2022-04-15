@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Orc_0001 : GroundObject
+public class Orc_0002 : GroundObject
 {
-    [SerializeField] Projectile bullet_prefab;
+    [SerializeField] Projectile_Arc bullet_prefab;
     protected override void Awake()
     {
         base.Awake();
@@ -22,31 +22,10 @@ public class Orc_0001 : GroundObject
 
     protected override void BaseAttack()
     {
-        StartCoroutine(_BaseAttack());
-    }
-
-    /// <summary>
-    /// 플레이어를 향해 3번 연속 총알을 발사하는 공격 함수
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator _BaseAttack()
-    {
-        WaitForSeconds second = new WaitForSeconds(0.65f);
-        Projectile bullet;
-        Vector2 direction = (player.transform.position - transform.position).normalized;
-        direction.y = 0;
-
-        for (int i = 0; i < 3; i++)
-        {
-            bullet = Instantiate(bullet_prefab);
-
-            bullet.transform.position = transform.position;
-            bullet.fire_direction = direction;
-            bullet.move_speed = bullet_speed;
-
-            yield return second;
-
-        }
+        Projectile_Arc bullet = Instantiate(bullet_prefab);
+        bullet.transform.position = transform.position - new Vector3(0, transform.localScale.y);
+        bullet.move_speed = bullet_speed;
+        bullet.SetArc(player.transform.position);
     }
 
     Vector2 target_move_position;

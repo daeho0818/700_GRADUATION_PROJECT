@@ -109,7 +109,6 @@ public class Enemy : Entity
             if (find_player) continue;
 
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
-            Debug.Log(vec);
             transform.Translate(vec);
 
             if (Vector2.Distance(target, transform.position) <= vec.x)
