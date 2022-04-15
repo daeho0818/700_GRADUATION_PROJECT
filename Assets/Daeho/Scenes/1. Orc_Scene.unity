@@ -774,6 +774,10 @@ PrefabInstance:
       propertyPath: delay_min
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 88974389173753885, guid: a2359a7f16fcdb343948401a41206dcb, type: 3}
+      propertyPath: ai_moving_range
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1192932492300047689, guid: a2359a7f16fcdb343948401a41206dcb, type: 3}
       propertyPath: m_Constraints
       value: 4
