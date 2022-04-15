@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Orc_0000 : FlyingObject
+public class Orc_0001 : GroundObject
 {
     [SerializeField] Projectile bullet_prefab;
     protected override void Awake()
@@ -20,29 +20,31 @@ public class Orc_0000 : FlyingObject
         base.Update();
     }
 
-    Vector3 target_fire_position;
-
-    /// <summary>
-    /// 플레이어를 향해 산탄총 발사하는 기본 공격 함수
-    /// </summary>
     protected override void BaseAttack()
     {
-        if (!player) return;
+        StartCoroutine(_BaseAttack());
+    }
 
-        target_fire_position = player.transform.position;
-        Vector2 dir;
-        float value;
+    /// <summary>
+    /// 플레이어를 향해 3번 연속 총알을 발사하는 공격 함수
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator _BaseAttack()
+    {
+        WaitForSeconds second = new WaitForSeconds(1);
         Projectile bullet;
+        Vector2 direction = (player.transform.position - transform.position).normalized;
 
-        for (int i = -1; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
-            value = Mathf.Sin(i * Mathf.Deg2Rad) * 50;
-            dir = ((target_fire_position + new Vector3(value, value)) - transform.position).normalized;
-
             bullet = Instantiate(bullet_prefab);
+
             bullet.transform.position = transform.position;
-            bullet.fire_direction = dir;
+            bullet.fire_direction = direction;
             bullet.move_speed = bullet_speed;
+
+            yield return second;
+
         }
     }
 

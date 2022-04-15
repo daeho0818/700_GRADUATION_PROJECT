@@ -37,7 +37,6 @@ public class Boss_Orc : GroundObject
     /// <returns></returns>
     IEnumerator AttackPattern1(float fragment_speed)
     {
-        Transform player = GameObject.FindWithTag("Player").transform;
         GameObject[] platforms = GameObject.FindGameObjectsWithTag("Platform");
         Transform target_platform = null;
         float min_distance = 9999;
@@ -45,9 +44,9 @@ public class Boss_Orc : GroundObject
         // 이동할 플랫폼 선택
         foreach (var plat in platforms)
         {
-            if (Vector2.Distance(player.position, plat.transform.position) < min_distance)
+            if (Vector2.Distance(player.transform.position, plat.transform.position) < min_distance)
             {
-                min_distance = Vector2.Distance(player.position, plat.transform.position);
+                min_distance = Vector2.Distance(player.transform.position, plat.transform.position);
                 target_platform = plat.transform;
             }
         }
@@ -55,7 +54,7 @@ public class Boss_Orc : GroundObject
         bool dir_is_right = target_platform.position.x > transform.position.x;
 
         // 이동 방향에 따른 이동 위치 설정
-        Vector2 target = new Vector2(target_platform.position.x, player.position.y) + // 플랫폼 위치 - - - ①
+        Vector2 target = new Vector2(target_platform.position.x, player.transform.position.y) + // 플랫폼 위치 - - - ①
             new Vector2(target_platform.localScale.x / 2 * (dir_is_right ? -1 : 1), 0) + // ①에서 구한 플랫폼 위치의 맨 끝 - - - ②
             new Vector2(transform.localScale.x / 2 * (dir_is_right ? 4 : -4), 0); // ②에서 구한 맨 끝에서 조금 안쪽으로 이동 (플랫폼에 절반만 걸친 상태이기 때문) - - - ③
 
