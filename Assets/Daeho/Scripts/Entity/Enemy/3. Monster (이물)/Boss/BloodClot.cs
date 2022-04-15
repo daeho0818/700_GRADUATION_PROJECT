@@ -6,10 +6,10 @@ public class BloodClot : Projectile
 {
     void Start()
     {
-
+        Destroy(gameObject, 3);
     }
 
-    void Update()
+    protected override void Update()
     {
         base.Update();
     }

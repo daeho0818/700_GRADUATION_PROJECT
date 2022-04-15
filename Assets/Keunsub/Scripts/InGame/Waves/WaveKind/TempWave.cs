@@ -20,7 +20,7 @@ public class TempWave : WaveBase
     {
         int cnt = 15;
         GameObject testMonster = new GameObject("monster (clone)");
-        Entity entity = testMonster.AddComponent<Monster>();
+        Entity entity = testMonster.AddComponent<Enemy>();
 
         Entity flying = SummonMonster(MonsterSize.MIDIUM, Vector3.zero, entity);
         for (int i = 0; i < cnt; i++)

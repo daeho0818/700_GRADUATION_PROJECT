@@ -5,8 +5,11 @@ using System;
 
 public abstract class Entity : MonoBehaviour
 {
-    public float Hp { get; set; }
-    public bool IsDestroy => Hp == 0;
+    public float max_hp;
+    public float hp;
+    public float move_speed;
+    public bool is_hit;
+    public bool IsDestroy => hp == 0;
 
     public Action OnHit =null;
     public Action OnDestroy = null;

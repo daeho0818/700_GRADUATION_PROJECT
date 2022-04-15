@@ -2,20 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : Entity
+public class GroundObject : Enemy
 {
+
+
+    Player player;
     protected override void Awake()
     {
+        base.Awake();
     }
-
     protected override void Start()
     {
-        rigid = GetComponent<Rigidbody2D>();
-        renderer = GetComponent<SpriteRenderer>();
+        base.Start();
+
+        player = FindObjectOfType<Player>();
+        StartCoroutine(AIMoving());
     }
 
     protected override void Update()
     {
-        OnDestroy?.Invoke();
+        base.Update();
     }
 }

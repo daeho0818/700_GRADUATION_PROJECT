@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss_Monster : Monster
+public class Boss_Monster : GroundObject
 {
     [SerializeField] Transform[] warp_positions;
 
@@ -17,6 +17,8 @@ public class Boss_Monster : Monster
     [SerializeField] Transform blood_wind_position;
     [SerializeField] Transform hole_position;
     [SerializeField] Transform monster_mouth_position;
+
+    int current_index = -1;
     protected override void Awake()
     {
         base.Awake();
@@ -43,7 +45,17 @@ public class Boss_Monster : Monster
     /// <returns></returns>
     IEnumerator Pattern1()
     {
-        int warp_index = 1;//Random.Range(0, 3);
+        Debug.Log("워프 이동 패턴!");
+
+
+        int warp_index;
+
+        do
+        {
+            warp_index = 1;//Random.Range(0, 3);
+        } while (current_index == warp_index);
+        //current_index = warp_index;
+
         Vector2 warp_position = warp_positions[warp_index].position;
 
         // 워프 이펙트
@@ -59,7 +71,10 @@ public class Boss_Monster : Monster
         }
         else
         {
-            StartCoroutine(Pattern2_1());
+            if (Random.Range(0, 2) == 0)
+                StartCoroutine(Pattern2_1());
+            else
+                StartCoroutine(Pattern2_2());
         }
     }
 
@@ -70,6 +85,8 @@ public class Boss_Monster : Monster
     /// <returns></returns>
     IEnumerator Pattern2_1()
     {
+        Debug.Log("흩뿌리기 공격 패턴!");
+
         pattern2[0] = true;
         rigid.gravityScale = 0;
 
@@ -80,10 +97,11 @@ public class Boss_Monster : Monster
         // 핏덩이 뿌리기
         colliders[1].enabled = true;
 
-        for (int i = 0; i < 180; i += 180 / count)
+        for (int i = 20; i < 160; i += 180 / count)
         {
             direction = new Vector2(Mathf.Cos(i * Mathf.Deg2Rad), -Mathf.Sin(i * Mathf.Deg2Rad));
             blood = Instantiate(blood_prefab);
+            blood.transform.position = transform.position;
             blood.fire_direction = direction;
             blood.move_speed = 10;
         }
@@ -111,6 +129,8 @@ public class Boss_Monster : Monster
     /// <returns></returns>
     IEnumerator Pattern2_2()
     {
+        Debug.Log("베어내기 공격 패턴!");
+
         pattern2[1] = true;
         rigid.gravityScale = 0;
 
@@ -125,6 +145,8 @@ public class Boss_Monster : Monster
 
         // 균열이 생긴 뒤 대기
         yield return new WaitForSeconds(1);
+
+        colliders[1].enabled = false;
 
         crack.Explosion();
 
@@ -150,6 +172,8 @@ public class Boss_Monster : Monster
     /// <returns></returns>
     IEnumerator Pattern3_1(int warp_index)
     {
+        Debug.Log("피바람 공격 패턴!");
+
         // 몇초동안 힘을 모음
         yield return new WaitForSeconds(1);
 
@@ -159,6 +183,8 @@ public class Boss_Monster : Monster
         yield return new WaitForSeconds(3);
 
         Destroy(blood_wind_obj);
+
+        StartCoroutine(Pattern1());
     }
 
     /// <summary>
@@ -167,11 +193,13 @@ public class Boss_Monster : Monster
     /// <returns></returns>
     IEnumerator Pattern3_2(int warp_index)
     {
+        Debug.Log("구멍 공격 패턴!");
+
         GameObject hole = Instantiate(hole_prefab);
         hole.transform.position = hole_position.position * new Vector2((warp_index == 0 ? 1 : -1), 1);
 
         // 이물의 입 생성 대기시간
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
 
         GameObject monster_mouth = Instantiate(monster_mouth_prefab);
 
