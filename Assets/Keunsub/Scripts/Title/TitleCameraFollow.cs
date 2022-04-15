@@ -35,7 +35,7 @@ public class TitleCameraFollow : MonoBehaviour
 
     void FollowTarget()
     {
-        Vector3 followPos = Vector3.Lerp(transform.position, target.position + new Vector3(0, 0, -10f), Time.deltaTime * 15f);
+        Vector3 followPos = Vector3.Lerp(transform.position, target.position + new Vector3(0, 0, -10f), 0.5f);
 
         switch (roomType)
         {
@@ -47,7 +47,7 @@ public class TitleCameraFollow : MonoBehaviour
                 break;
         }
 
-        transform.position = Vector3.Lerp(transform.position, followPos, Time.deltaTime * 15f);
+        transform.position = Vector3.Lerp(transform.position, followPos, 0.5f);
     }
 
     Vector3 ClampHorizontal(Vector3 pos)

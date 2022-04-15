@@ -7,6 +7,7 @@ TagManager:
   - Platform
   - Monster
   - CameraRoom
+  - Store
   layers:
   - Default
   - TransparentFX
