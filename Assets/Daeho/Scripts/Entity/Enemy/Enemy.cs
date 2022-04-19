@@ -21,6 +21,7 @@ public class Enemy : Entity
     [SerializeField] protected float unSearch_distance;
     [Tooltip("추격 중 플레이어와 유지할 거리")]
     [SerializeField] protected float distance_with_player;
+    protected Coroutine ai_moving = null;
 
     public bool find_player;
 
@@ -36,7 +37,7 @@ public class Enemy : Entity
 
         player = FindObjectOfType<Player>();
 
-        StartCoroutine(AIMoving());
+        ai_moving = StartCoroutine(AIMoving());
     }
 
     protected override void Update()
@@ -102,6 +103,7 @@ public class Enemy : Entity
     {
         Vector3 target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
         Vector3 vec;
+        RaycastHit2D[] hits;
 
         while (true)
         {
@@ -111,7 +113,9 @@ public class Enemy : Entity
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
             transform.Translate(vec);
 
-            if (Vector2.Distance(target, transform.position) <= vec.x)
+            hits = Physics2D.RaycastAll(transform.position, (target - transform.position).normalized, 2, LayerMask.NameToLayer("Wall"));
+
+            if (Vector2.Distance(target, transform.position) <= vec.x || hits.Length > 0)
             {
                 yield return new WaitForSeconds(Random.Range(delay_min, delay_max));
 

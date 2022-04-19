@@ -60,6 +60,7 @@ public class Orc_0000 : FlyingObject
             target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, 0);
             target_move_position.y = transform.position.y;
 
+            // renderer.flipX = transform.position.x < target_move_position.x;
             transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
         }
     }
