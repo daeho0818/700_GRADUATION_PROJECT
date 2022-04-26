@@ -95,7 +95,7 @@ public class Boss_Monster : GroundObject
         BloodClot blood;
 
         // «Õµ¢¿Ã ª—∏Æ±‚
-        colliders[1].enabled = true;
+        CheckCollision(transform.position, (BoxCollider2D)colliders[1], 0);
 
         for (int i = 20; i < 160; i += 180 / count)
         {
@@ -107,8 +107,6 @@ public class Boss_Monster : GroundObject
         }
 
         yield return new WaitForSeconds(3);
-        colliders[1].enabled = false;
-
 
         if (pattern2[1])
         {
@@ -139,14 +137,12 @@ public class Boss_Monster : GroundObject
         yield return new WaitForSeconds(2);
 
         // ≥¥ »÷µŒ∏ß
-        colliders[1].enabled = true;
+        CheckCollision(transform.position, (BoxCollider2D)colliders[1], 0);
 
         BloodCrack crack = Instantiate(crack_prefab);
 
         // ±’ø≠¿Ã ª˝±‰ µ⁄ ¥Î±‚
         yield return new WaitForSeconds(1);
-
-        colliders[1].enabled = false;
 
         crack.Explosion();
 

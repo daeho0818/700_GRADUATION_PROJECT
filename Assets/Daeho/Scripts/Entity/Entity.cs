@@ -11,7 +11,8 @@ public abstract class Entity : MonoBehaviour
     public bool is_hit;
     public bool IsDestroy => hp == 0;
 
-    public Action OnHit =null;
+    // damage 매개변수
+    public Action<int> OnHit =null;
     public Action OnDestroy = null;
 
     [Tooltip("엔티티 콜라이더들 (1. 몸 | 2. 공격 1 | 3. 공격 2 | 4 공격 3 | ...)")]

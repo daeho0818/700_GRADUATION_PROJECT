@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6152513494819372573}
   - component: {fileID: 6152513494819372572}
   - component: {fileID: 6152513494819372574}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boss_Crystal
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -144,8 +144,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df322850a7f972e4f83019e41cf82685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  max_hp: 0
+  hp: 0
+  move_speed: 0
+  is_hit: 0
   colliders:
   - {fileID: 6152513494819372572}
+  attack_check: 0
+  attack_coolTime: 0
+  cur_attack_coolTime: 0
+  bullet_speed: 0
+  search_player: 1
+  ai_moving_range: 0
+  delay_min: 0
+  delay_max: 0
+  search_distance: 0
+  unSearch_distance: 0
+  distance_with_player: 0
+  find_player: 0
   platforms:
   - {fileID: 0}
   - {fileID: 0}

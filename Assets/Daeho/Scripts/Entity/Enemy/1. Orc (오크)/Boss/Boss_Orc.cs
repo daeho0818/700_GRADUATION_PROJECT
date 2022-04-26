@@ -80,16 +80,16 @@ public class Boss_Orc : GroundObject
             move_distance = new Vector2(distance, 0).x - Mathf.Abs(start_position.x - transform.position.x);
             height = moved_distance * move_distance;
 
-            transform.position = new Vector2(transform.position.x, start_position.y + 
-                                                      (target.y > start_position.y ? (height / (distance / 2)) * 2.5f : height / (distance / 2))); // 더 위로 점프해야할 경우 (수정하기)
+            transform.position = new Vector2(transform.position.x, start_position.y +
+                                                      (target.y > start_position.y ? (height / (distance / 2)) * 2.5f : height / (distance / 2))); // 더 위로 점프해야할 경우
         }
 
-        colliders[1].transform.localPosition = new Vector2(Mathf.Abs(colliders[1].transform.localPosition.x) * (dir_is_right ? 1 : -1), 0);
-        colliders[1].enabled = true;
+        SetColliderDirection(colliders[1], (dir_is_right ? 1 : -1));
+
+        Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[1], CapsuleDirection2D.Horizontal, 0);
 
         yield return new WaitForSeconds(0.5f);
 
-        colliders[1].enabled = false;
         #endregion
 
         // 추격 후 바위 솟아오름
@@ -152,7 +152,7 @@ public class Boss_Orc : GroundObject
         yield return new WaitForSeconds(2);
 
         renderer.flipX = direction.x < 0;
-        colliders[2].enabled = true;
+        Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[2], CapsuleDirection2D.Horizontal, 0);
         do
         {
             origin = transform.position + direction * 5;
@@ -164,13 +164,11 @@ public class Boss_Orc : GroundObject
             yield return null;
         }
         while (hits.Length > 0);
-        colliders[2].enabled = false;
 
-        colliders[3].transform.localPosition = new Vector2(Mathf.Abs(colliders[3].transform.localPosition.x) * direction.x, colliders[3].transform.localPosition.y);
-        colliders[3].enabled = true;
+        SetColliderDirection(colliders[3], direction.x);
+
+        p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[3], CapsuleDirection2D.Vertical, 0);
 
         yield return new WaitForSeconds(0.5f);
-
-        colliders[3].enabled = false;
     }
 }

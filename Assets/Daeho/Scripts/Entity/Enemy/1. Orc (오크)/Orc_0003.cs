@@ -18,6 +18,9 @@ public class Orc_0003 : GroundObject
         base.Update();
     }
 
+    /// <summary>
+    /// 벽이 나타날 때까지 돌진하는 공격 패턴
+    /// </summary>
     protected override void BaseAttack()
     {
         float dir_x = (player.transform.position - transform.position).normalized.x;
@@ -33,7 +36,8 @@ public class Orc_0003 : GroundObject
         yield return new WaitForSeconds(1.5f);
         do
         {
-            hits = Physics2D.RaycastAll(transform.position, dir, 2, LayerMask.NameToLayer("Wall"));
+            hits = Physics2D.RaycastAll(transform.position, dir, 1.5f, LayerMask.GetMask("Wall"));
+            Debug.DrawRay(transform.position, dir * 1.5f, Color.red, 0.1f);
 
             if (hits.Length > 0) break;
 
@@ -46,8 +50,5 @@ public class Orc_0003 : GroundObject
     }
 
 
-    protected override void MoveToPlayer()
-    {
-        base.MoveToPlayer();
-    }
+    protected override void MoveToPlayer() {}
 }

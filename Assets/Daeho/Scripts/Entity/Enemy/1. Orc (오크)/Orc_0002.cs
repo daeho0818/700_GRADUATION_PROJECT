@@ -20,6 +20,9 @@ public class Orc_0002 : GroundObject
         base.Update();
     }
 
+    /// <summary>
+    /// 플레이어를 향해 포물선을 그리며 투척물을 날리는 공격 함수
+    /// </summary>
     protected override void BaseAttack()
     {
         Projectile_Arc bullet = Instantiate(bullet_prefab);

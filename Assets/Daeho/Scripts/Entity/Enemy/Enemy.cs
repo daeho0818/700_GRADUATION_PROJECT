@@ -113,8 +113,9 @@ public class Enemy : Entity
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
             transform.Translate(vec);
 
-            hits = Physics2D.RaycastAll(transform.position, (target - transform.position).normalized, 2, LayerMask.NameToLayer("Wall"));
+            hits = Physics2D.RaycastAll(transform.position, (target - transform.position).normalized, 2, LayerMask.GetMask("Wall"));
 
+            // 벽에 부딛혔거나, 타겟 위치로의 이동이 완료됐을 때
             if (Vector2.Distance(target, transform.position) <= vec.x || hits.Length > 0)
             {
                 yield return new WaitForSeconds(Random.Range(delay_min, delay_max));
@@ -130,5 +131,76 @@ public class Enemy : Entity
     protected virtual void MoveToPlayer()
     {
         transform.Translate(move_speed * ((new Vector2(player.transform.position.x, 0) - new Vector2(transform.position.x, 0)).normalized) * Time.deltaTime);
+        renderer.flipX = player.transform.position.x > transform.position.x;
+    }
+
+    protected void SetColliderDirection(Collider2D collider, float dir_x)
+    {
+        Vector2 offset = collider.offset;
+
+        if (offset.x > 0)
+            collider.offset = offset * new Vector2(dir_x, 1);
+        else
+            collider.offset = offset * new Vector2(-dir_x, 1);
+    }
+
+    /// <summary>
+    /// BoxCollider와 Player의 충돌을 확인하는 함수
+    /// </summary>
+    /// <param name="position">BoxCollider2D 위치</param>
+    /// <param name="collider">BoxCollider2D</param>
+    /// <param name="rot">회전</param>
+    /// <returns>충돌했다면 player, 아니라면 null</returns>
+    protected Player CheckCollision(Vector2 position, BoxCollider2D collider, float rot)
+    {
+        var hits = Physics2D.BoxCastAll(position + collider.offset, collider.size, rot, Vector2.zero, 0, LayerMask.GetMask("Wall"));
+
+        foreach (var hit in hits)
+        {
+            if (TryGetComponent(out Player p))
+                return p;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// CapshuleCollider와 Player의 충돌을 확인하는 함수
+    /// </summary>
+    /// <param name="position">CapsuleCollider2D 위치</param>
+    /// <param name="collider">CapsuleCollider2D</param>
+    /// <param name="capshule_dir">CapsuleCollider2D 방향</param>
+    /// <param name="rot">회전</param>
+    /// <returns>충돌했다면 player, 아니라면 null</returns>
+    protected Player CheckCollision(Vector2 position, CapsuleCollider2D collider, CapsuleDirection2D capshule_dir, float rot)
+    {
+        var hits = Physics2D.CapsuleCastAll(position + collider.offset, collider.size, capshule_dir, 0, Vector2.zero, 0, LayerMask.GetMask("Entity"));
+
+        foreach (var hit in hits)
+        {
+            if (TryGetComponent(out Player p))
+                return p;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// CircleCollider2D와 Player의 충돌을 확인하는 함수
+    /// </summary>
+    /// <param name="position">CircleCollider2D 위치</param>
+    /// <param name="collider">CircleCollider2D</param>
+    /// <returns>충돌했다면 player, 아니라면 null</returns>
+    protected Player CheckCollision(Vector2 position, CircleCollider2D collider)
+    {
+        var hits = Physics2D.CircleCastAll(position + collider.offset, collider.radius, Vector2.zero, 0, LayerMask.GetMask("Entity"));
+
+        foreach (var hit in hits)
+        {
+            if (TryGetComponent(out Player p))
+                return p;
+        }
+
+        return null;
     }
 }
