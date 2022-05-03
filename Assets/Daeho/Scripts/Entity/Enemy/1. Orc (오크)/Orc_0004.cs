@@ -33,7 +33,7 @@ public class Orc_0004 : GroundObject
         SetColliderDirection(collider, dir_x);
 
         Player p = CheckCollision((Vector2)transform.position + collider.offset, collider, 0);
-        // ((Entity)p)?.OnHit();
+        // p?.OnHit();
     }
 
     protected override IEnumerator AIMoving()

@@ -5,16 +5,16 @@ using UnityEngine;
 public class Enemy : Entity
 {
     [Header("Enemy Information")]
-    [SerializeField] bool attack_check;
-    [SerializeField] float attack_coolTime;
-    [SerializeField] float cur_attack_coolTime;
+    [SerializeField] protected bool attack_check;
+    [SerializeField] protected float attack_coolTime;
+    [SerializeField] protected float cur_attack_coolTime;
     [SerializeField] protected float bullet_speed;
 
     [Header("AI Moving Information")]
-    [SerializeField] bool search_player = true;
-    [SerializeField] float ai_moving_range;
-    [SerializeField] float delay_min;
-    [SerializeField] float delay_max;
+    [SerializeField] protected bool search_player = true;
+    [SerializeField] protected float ai_moving_range;
+    [SerializeField] protected float delay_min;
+    [SerializeField] protected float delay_max;
     [Tooltip("플레이어를 탐색하는 범위 (거리)")]
     [SerializeField] protected float search_distance;
     [Tooltip("플레이어 추격이 해제되는 거리")]
@@ -153,7 +153,7 @@ public class Enemy : Entity
     /// <returns>충돌했다면 player, 아니라면 null</returns>
     protected Player CheckCollision(Vector2 position, BoxCollider2D collider, float rot)
     {
-        var hits = Physics2D.BoxCastAll(position + collider.offset, collider.size, rot, Vector2.zero, 0, LayerMask.GetMask("Wall"));
+        var hits = Physics2D.BoxCastAll(position + collider.offset, collider.size, rot, Vector2.zero, 0, LayerMask.GetMask("Entity"));
 
         foreach (var hit in hits)
         {

@@ -36,8 +36,8 @@ public class Orc_0003 : GroundObject
         yield return new WaitForSeconds(1.5f);
         do
         {
-            hits = Physics2D.RaycastAll(transform.position, dir, 1.5f, LayerMask.GetMask("Wall"));
-            Debug.DrawRay(transform.position, dir * 1.5f, Color.red, 0.1f);
+            hits = Physics2D.RaycastAll(transform.position, dir, 2f, LayerMask.GetMask("Wall"));
+            Debug.DrawRay(transform.position, dir * 2f, Color.red, 0.1f);
 
             if (hits.Length > 0) break;
 
