@@ -228,7 +228,7 @@ MonoBehaviour:
   is_hit: 0
   colliders: []
   moveSpeed: 5
-  attackDelay: 0
+  attackDelay: 1
   jumpHoldTime: 0.5
   JumpForce: {x: 0, y: 10}
   FeetPos: {fileID: 1572514748}

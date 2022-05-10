@@ -25,8 +25,11 @@ public class Player : Entity
     bool isAttack;
     bool isFalling;
     bool isJumping;
-    int attackState;
+    [SerializeField] int attackState;
     #endregion
+
+    bool isCombo;
+    Coroutine activeCoroutine;
 
     #region Component
     Rigidbody2D RB;
@@ -45,9 +48,12 @@ public class Player : Entity
 
     protected override void Update()
     {
-        RunningLogic();
-        JumpLogic();
-        JumpHolding();
+        if (!isCombo)
+        {
+            JumpLogic();
+            JumpHolding();
+            RunningLogic();
+        }
         AttackLogic();
         AnimatorLogic();
     }
@@ -58,13 +64,13 @@ public class Player : Entity
 
     void RunningLogic()
     {
-        if(Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
         }
-        else if(Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
@@ -95,7 +101,7 @@ public class Player : Entity
 
     void JumpHolding()
     {
-        if(Input.GetKey(KeyCode.Z) && isJumping && curJumpTime > 0f)
+        if (Input.GetKey(KeyCode.Z) && isJumping && curJumpTime > 0f)
         {
             RB.AddForce(JumpForce / 2);
             curJumpTime -= Time.deltaTime;
@@ -105,7 +111,25 @@ public class Player : Entity
 
     void AttackLogic()
     {
+        // 지상일때는 콤보 가능, 공중에서는 콤보 불가능
+        // 콤보에서 다음 콤보로 이어지기 전 짧은 시간동안 isAttack 풀어짐
 
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (isGround)
+            {
+                if (!isAttack)
+                {
+                }
+                else if (isAttack && attackState < 3 && activeCoroutine != null && isCombo)
+                {
+                }
+            }
+            else
+            {
+
+            }
+        }
     }
 
     void AnimatorLogic()
@@ -116,5 +140,7 @@ public class Player : Entity
         ANIM.SetBool("IsRunning", isRunning);
         ANIM.SetBool("IsJumping", isJumping);
         ANIM.SetBool("IsGround", isGround);
+        ANIM.SetBool("IsAttack", isAttack);
+        ANIM.SetInteger("AttackState", attackState);
     }
 }
