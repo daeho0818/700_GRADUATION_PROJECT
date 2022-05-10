@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Orc_0000 : FlyingObject
+public class Orc_0002 : GroundObject
 {
-    [SerializeField] Projectile bullet_prefab;
+    [SerializeField] Projectile_Arc bullet_prefab;
     protected override void Awake()
     {
         base.Awake();
@@ -20,30 +20,15 @@ public class Orc_0000 : FlyingObject
         base.Update();
     }
 
-    Vector3 target_fire_position;
-
     /// <summary>
-    /// 플레이어를 향해 산탄총 발사하는 기본 공격 함수
+    /// 플레이어를 향해 포물선을 그리며 투척물을 날리는 공격 함수
     /// </summary>
     protected override void BaseAttack()
     {
-        if (!player) return;
-
-        target_fire_position = player.transform.position;
-        Vector2 dir;
-        float value;
-        Projectile bullet;
-
-        for (int i = -1; i < 2; i++)
-        {
-            value = Mathf.Sin(i * Mathf.Deg2Rad) * 50;
-            dir = ((target_fire_position + new Vector3(value, value)) - transform.position).normalized;
-
-            bullet = Instantiate(bullet_prefab);
-            bullet.transform.position = transform.position;
-            bullet.fire_direction = dir;
-            bullet.move_speed = bullet_speed;
-        }
+        Projectile_Arc bullet = Instantiate(bullet_prefab);
+        bullet.transform.position = transform.position - new Vector3(0, transform.localScale.y);
+        bullet.move_speed = bullet_speed;
+        bullet.SetArc(player.transform.position);
     }
 
     Vector2 target_move_position;
@@ -60,7 +45,7 @@ public class Orc_0000 : FlyingObject
             target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, 0);
             target_move_position.y = transform.position.y;
 
-            // renderer.flipX = transform.position.x < target_move_position.x;
+            renderer.flipX = transform.position.x < target_move_position.x;
             transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
         }
     }
