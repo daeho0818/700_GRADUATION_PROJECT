@@ -34,7 +34,7 @@ public class Crystal_0001 : GroundObject
 
         for (float i = 0f; i < 1.5f; i += 0.5f)
         {
-            rigid.AddForce((player.transform.position - transform.position).normalized, ForceMode2D.Impulse);
+            rigid.AddForce((player.transform.position - transform.position).normalized * 5, ForceMode2D.Impulse);
 
             float count = Time.time;
 
@@ -44,7 +44,7 @@ public class Crystal_0001 : GroundObject
             renderer.flipX = player.transform.position.x > transform.position.x;
 
             Player p;
-            while (Time.time - count >= 1f)
+            while (Time.time - count < 1f)
             {
                 p = CheckCollision(transform.position, collider, 0);
                 // p?.OnHit();
