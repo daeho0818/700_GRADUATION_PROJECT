@@ -157,7 +157,7 @@ public class Enemy : Entity
 
         foreach (var hit in hits)
         {
-            if (TryGetComponent(out Player p))
+            if (hit.transform.TryGetComponent(out Player p))
                 return p;
         }
 
