@@ -35,6 +35,10 @@ public class Player : Entity
 
     protected override void Update()
     {
+        RunningLogic();
+        JumpLogic();
+        AttackLogic();
+        AnimatorLogic();
     }
 
     void RunningLogic()
@@ -52,7 +56,7 @@ public class Player : Entity
 
     }
 
-    void ETC()
+    void AnimatorLogic()
     {
         isFalling = RB.velocity.y < 0f;
 
