@@ -28,6 +28,8 @@ public class Crystal_0000 : GroundObject
     /// </summary>
     protected override void BaseAttack()
     {
+        return;
+
         if (base_attack != null) StopCoroutine(base_attack);
         base_attack = StartCoroutine(_BaseAttack());
     }
@@ -53,12 +55,13 @@ public class Crystal_0000 : GroundObject
     {
         if (smash_attack != null) return;
 
-        base.MoveToPlayer();
-
         if (Vector2.Distance(player.transform.position, transform.position) <= distance_with_player)
         {
             smash_attack = StartCoroutine(SmashAttack());
+            return;
         }
+
+        base.MoveToPlayer();
     }
 
     Coroutine smash_attack = null;
@@ -77,7 +80,7 @@ public class Crystal_0000 : GroundObject
         Player p = CheckCollision(transform.position, collider, 0);
         Debug.Log(p);
         // p?.OnHit();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
 
         smash_attack = null;
     }
