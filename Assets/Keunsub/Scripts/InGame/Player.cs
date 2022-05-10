@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class Player : Entity
 {
+    [Header("Player")]
+
     #region BehaviourState
     public float moveSpeed;
     public float attackDelay;
+    public float jumpHoldTime = 2.5f;
+    float curJumpTime;
     #endregion
+
+    [SerializeField] Vector2 JumpForce;
+    [Header("Check Ground")]
+    [SerializeField] Transform FeetPos;
+    [SerializeField] float checkRadius;
+    [SerializeField] LayerMask GroundMask;
 
     #region AnimatorState
     bool isRunning;
@@ -37,17 +47,59 @@ public class Player : Entity
     {
         RunningLogic();
         JumpLogic();
+        JumpHolding();
         AttackLogic();
         AnimatorLogic();
     }
 
+    private void FixedUpdate()
+    {
+    }
+
     void RunningLogic()
     {
-
+        if(Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+            transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
+            isRunning = true;
+        }
+        else if(Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
+            isRunning = true;
+        }
+        else
+        {
+            isRunning = false;
+        }
     }
 
     void JumpLogic()
     {
+        if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround)
+        {
+            isJumping = true;
+            curJumpTime = jumpHoldTime;
+            RB.AddForce(JumpForce, ForceMode2D.Impulse);
+        }
+
+        if (Input.GetKeyUp(KeyCode.Z) && isJumping)
+        {
+            isJumping = false;
+        }
+
+        isGround = Physics2D.OverlapCircle(FeetPos.position, checkRadius, GroundMask);
+    }
+
+    void JumpHolding()
+    {
+        if(Input.GetKey(KeyCode.Z) && isJumping && curJumpTime > 0f)
+        {
+            RB.AddForce(JumpForce / 2);
+            curJumpTime -= Time.deltaTime;
+        }
 
     }
 
@@ -58,8 +110,11 @@ public class Player : Entity
 
     void AnimatorLogic()
     {
-        isFalling = RB.velocity.y < 0f;
+        isFalling = RB.velocity.y <= 0f;
 
-        ANIM.SetBool("isFalling", isFalling);
+        ANIM.SetBool("IsFalling", isFalling);
+        ANIM.SetBool("IsRunning", isRunning);
+        ANIM.SetBool("IsJumping", isJumping);
+        ANIM.SetBool("IsGround", isGround);
     }
 }
