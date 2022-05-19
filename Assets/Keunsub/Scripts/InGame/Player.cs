@@ -14,6 +14,10 @@ public class Player : Entity
     #endregion
 
     [SerializeField] Vector2 JumpForce;
+
+    [Header("Attack")]
+    [SerializeField] BoxCollider2D[] AttackColliders;
+
     [Header("Check Ground")]
     [SerializeField] Transform FeetPos;
     [SerializeField] float checkRadius;
@@ -140,6 +144,8 @@ public class Player : Entity
     IEnumerator AttackCoroutine()
     {
         attackState++;
+        foreach (var item in AttackColliders) item.gameObject.SetActive(false);
+        AttackColliders[attackState - 1].gameObject.SetActive(true);
         isAttack = true;
 
         yield return new WaitForSeconds(attackDelay / 2);
@@ -156,6 +162,7 @@ public class Player : Entity
         isCombo = false;
         isAttack = false;
         attackState = 0;
+        foreach (var item in AttackColliders) item.gameObject.SetActive(false);
     }
 
     void AnimatorLogic()
