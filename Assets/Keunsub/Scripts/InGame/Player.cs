@@ -118,18 +118,25 @@ public class Player : Entity
         {
             if (isGround)
             {
-                if (!isAttack)
+                if (!isCombo)
                 {
-                }
-                else if (isAttack && attackState < 3 && activeCoroutine != null && isCombo)
-                {
+                    AttackCoroutine();
                 }
             }
             else
             {
-
+                //공중공격
             }
         }
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        isCombo = true;
+        if (attackState >= 3) attackState = 1;
+        else attackState++;
+        yield return new WaitForSeconds(attackDelay / 2);
+        isCombo = false;
     }
 
     void AnimatorLogic()
