@@ -48,7 +48,7 @@ public class Player : Entity
 
     protected override void Update()
     {
-        if (!isCombo)
+        if (!isAttack)
         {
             JumpLogic();
             JumpHolding();
@@ -109,6 +109,8 @@ public class Player : Entity
 
     }
 
+
+    Coroutine curCoroutine;
     void AttackLogic()
     {
         // 지상일때는 콤보 가능, 공중에서는 콤보 불가능
@@ -118,9 +120,14 @@ public class Player : Entity
         {
             if (isGround)
             {
-                if (!isCombo)
+                if (!isCombo && !isAttack)
                 {
-                    AttackCoroutine();
+                    curCoroutine = StartCoroutine(AttackCoroutine());
+                }
+                else if(isCombo && isAttack && attackState < 3)
+                {
+                    StopCoroutine(curCoroutine);
+                    curCoroutine = StartCoroutine(AttackCoroutine());
                 }
             }
             else
@@ -132,11 +139,23 @@ public class Player : Entity
 
     IEnumerator AttackCoroutine()
     {
-        isCombo = true;
-        if (attackState >= 3) attackState = 1;
-        else attackState++;
+        attackState++;
+        isAttack = true;
+
         yield return new WaitForSeconds(attackDelay / 2);
+
+        isCombo = true;
+        float timer = attackDelay / 2;
+
+        while (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
         isCombo = false;
+        isAttack = false;
+        attackState = 0;
     }
 
     void AnimatorLogic()
@@ -148,6 +167,6 @@ public class Player : Entity
         ANIM.SetBool("IsJumping", isJumping);
         ANIM.SetBool("IsGround", isGround);
         ANIM.SetBool("IsAttack", isAttack);
-        ANIM.SetInteger("AttackState", attackState);
+        ANIM.SetInteger("attackState", attackState);
     }
 }

@@ -228,7 +228,7 @@ MonoBehaviour:
   is_hit: 0
   colliders: []
   moveSpeed: 5
-  attackDelay: 1
+  attackDelay: 0.5
   jumpHoldTime: 0.5
   JumpForce: {x: 0, y: 10}
   FeetPos: {fileID: 1572514748}
@@ -236,6 +236,7 @@ MonoBehaviour:
   GroundMask:
     serializedVersion: 2
     m_Bits: 256
+  attackState: 0
 --- !u!50 &460746094
 Rigidbody2D:
   serializedVersion: 4
