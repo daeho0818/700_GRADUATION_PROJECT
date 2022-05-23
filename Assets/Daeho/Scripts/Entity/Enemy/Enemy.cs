@@ -44,14 +44,14 @@ public class Enemy : Entity
     {
         OnDestroy?.Invoke();
 
-        if (search_player)
+        if (search_player && player)
         {
             bool tempFInd = FindPlayer();
             if (tempFInd) MoveToPlayer();
             find_player = tempFInd;
         }
 
-        if (!attack_check)
+        if (!attack_check && player)
         {
             bool tempAtk = AttackCheck();
             if (tempAtk) BaseAttack();

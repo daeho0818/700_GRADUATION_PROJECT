@@ -21,16 +21,6 @@ public class FlyingObject : Enemy
         base.Update();
     }
 
-    protected override bool FindPlayer()
-    {
-        return base.FindPlayer();
-    }
-
-    protected override bool AttackCheck()
-    {
-        return base.AttackCheck();
-    }
-
     /// <summary>
     /// Flying Object 부유 애니메이션
     /// </summary>
