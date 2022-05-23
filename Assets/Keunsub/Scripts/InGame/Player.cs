@@ -113,6 +113,15 @@ public class Player : Entity
 
     }
 
+    void AttackColliderOn(int idx)
+    {
+        AttackColliders[idx].gameObject.SetActive(true);
+    }
+
+    void AttackColliderOff(int idx)
+    {
+        AttackColliders[idx].gameObject.SetActive(false);
+    }
 
     Coroutine curCoroutine;
     void AttackLogic()
@@ -144,8 +153,6 @@ public class Player : Entity
     IEnumerator AttackCoroutine()
     {
         attackState++;
-        foreach (var item in AttackColliders) item.gameObject.SetActive(false);
-        AttackColliders[attackState - 1].gameObject.SetActive(true);
         isAttack = true;
 
         yield return new WaitForSeconds(attackDelay / 2);
@@ -162,7 +169,6 @@ public class Player : Entity
         isCombo = false;
         isAttack = false;
         attackState = 0;
-        foreach (var item in AttackColliders) item.gameObject.SetActive(false);
     }
 
     void AnimatorLogic()
