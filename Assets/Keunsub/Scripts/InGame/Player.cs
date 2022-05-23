@@ -140,6 +140,7 @@ public class Player : Entity
                 else if(isCombo && isAttack && attackState < 3)
                 {
                     StopCoroutine(curCoroutine);
+                    isCombo = false;
                     curCoroutine = StartCoroutine(AttackCoroutine());
                 }
             }
@@ -173,7 +174,7 @@ public class Player : Entity
 
     void AnimatorLogic()
     {
-        isFalling = RB.velocity.y <= 0f;
+        isFalling = RB.velocity.y <= 0.5f;
 
         ANIM.SetBool("IsFalling", isFalling);
         ANIM.SetBool("IsRunning", isRunning);
