@@ -5,6 +5,10 @@ using UnityEngine;
 public class Projectile_Arc : Projectile
 {
     Vector3 target_position;
+    /// <summary>
+    /// 포물선을 그리며 발사할 타겟 위치 설정
+    /// </summary>
+    /// <param name="target">타겟 위치</param>
     public void SetArc(Vector2 target)
     {
         target_position = target;

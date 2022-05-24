@@ -6,7 +6,6 @@ public class Projectile_Guided : Projectile
 {
     public Transform target { get; private set; }
 
-    event System.Action onCollision = null;
 
     protected override void Update()
     {
@@ -23,12 +22,6 @@ public class Projectile_Guided : Projectile
         if (shooting != null) StopCoroutine(shooting);
         shooting = StartCoroutine(Shooting());
     }
-
-    /// <summary>
-    /// 충돌 시 실행할 내용을 저장하는 함수
-    /// </summary>
-    /// <param name="action"></param>
-    public void SetCollision(System.Action action) => onCollision = action;
 
     Coroutine shooting = null;
     /// <summary>
@@ -47,15 +40,6 @@ public class Projectile_Guided : Projectile
             transform.Translate(fire_direction * Time.deltaTime * move_speed);
 
             yield return null;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.transform.CompareTag("Player"))
-        {
-            onCollision?.Invoke();
-            Destroy(gameObject);
         }
     }
 }

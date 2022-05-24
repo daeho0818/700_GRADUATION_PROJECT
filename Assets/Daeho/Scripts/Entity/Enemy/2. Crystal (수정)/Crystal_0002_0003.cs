@@ -38,6 +38,9 @@ public class Crystal_0002_0003 : FlyingObject
         transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
     }
 
+    /// <summary>
+    /// 플레이어를 향해 유도탄 발사
+    /// </summary>
     protected override void BaseAttack()
     {
         Projectile_Guided proj = Instantiate(projectile_prefab);
