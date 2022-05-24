@@ -44,6 +44,19 @@ public class Player : Entity
     {
         RB = GetComponent<Rigidbody2D>();
         ANIM = GetComponent<Animator>();
+
+        OnHit += OnHitAction;
+        OnDestroy += OnDestroyAction;
+    }
+
+    void OnDestroyAction()
+    {
+
+    }
+
+    void OnHitAction(int damage)
+    {
+
     }
 
     protected override void Start()

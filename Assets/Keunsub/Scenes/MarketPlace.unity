@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 115690275}
   m_Layer: 0
   m_Name: AttackCollider_3
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,9 +194,9 @@ GameObject:
   - component: {fileID: 460746094}
   - component: {fileID: 460746095}
   - component: {fileID: 460746096}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,7 +288,7 @@ MonoBehaviour:
   is_hit: 0
   colliders: []
   moveSpeed: 5
-  attackDelay: 0.5
+  attackDelay: 0.4
   jumpHoldTime: 0.5
   JumpForce: {x: 0, y: 10}
   AttackColliders:
@@ -379,7 +379,7 @@ GameObject:
   - component: {fileID: 1109754058}
   m_Layer: 0
   m_Name: AttackCollider_1
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -658,7 +658,7 @@ GameObject:
   - component: {fileID: 2008921401}
   m_Layer: 0
   m_Name: AttackCollider_2
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
