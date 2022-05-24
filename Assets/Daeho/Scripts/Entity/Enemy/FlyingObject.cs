@@ -27,7 +27,8 @@ public class FlyingObject : Enemy
     /// <returns></returns>
     protected virtual IEnumerator FlyAnimation()
     {
-        float value = 0;
+        float value = Random.Range(0, 2);
+        value *= 180;
 
         while (true)
         {

@@ -39,7 +39,14 @@ public class Orc_0003 : GroundObject
             hits = Physics2D.RaycastAll(transform.position, dir, 2f, LayerMask.GetMask("Wall"));
             Debug.DrawRay(transform.position, dir * 2f, Color.red, 0.1f);
 
+            // º®À» ¸¸³µÀ» ¶§
             if (hits.Length > 0) break;
+
+            hits = Physics2D.RaycastAll((Vector2)transform.position + (dir * 3), Vector2.down, 1f, LayerMask.GetMask("Wall"));
+            Debug.DrawRay(transform.position, dir * 2f, Color.red, 0.1f);
+
+            // ÇÃ·§Æû ³¡¿¡ µµ´ÞÇßÀ» ¶§
+            if (hits.Length == 0) break;
 
             transform.Translate(dir * move_speed * 2 * Time.deltaTime);
             yield return null;
@@ -50,5 +57,5 @@ public class Orc_0003 : GroundObject
     }
 
 
-    protected override void MoveToPlayer() {}
+    protected override void MoveToPlayer() { }
 }

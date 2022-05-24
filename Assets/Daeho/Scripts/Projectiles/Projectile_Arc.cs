@@ -21,6 +21,10 @@ public class Projectile_Arc : Projectile
     {
     }
 
+    /// <summary>
+    /// 포물선을 그리며 타겟을 향해 날아가는 함수
+    /// </summary>
+    /// <returns></returns>
     IEnumerator MoveToTarget()
     {
         Vector3 start_position = transform.position;
@@ -29,7 +33,7 @@ public class Projectile_Arc : Projectile
         float gone_distance;
         float will_distance;
 
-        while (true)
+        while (Vector2.Distance(transform.position, target_position) > 0.1f)
         {
             gone_distance = Mathf.Abs(transform.position.x - start_position.x);
             will_distance = distance - gone_distance;

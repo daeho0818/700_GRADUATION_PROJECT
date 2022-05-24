@@ -152,7 +152,7 @@ MonoBehaviour:
   attack_check: 0
   attack_coolTime: 5
   cur_attack_coolTime: 0
-  bullet_speed: 10
+  bullet_speed: 5
   search_player: 1
   ai_moving_range: 5
   delay_min: 1
