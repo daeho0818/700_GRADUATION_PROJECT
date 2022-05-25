@@ -41,9 +41,13 @@ public class Crystal_0002_0003 : FlyingObject
     /// <summary>
     /// 플레이어를 향해 유도탄 발사
     /// </summary>
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
-        Projectile_Guided proj = Instantiate(projectile_prefab);
+        Projectile_Guided proj;
+
+        yield return null;
+
+        proj = Instantiate(projectile_prefab);
         proj.transform.position = transform.position;
         proj.move_speed = bullet_speed;
         proj.SetTarget(player.transform);

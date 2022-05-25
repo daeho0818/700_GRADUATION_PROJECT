@@ -23,9 +23,15 @@ public class Orc_0002 : GroundObject
     /// <summary>
     /// 플레이어를 향해 포물선을 그리며 투척물을 날리는 공격 함수
     /// </summary>
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
-        Projectile_Arc bullet = Instantiate(bullet_prefab);
+        Projectile_Arc bullet;
+
+        yield return null;
+
+        renderer.flipX = transform.position.x < target_move_position.x;
+
+        bullet = Instantiate(bullet_prefab);
         bullet.transform.position = transform.position;
         bullet.move_speed = bullet_speed;
         bullet.SetArc(player.transform.position);

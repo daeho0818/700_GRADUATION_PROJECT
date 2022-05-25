@@ -25,15 +25,21 @@ public class Orc_0004 : GroundObject
         return distance <= distance_with_player;
     }
 
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
-        var collider = (BoxCollider2D)colliders[1];
-        int dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
+        BoxCollider2D collider;
+        int dir_x;
+        Player p;
+
+        yield return null;
+
+        collider = (BoxCollider2D)colliders[1];
+        dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
 
         SetColliderDirection(collider, dir_x);
 
-        Player p = CheckCollision((Vector2)transform.position + collider.offset, collider, 0);
-        // p?.OnHit();
+        p = CheckCollision((Vector2)transform.position + collider.offset, collider, 0);
+        p?.OnHit?.Invoke(1);
     }
 
     protected override IEnumerator AIMoving()

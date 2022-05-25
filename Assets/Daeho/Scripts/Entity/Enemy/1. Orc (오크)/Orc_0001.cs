@@ -20,9 +20,9 @@ public class Orc_0001 : GroundObject
         base.Update();
     }
 
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
-        StartCoroutine(_BaseAttack());
+        yield return StartCoroutine(_BaseAttack());
     }
 
     /// <summary>
@@ -42,6 +42,8 @@ public class Orc_0001 : GroundObject
             bullet.transform.position = transform.position;
             bullet.fire_direction = direction;
             bullet.move_speed = bullet_speed;
+
+            renderer.flipX = transform.position.x < target_move_position.x;
 
             yield return second;
         }

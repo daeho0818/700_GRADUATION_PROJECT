@@ -151,8 +151,9 @@ MonoBehaviour:
   colliders:
   - {fileID: 7962684145201448622}
   attack_check: 0
+  attack_beforeDelay: 1
+  attack_afterDelay: 1
   attack_coolTime: 0
-  cur_attack_coolTime: 0
   bullet_speed: 0
   search_player: 1
   ai_moving_range: 0

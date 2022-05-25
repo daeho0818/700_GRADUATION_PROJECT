@@ -38,7 +38,7 @@ public class Crystal_0004_0005 : FlyingObject
         return search_distance >= distance;
     }
 
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
         // 자폭 애니메이션
 
@@ -47,6 +47,8 @@ public class Crystal_0004_0005 : FlyingObject
         Projectile proj;
         Vector2 fire_direction;
         float rad;
+
+        yield return null;
 
         for (int i = 0; i <= 360; i += 360 / FIRE_COUNT)
         {

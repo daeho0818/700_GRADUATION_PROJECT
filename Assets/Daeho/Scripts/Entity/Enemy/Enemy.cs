@@ -8,7 +8,8 @@ public class Enemy : Entity
     // 공격 패턴 유무 여부
     [SerializeField] protected bool attack_check;
     // 공격 전/후 딜레이
-    [SerializeField] protected float attack_delay;
+    [SerializeField] protected float attack_beforeDelay;
+    [SerializeField] protected float attack_afterDelay;
     // 공격 쿨타임
     [SerializeField] protected float attack_coolTime;
     // 총알 속도
@@ -49,8 +50,6 @@ public class Enemy : Entity
         ai_moving = StartCoroutine(AIMoving());
     }
 
-    Timer coolTime_timer = new Timer();
-    Timer delay_timer = new Timer();
     protected override void Update()
     {
         OnDestroy?.Invoke();
@@ -67,18 +66,10 @@ public class Enemy : Entity
             bool tempAtk = AttackCheck();
             if (tempAtk)
             {
-                Invoke(nameof(BaseAttack), attack_delay);
+                StartCoroutine(Attack());
                 movable = false;
             }
             attack_check = tempAtk;
-        }
-        else if (attack_check)
-        {
-            if (!delay_timer.Processing())
-                delay_timer.TimerStart(this, attack_delay, attack_delay, () => { movable = true; });
-
-            if (!coolTime_timer.Processing())
-                coolTime_timer.TimerStart(this, attack_coolTime, attack_coolTime, () => { attack_check = false; });
         }
     }
 
@@ -102,10 +93,30 @@ public class Enemy : Entity
     /// <returns>공격 가능 여부</returns>
     protected virtual bool AttackCheck() => find_player;
 
+    Timer coolTime_timer = new Timer();
+    Timer delay_timer = new Timer();
+    /// <summary>
+    /// 공격 전/후 딜레이, 쿨타임 등 공격 매커니즘 구현 함수
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Attack()
+    {
+        yield return new WaitForSeconds(attack_beforeDelay);
+
+        yield return StartCoroutine(BaseAttack());
+
+        yield return new WaitForSeconds(attack_afterDelay);
+
+        if (!delay_timer.Processing())
+            delay_timer.TimerStart(this, attack_afterDelay, () => { movable = true; });
+
+        if (!coolTime_timer.Processing())
+            coolTime_timer.TimerStart(this, attack_coolTime, () => { attack_check = false; });
+    }
     /// <summary>
     /// 기본적인 공격을 구현하는 가상함수
     /// </summary>
-    protected virtual void BaseAttack() { }
+    protected virtual IEnumerator BaseAttack() { yield return null; }
 
     /// <summary>
     /// 플레이어를 탐색하지 못할 동안의 AI 기반 움직임을 구현한 함수
