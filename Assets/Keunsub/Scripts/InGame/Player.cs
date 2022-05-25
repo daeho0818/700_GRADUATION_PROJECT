@@ -33,6 +33,7 @@ public class Player : Entity
     #endregion
 
     bool isCombo;
+    bool doubleJumpAble = true;
     Coroutine activeCoroutine;
 
     #region Component
@@ -65,12 +66,9 @@ public class Player : Entity
 
     protected override void Update()
     {
-        if (!isAttack)
-        {
-            JumpLogic();
-            JumpHolding();
-            RunningLogic();
-        }
+        RunningLogic();
+        JumpLogic();
+        JumpHolding();
         AttackLogic();
         AnimatorLogic();
     }
@@ -81,13 +79,13 @@ public class Player : Entity
 
     void RunningLogic()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow) && !isAttack)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow) && !isAttack)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
@@ -101,11 +99,9 @@ public class Player : Entity
 
     void JumpLogic()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround)
+        if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround && !isAttack)
         {
-            isJumping = true;
-            curJumpTime = jumpHoldTime;
-            RB.AddForce(JumpForce, ForceMode2D.Impulse);
+            JumpFunc();
         }
 
         if (Input.GetKeyUp(KeyCode.Z) && isJumping)
@@ -113,7 +109,23 @@ public class Player : Entity
             isJumping = false;
         }
 
+        if(Input.GetKeyDown(KeyCode.Z) && !isGround && doubleJumpAble)
+        {
+            doubleJumpAble = false;
+            RB.velocity = Vector2.zero;
+            RB.AddForce(JumpForce * 2, ForceMode2D.Impulse);
+        }
+
         isGround = Physics2D.OverlapCircle(FeetPos.position, checkRadius, GroundMask);
+
+        if (isGround && !doubleJumpAble) doubleJumpAble = true;
+    }
+
+    void JumpFunc()
+    {
+        isJumping = true;
+        curJumpTime = jumpHoldTime;
+        RB.AddForce(JumpForce, ForceMode2D.Impulse);
     }
 
     void JumpHolding()
@@ -150,7 +162,7 @@ public class Player : Entity
                 {
                     curCoroutine = StartCoroutine(AttackCoroutine());
                 }
-                else if(isCombo && isAttack && attackState < 3)
+                else if (isCombo && isAttack && attackState < 3)
                 {
                     StopCoroutine(curCoroutine);
                     isCombo = false;
@@ -159,9 +171,18 @@ public class Player : Entity
             }
             else
             {
+                if (!isAttack)
+                    StartCoroutine(OverGroundAttackCoroutine());
                 //공중공격
             }
         }
+    }
+
+    IEnumerator OverGroundAttackCoroutine()
+    {
+        isAttack = true;
+        yield return new WaitForSeconds(attackDelay / 2.5f);
+        isAttack = false;
     }
 
     IEnumerator AttackCoroutine()
