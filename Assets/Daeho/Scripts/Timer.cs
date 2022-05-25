@@ -9,10 +9,10 @@ public class Timer
     /// </summary>
     /// <param name="time">기다릴 시간</param>
     /// <param name="action">실행할 내용 (이벤트)</param>
-    public void TimerStart(Enemy e, float delay, float time, System.Action action)
+    public void TimerStart(Enemy e, float time, System.Action action)
     {
         processing = true;
-        e.StartCoroutine(TimerProcess(delay, time, action));
+        e.StartCoroutine(TimerProcess(time, action));
     }
 
     bool processing = false;
@@ -24,10 +24,8 @@ public class Timer
     /// <param name="time">기다릴 시간</param>
     /// <param name="action">실행할 내용 (이벤트)</param>
     /// <returns></returns>
-    IEnumerator TimerProcess(float delay, float time, System.Action action)
+    IEnumerator TimerProcess(float time, System.Action action)
     {
-        yield return new WaitForSeconds(delay);
-
         float current_time = 0;
 
         while (current_time < time)

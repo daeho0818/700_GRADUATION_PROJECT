@@ -212,8 +212,9 @@ MonoBehaviour:
   - {fileID: 2668087790243808331}
   - {fileID: 5658718076002661185}
   attack_check: 0
+  attack_beforeDelay: 1
+  attack_afterDelay: 1
   attack_coolTime: 5
-  cur_attack_coolTime: 0
   bullet_speed: 0
   search_player: 1
   ai_moving_range: 5

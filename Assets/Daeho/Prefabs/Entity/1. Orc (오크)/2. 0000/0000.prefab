@@ -101,7 +101,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -177,7 +177,8 @@ MonoBehaviour:
   is_hit: 0
   colliders: []
   attack_check: 0
-  attack_delay: 1.5
+  attack_beforeDelay: 1
+  attack_afterDelay: 1
   attack_coolTime: 3
   bullet_speed: 5
   search_player: 1

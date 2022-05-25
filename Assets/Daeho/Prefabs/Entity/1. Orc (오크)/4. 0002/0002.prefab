@@ -150,8 +150,9 @@ MonoBehaviour:
   is_hit: 0
   colliders: []
   attack_check: 0
+  attack_beforeDelay: 1
+  attack_afterDelay: 1
   attack_coolTime: 5
-  cur_attack_coolTime: 0
   bullet_speed: 5
   search_player: 1
   ai_moving_range: 5

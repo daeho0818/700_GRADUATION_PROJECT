@@ -21,10 +21,12 @@ public class Orc_0003 : GroundObject
     /// <summary>
     /// 벽이 나타날 때까지 돌진하는 공격 패턴
     /// </summary>
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
-        float dir_x = (player.transform.position - transform.position).normalized.x;
-        StartCoroutine(_BaseAttack(dir_x));
+        float dir_x;
+
+        dir_x = (player.transform.position - transform.position).normalized.x;
+        yield return StartCoroutine(_BaseAttack(dir_x));
     }
     IEnumerator _BaseAttack(float dir_x)
     {
@@ -33,7 +35,7 @@ public class Orc_0003 : GroundObject
         RaycastHit2D[] hits;
         Vector2 dir = new Vector2(dir_x, 0);
 
-        yield return new WaitForSeconds(1.5f);
+        renderer.flipX = player.transform.position.x > transform.position.x;
         do
         {
             hits = Physics2D.RaycastAll(transform.position, dir, 2f, LayerMask.GetMask("Wall"));
@@ -42,9 +44,10 @@ public class Orc_0003 : GroundObject
             // 벽을 만났을 때
             if (hits.Length > 0) break;
 
-            hits = Physics2D.RaycastAll((Vector2)transform.position + (dir * 3), Vector2.down, 1f, LayerMask.GetMask("Wall"));
-            Debug.DrawRay(transform.position, dir * 2f, Color.red, 0.1f);
+            hits = Physics2D.RaycastAll((Vector2)transform.position + (dir * 1), Vector2.down, 5f, LayerMask.GetMask("Platform"));
+            Debug.DrawRay((Vector2)transform.position + (dir * 1), Vector2.down * 5f, Color.red, 0.1f);
 
+            Debug.Log(hits.Length);
             // 플랫폼 끝에 도달했을 때
             if (hits.Length == 0) break;
 

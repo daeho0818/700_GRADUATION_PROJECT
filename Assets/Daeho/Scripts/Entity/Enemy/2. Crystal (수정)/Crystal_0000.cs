@@ -26,12 +26,12 @@ public class Crystal_0000 : GroundObject
     /// <summary>
     /// 플레이어를 향해 돌진하는 공격 스킬
     /// </summary>
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
-        return;
-
         if (base_attack != null) StopCoroutine(base_attack);
         base_attack = StartCoroutine(_BaseAttack());
+
+        yield return base_attack;
     }
     Coroutine base_attack = null;
     IEnumerator _BaseAttack()
