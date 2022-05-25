@@ -146,13 +146,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 3
   hp: 3
-  move_speed: 3
+  move_speed: 2
   is_hit: 0
   colliders: []
   attack_check: 0
   attack_coolTime: 5
   cur_attack_coolTime: 0
-  bullet_speed: 0
+  bullet_speed: 3
   search_player: 1
   ai_moving_range: 0
   delay_min: 0

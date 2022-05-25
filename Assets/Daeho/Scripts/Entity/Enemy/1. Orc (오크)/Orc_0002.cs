@@ -26,7 +26,7 @@ public class Orc_0002 : GroundObject
     protected override void BaseAttack()
     {
         Projectile_Arc bullet = Instantiate(bullet_prefab);
-        bullet.transform.position = transform.position - new Vector3(0, transform.localScale.y);
+        bullet.transform.position = transform.position;
         bullet.move_speed = bullet_speed;
         bullet.SetArc(player.transform.position);
     }

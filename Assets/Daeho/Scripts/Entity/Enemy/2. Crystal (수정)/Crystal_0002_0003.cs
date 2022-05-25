@@ -45,6 +45,7 @@ public class Crystal_0002_0003 : FlyingObject
     {
         Projectile_Guided proj = Instantiate(projectile_prefab);
         proj.transform.position = transform.position;
+        proj.move_speed = bullet_speed;
         proj.SetTarget(player.transform);
     }
 }
