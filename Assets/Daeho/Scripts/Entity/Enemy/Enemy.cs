@@ -5,15 +5,23 @@ using UnityEngine;
 public class Enemy : Entity
 {
     [Header("Enemy Information")]
+    // 공격 패턴 유무 여부
     [SerializeField] protected bool attack_check;
+    // 공격 전/후 딜레이
+    [SerializeField] protected float attack_delay;
+    // 공격 쿨타임
     [SerializeField] protected float attack_coolTime;
-    [SerializeField] protected float cur_attack_coolTime;
+    // 총알 속도
     [SerializeField] protected float bullet_speed;
 
     [Header("AI Moving Information")]
+    // 플레이어 탐색 여부
     [SerializeField] protected bool search_player = true;
+    // AI 이동 반경
     [SerializeField] protected float ai_moving_range;
+    // 이동 간 최소 대기시간
     [SerializeField] protected float delay_min;
+    // 이동 간 최대 대기시간
     [SerializeField] protected float delay_max;
     [Tooltip("플레이어를 탐색하는 범위 (거리)")]
     [SerializeField] protected float search_distance;
@@ -21,6 +29,7 @@ public class Enemy : Entity
     [SerializeField] protected float unSearch_distance;
     [Tooltip("추격 중 플레이어와 유지할 거리")]
     [SerializeField] protected float distance_with_player;
+
     protected Coroutine ai_moving = null;
 
     public bool find_player;
@@ -40,34 +49,36 @@ public class Enemy : Entity
         ai_moving = StartCoroutine(AIMoving());
     }
 
+    Timer coolTime_timer = new Timer();
+    Timer delay_timer = new Timer();
     protected override void Update()
     {
         OnDestroy?.Invoke();
 
-        if (search_player && player)
+        if (search_player && player != null && movable)
         {
             bool tempFInd = FindPlayer();
             if (tempFInd) MoveToPlayer();
             find_player = tempFInd;
         }
 
-        if (!attack_check && player)
+        if (!attack_check && player != null)
         {
             bool tempAtk = AttackCheck();
-            if (tempAtk) BaseAttack();
-            attack_check = tempAtk;
-            cur_attack_coolTime = 0;
-        }
-        else
-        {
-            if (cur_attack_coolTime >= attack_coolTime)
+            if (tempAtk)
             {
-                attack_check = false;
-                cur_attack_coolTime = 0;
+                Invoke(nameof(BaseAttack), attack_delay);
+                movable = false;
             }
+            attack_check = tempAtk;
+        }
+        else if (attack_check)
+        {
+            if (!delay_timer.Processing())
+                delay_timer.TimerStart(this, attack_delay, attack_delay, () => { movable = true; });
 
-            else
-                cur_attack_coolTime += Time.deltaTime;
+            if (!coolTime_timer.Processing())
+                coolTime_timer.TimerStart(this, attack_coolTime, attack_coolTime, () => { attack_check = false; });
         }
     }
 
@@ -84,6 +95,7 @@ public class Enemy : Entity
 
         return distance <= search_distance;
     }
+
     /// <summary>
     /// 공격 가능한 상황인지 확인하는 함수
     /// </summary>
@@ -108,7 +120,7 @@ public class Enemy : Entity
         while (true)
         {
             yield return null;
-            if (find_player) continue;
+            if (find_player || !movable) continue;
 
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
             transform.Translate(vec);
@@ -134,6 +146,11 @@ public class Enemy : Entity
         renderer.flipX = player.transform.position.x > transform.position.x;
     }
 
+    /// <summary>
+    /// Collider 방향 전환
+    /// </summary>
+    /// <param name="collider"></param>
+    /// <param name="dir_x"></param>
     protected void SetColliderDirection(Collider2D collider, float dir_x)
     {
         Vector2 offset = collider.offset;

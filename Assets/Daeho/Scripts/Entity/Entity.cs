@@ -8,6 +8,7 @@ public abstract class Entity : MonoBehaviour
     public float max_hp;
     public float hp;
     public float move_speed;
+    protected bool movable = true;
     public bool is_hit;
     public bool IsDestroy => hp == 0;
 
@@ -19,7 +20,7 @@ public abstract class Entity : MonoBehaviour
     [SerializeField] protected Collider2D[] colliders;
 
     protected Rigidbody2D rigid;
-    protected SpriteRenderer renderer;
+    protected new SpriteRenderer renderer;
     protected abstract void Awake();
     protected abstract void Start();
     protected abstract void Update();

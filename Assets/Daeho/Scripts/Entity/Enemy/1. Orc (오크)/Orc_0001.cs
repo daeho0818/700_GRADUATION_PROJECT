@@ -39,13 +39,11 @@ public class Orc_0001 : GroundObject
         for (int i = 0; i < 3; i++)
         {
             bullet = Instantiate(bullet_prefab);
-
             bullet.transform.position = transform.position;
             bullet.fire_direction = direction;
             bullet.move_speed = bullet_speed;
 
             yield return second;
-
         }
     }
 
