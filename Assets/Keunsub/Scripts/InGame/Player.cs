@@ -79,13 +79,13 @@ public class Player : Entity
 
     void RunningLogic()
     {
-        if (Input.GetKey(KeyCode.LeftArrow) && !isAttack)
+        if (Input.GetKey(KeyCode.LeftArrow) && (!isAttack || (!isGround && isAttack)))
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && !isAttack)
+        else if (Input.GetKey(KeyCode.RightArrow) && (!isAttack || (!isGround && isAttack)))
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
