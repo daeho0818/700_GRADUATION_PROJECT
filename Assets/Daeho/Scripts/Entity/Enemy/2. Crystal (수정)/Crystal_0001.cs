@@ -19,9 +19,9 @@ public class Crystal_0001 : GroundObject
         base.Update();
     }
 
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
-        StartCoroutine(_BaseAttack());
+        yield return StartCoroutine(_BaseAttack());
     }
 
     /// <summary>

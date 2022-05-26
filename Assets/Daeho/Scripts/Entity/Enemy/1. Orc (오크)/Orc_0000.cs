@@ -25,8 +25,10 @@ public class Orc_0000 : FlyingObject
     /// <summary>
     /// 플레이어를 향해 산탄총 발사하는 기본 공격 함수
     /// </summary>
-    protected override void BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
+        yield return null;
+
         target_fire_position = player.transform.position;
         Vector2 dir;
         float value;

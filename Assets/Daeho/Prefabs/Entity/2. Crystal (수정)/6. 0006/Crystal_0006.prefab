@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2084888840626803353}
   - component: {fileID: 2084888840626803352}
   - component: {fileID: 2084888840626803359}
+  - component: {fileID: 3867100612215147746}
   m_Layer: 0
   m_Name: Crystal_0006
   m_TagString: Untagged
@@ -131,3 +132,33 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3867100612215147746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084888840626803355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 257a20b3539283a448293fda423b55b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_hp: 0
+  hp: 0
+  move_speed: 0
+  is_hit: 0
+  colliders: []
+  attack_check: 0
+  attack_beforeDelay: 1
+  attack_afterDelay: 1
+  attack_coolTime: 0
+  bullet_speed: 0
+  search_player: 1
+  ai_moving_range: 0
+  delay_min: 0
+  delay_max: 0
+  search_distance: 0
+  unSearch_distance: 0
+  distance_with_player: 0
+  find_player: 0
