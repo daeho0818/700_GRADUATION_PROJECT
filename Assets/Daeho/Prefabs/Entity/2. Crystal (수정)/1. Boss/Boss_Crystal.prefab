@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3302935097203447420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.081289, y: -2.3538392, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 368ac4430a3b947429d20fa02d7951d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,7 +123,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 7.4, y: 7.02}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -150,10 +150,25 @@ MonoBehaviour:
   is_hit: 0
   colliders:
   - {fileID: 6152513494819372572}
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 0
+    attack_afterDelay: 0
+    attack_coolTime: 0
+    bullet_speed: 0
   attack_check: 0
+  attack_beforeDelay: 0
+  attack_afterDelay: 0
   attack_coolTime: 0
-  cur_attack_coolTime: 0
   bullet_speed: 0
+  ai:
+    search_player: 0
+    ai_moving_range: 0
+    delay_min: 0
+    delay_max: 0
+    search_distance: 0
+    unSearch_distance: 0
+    distance_with_player: 0
   search_player: 1
   ai_moving_range: 0
   delay_min: 0
@@ -161,7 +176,6 @@ MonoBehaviour:
   search_distance: 0
   unSearch_distance: 0
   distance_with_player: 0
-  find_player: 0
   platforms:
   - {fileID: 0}
   - {fileID: 0}

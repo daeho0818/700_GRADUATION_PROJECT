@@ -1,10 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EInfo = EnemyInformation;
+using AIInfo = AIInformation;
+
+[System.Serializable]
+public struct EnemyInformation
+{
+    // 공격 패턴 유무 여부
+    public bool attack_check;
+    // 공격 전/후 딜레이
+    public float attack_beforeDelay;
+    public float attack_afterDelay;
+    // 공격 쿨타임
+    public float attack_coolTime;
+    // 총알 속도
+    public float bullet_speed;
+}
+
+[System.Serializable]
+public struct AIInformation
+{
+    // 플레이어 탐색 여부
+    public bool search_player;
+    // AI 이동 반경
+    public float ai_moving_range;
+    // 이동 간 최소 대기시간
+    public float delay_min;
+    // 이동 간 최대 대기시간
+    public float delay_max;
+    [Tooltip("플레이어를 탐색하는 범위 (거리)")]
+    public float search_distance;
+    [Tooltip("플레이어 추격이 해제되는 거리")]
+    public float unSearch_distance;
+    [Tooltip("추격 중 플레이어와 유지할 거리")]
+    public float distance_with_player;
+}
 
 public class Enemy : Entity
 {
     [Header("Enemy Information")]
+    [SerializeField] EInfo enemy;
+    #region trash
     // 공격 패턴 유무 여부
     [SerializeField] protected bool attack_check;
     // 공격 전/후 딜레이
@@ -14,8 +51,11 @@ public class Enemy : Entity
     [SerializeField] protected float attack_coolTime;
     // 총알 속도
     [SerializeField] protected float bullet_speed;
+    #endregion
 
     [Header("AI Moving Information")]
+    [SerializeField] AIInfo ai;
+    #region trash
     // 플레이어 탐색 여부
     [SerializeField] protected bool search_player = true;
     // AI 이동 반경
@@ -30,10 +70,12 @@ public class Enemy : Entity
     [SerializeField] protected float unSearch_distance;
     [Tooltip("추격 중 플레이어와 유지할 거리")]
     [SerializeField] protected float distance_with_player;
+    #endregion
 
     protected Coroutine ai_moving = null;
 
-    public bool find_player;
+    // 플레이어 발견 여부
+    public bool find_player { get; set; }
 
     protected Player player;
     protected override void Awake()
@@ -52,12 +94,19 @@ public class Enemy : Entity
 
     protected override void Update()
     {
-        OnDestroy?.Invoke();
+        if (IsDestroy)
+            OnDestroy?.Invoke();
 
-        if (search_player && player != null && movable)
+        if (search_player && movable)
         {
             bool tempFInd = FindPlayer();
-            if (tempFInd) MoveToPlayer();
+            if (tempFInd)
+            {
+                MoveToPlayer();
+
+                // 플레이어를 향해 움직임 : 초록색
+                renderer.color = Color.green;
+            }
             find_player = tempFInd;
         }
 
@@ -101,9 +150,18 @@ public class Enemy : Entity
     /// <returns></returns>
     private IEnumerator Attack()
     {
+        // 대기 시간 : 노란색
+        renderer.color = Color.yellow;
+
         yield return new WaitForSeconds(attack_beforeDelay);
 
+        // 공격 중 : 빨간색
+        renderer.color = Color.red;
+
         yield return StartCoroutine(BaseAttack());
+
+        // 대기 시간 : 노란색
+        renderer.color = Color.yellow;
 
         yield return new WaitForSeconds(attack_afterDelay);
 

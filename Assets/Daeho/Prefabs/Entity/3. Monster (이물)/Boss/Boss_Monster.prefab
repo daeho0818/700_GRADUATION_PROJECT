@@ -132,7 +132,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e13d598cbe08b7b40af9946119d85e7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -181,7 +181,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 15.01, y: 7.66}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -209,10 +209,25 @@ MonoBehaviour:
   colliders:
   - {fileID: 3281991306498939774}
   - {fileID: 3281991305940317943}
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 0
+    attack_afterDelay: 0
+    attack_coolTime: 0
+    bullet_speed: 0
   attack_check: 0
+  attack_beforeDelay: 0
+  attack_afterDelay: 0
   attack_coolTime: 0
-  cur_attack_coolTime: 0
   bullet_speed: 0
+  ai:
+    search_player: 0
+    ai_moving_range: 0
+    delay_min: 0
+    delay_max: 0
+    search_distance: 0
+    unSearch_distance: 0
+    distance_with_player: 0
   search_player: 1
   ai_moving_range: 0
   delay_min: 0
@@ -220,7 +235,6 @@ MonoBehaviour:
   search_distance: 0
   unSearch_distance: 0
   distance_with_player: 0
-  find_player: 0
   warp_positions:
   - {fileID: 0}
   - {fileID: 0}
