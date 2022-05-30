@@ -29,6 +29,7 @@ public class Player : Entity
     bool isAttack;
     bool isFalling;
     bool isJumping;
+    bool isRunAble = true;
     [SerializeField] int attackState;
     #endregion
 
@@ -37,12 +38,15 @@ public class Player : Entity
     Coroutine activeCoroutine;
 
     #region Component
+    public Camera mainCam;
+    public CameraFollow camFollow;
     Rigidbody2D RB;
     Animator ANIM;
     #endregion
 
     protected override void Awake()
     {
+        camFollow = mainCam.GetComponent<CameraFollow>();
         RB = GetComponent<Rigidbody2D>();
         ANIM = GetComponent<Animator>();
 
@@ -79,13 +83,13 @@ public class Player : Entity
 
     void RunningLogic()
     {
-        if (Input.GetKey(KeyCode.LeftArrow) && (!isAttack || (!isGround && isAttack)))
+        if (Input.GetKey(KeyCode.LeftArrow) && (isRunAble || (!isGround && isAttack)))
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && (!isAttack || (!isGround && isAttack)))
+        else if (Input.GetKey(KeyCode.RightArrow) && (isRunAble || (!isGround && isAttack)))
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
@@ -99,9 +103,10 @@ public class Player : Entity
 
     void JumpLogic()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround && !isAttack)
+        if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround)
         {
             JumpFunc();
+            isAttack = false;
         }
 
         if (Input.GetKeyUp(KeyCode.Z) && isJumping)
@@ -166,6 +171,7 @@ public class Player : Entity
                 {
                     StopCoroutine(curCoroutine);
                     isCombo = false;
+                    isRunAble = true;
                     curCoroutine = StartCoroutine(AttackCoroutine());
                 }
             }
@@ -189,7 +195,8 @@ public class Player : Entity
     {
         attackState++;
         isAttack = true;
-
+        yield return new WaitForSeconds(attackDelay / 2 / 2);
+        isRunAble = false;
         yield return new WaitForSeconds(attackDelay / 2);
 
         isCombo = true;
@@ -203,6 +210,7 @@ public class Player : Entity
 
         isCombo = false;
         isAttack = false;
+        isRunAble = true;
         attackState = 0;
     }
 
@@ -216,5 +224,16 @@ public class Player : Entity
         ANIM.SetBool("IsGround", isGround);
         ANIM.SetBool("IsAttack", isAttack);
         ANIM.SetInteger("attackState", attackState);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("CameraRoom"))
+        {
+            // 씬에서 씬으로 넘어갈 때 넘어가는 문의 인덱스를 게임 매니저에 줌
+            // 게임매니저에 다음 씬의 문 인덱스를 받아옴
+            // 
+            collision.GetComponent<SceneContainer>().OnEnter(camFollow, transform, 0);
+        }
     }
 }
