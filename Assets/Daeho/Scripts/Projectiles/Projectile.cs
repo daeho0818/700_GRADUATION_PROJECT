@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
 
     protected virtual void Update()
     {
-        transform.Translate(fire_direction * move_speed * Time.deltaTime);
+        transform.position += (Vector3)fire_direction * move_speed * Time.deltaTime;
     }
 
     /// <summary>
