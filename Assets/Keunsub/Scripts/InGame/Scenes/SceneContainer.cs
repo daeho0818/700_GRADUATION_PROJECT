@@ -5,13 +5,24 @@ using UnityEngine;
 public abstract class SceneContainer : MonoBehaviour
 {
     public CameraBound Bound;
-    public Transform[] EnterPoses;
+    public Door[] Doors;
+    public Transform[] ExitPoses;
 
     public abstract void Init();
+
+    private void Start()
+    {
+        int i = 0;
+        foreach (var item in Doors)
+        {
+            item.Init(i, this);
+            i++;
+        }
+    }
 
     public void OnEnter(CameraFollow cam, Transform player, int posIdx)
     {
         cam.Bound = Bound;
-        player.transform.position = EnterPoses[posIdx].position;
+        player.transform.position = ExitPoses[posIdx].transform.position;
     }
 }

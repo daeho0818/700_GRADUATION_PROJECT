@@ -61,7 +61,7 @@ public class Player : Entity
 
     void OnHitAction(int damage)
     {
-
+        GameManager.Instance.PrintDamage(damage, transform.position);
     }
 
     protected override void Start()
@@ -230,10 +230,8 @@ public class Player : Entity
     {
         if(collision.CompareTag("CameraRoom"))
         {
-            // 씬에서 씬으로 넘어갈 때 넘어가는 문의 인덱스를 게임 매니저에 줌
-            // 게임매니저에 다음 씬의 문 인덱스를 받아옴
-            // 
-            collision.GetComponent<SceneContainer>().OnEnter(camFollow, transform, 0);
+            Door door = collision.GetComponent<Door>();
+            door.NextScene();
         }
     }
 }
