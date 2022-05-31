@@ -211,11 +211,25 @@ MonoBehaviour:
   - {fileID: 2668087790730956236}
   - {fileID: 2668087790243808331}
   - {fileID: 5658718076002661185}
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 1
+    attack_afterDelay: 1
+    attack_coolTime: 5
+    bullet_speed: 0
   attack_check: 0
   attack_beforeDelay: 1
   attack_afterDelay: 1
   attack_coolTime: 5
   bullet_speed: 0
+  ai:
+    search_player: 1
+    ai_moving_range: 5
+    delay_min: 1
+    delay_max: 5
+    search_distance: 5
+    unSearch_distance: 10
+    distance_with_player: 3
   search_player: 1
   ai_moving_range: 5
   delay_min: 1
@@ -223,7 +237,6 @@ MonoBehaviour:
   search_distance: 5
   unSearch_distance: 10
   distance_with_player: 3
-  find_player: 0
 --- !u!1 &5601745628651387179
 GameObject:
   m_ObjectHideFlags: 0

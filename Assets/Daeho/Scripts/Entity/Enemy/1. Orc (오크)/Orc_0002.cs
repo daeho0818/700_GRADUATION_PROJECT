@@ -5,6 +5,8 @@ using UnityEngine;
 public class Orc_0002 : GroundObject
 {
     [SerializeField] Projectile_Arc bullet_prefab;
+
+    [SerializeField] Sprite[] projectile_sprites;
     protected override void Awake()
     {
         base.Awake();
@@ -26,16 +28,38 @@ public class Orc_0002 : GroundObject
     protected override IEnumerator BaseAttack()
     {
         Projectile_Arc bullet;
+        Sprite sprite;
 
         yield return null;
 
         renderer.flipX = transform.position.x < target_move_position.x;
+        sprite = projectile_sprites[Random.Range(0, projectile_sprites.Length)];
 
         bullet = Instantiate(bullet_prefab);
         bullet.transform.position = transform.position;
+        bullet.GetComponent<SpriteRenderer>().sprite = sprite;
         bullet.move_speed = bullet_speed;
         bullet.SetArc(player.transform.position);
+
+        StartCoroutine(RotateProjectile(bullet));
     }
+
+    [Tooltip("발사체 회전 속도")] [SerializeField] float projectile_rot_speed;
+    /// <summary>
+    /// 발사체 회전 애니메이션을 구현한 함수
+    /// </summary>
+    /// <param name="projectile">회전시킬 발사체</param>
+    /// <returns></returns>
+    IEnumerator RotateProjectile(Projectile projectile)
+    {
+        while (projectile)
+        {
+            projectile.transform.Rotate(Vector3.forward * projectile_rot_speed * Time.deltaTime);
+
+            yield return null;
+        }
+    }
+
 
     Vector2 target_move_position;
 

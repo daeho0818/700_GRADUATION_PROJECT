@@ -106,7 +106,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &6535990230643327421
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -176,11 +176,25 @@ MonoBehaviour:
   move_speed: 0.5
   is_hit: 0
   colliders: []
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 1
+    attack_afterDelay: 1
+    attack_coolTime: 3
+    bullet_speed: 5
   attack_check: 0
   attack_beforeDelay: 1
   attack_afterDelay: 1
   attack_coolTime: 3
   bullet_speed: 5
+  ai:
+    search_player: 1
+    ai_moving_range: 0
+    delay_min: 0
+    delay_max: 0
+    search_distance: 5
+    unSearch_distance: 10
+    distance_with_player: 5
   search_player: 1
   ai_moving_range: 0
   delay_min: 0
@@ -188,5 +202,4 @@ MonoBehaviour:
   search_distance: 5
   unSearch_distance: 10
   distance_with_player: 5
-  find_player: 0
   bullet_prefab: {fileID: 776741225428772139, guid: 79745eb9cd7986a4a95eb0a815817495, type: 3}
