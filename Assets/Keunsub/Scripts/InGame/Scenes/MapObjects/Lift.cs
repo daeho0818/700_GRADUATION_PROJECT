@@ -14,8 +14,7 @@ public class Lift : MonoBehaviour
     private void Update()
     {
         Collider2D cd = Physics2D.OverlapCircle(transform.position, 5f, LayerMask.GetMask("Entity"));
-        if (cd != null)
-            isClose = cd.CompareTag("Player");
+        isClose = cd != null;
 
         if (isClose && isInteracted && !isMoving)
         {
