@@ -19,8 +19,8 @@ public abstract class Entity : MonoBehaviour
     [Tooltip("엔티티 콜라이더들 (1. 몸 | 2. 공격 1 | 3. 공격 2 | 4 공격 3 | ...)")]
     [SerializeField] protected Collider2D[] colliders;
 
-    protected Rigidbody2D rigid;
-    protected new SpriteRenderer renderer;
+    public Rigidbody2D rigid { get; protected set; }
+    public new SpriteRenderer renderer { get; protected set; }
     protected abstract void Awake();
     protected abstract void Start();
     protected abstract void Update();

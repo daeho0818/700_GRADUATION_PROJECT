@@ -209,11 +209,25 @@ MonoBehaviour:
   colliders:
   - {fileID: 4410719402695917673}
   - {fileID: 2601914537781682208}
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 1
+    attack_afterDelay: 1
+    attack_coolTime: 5
+    bullet_speed: 0
   attack_check: 0
   attack_beforeDelay: 1
   attack_afterDelay: 1
   attack_coolTime: 5
   bullet_speed: 0
+  ai:
+    search_player: 1
+    ai_moving_range: 5
+    delay_min: 1
+    delay_max: 5
+    search_distance: 5
+    unSearch_distance: 5
+    distance_with_player: 2
   search_player: 1
   ai_moving_range: 5
   delay_min: 1
@@ -221,4 +235,3 @@ MonoBehaviour:
   search_distance: 5
   unSearch_distance: 5
   distance_with_player: 2
-  find_player: 0

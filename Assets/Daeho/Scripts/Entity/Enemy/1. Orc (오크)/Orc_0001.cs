@@ -20,21 +20,20 @@ public class Orc_0001 : GroundObject
         base.Update();
     }
 
-    protected override IEnumerator BaseAttack()
-    {
-        yield return StartCoroutine(_BaseAttack());
-    }
-
     /// <summary>
     /// 플레이어를 향해 3번 연속 총알을 발사하는 공격 함수
     /// </summary>
     /// <returns></returns>
-    IEnumerator _BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
         WaitForSeconds second = new WaitForSeconds(0.65f);
         Projectile bullet;
         Vector2 direction = (player.transform.position - transform.position).normalized;
         direction.y = 0;
+
+        yield return null;
+
+        renderer.flipX = transform.position.x < player.transform.position.x;
 
         for (int i = 0; i < 3; i++)
         {
@@ -42,8 +41,6 @@ public class Orc_0001 : GroundObject
             bullet.transform.position = transform.position;
             bullet.fire_direction = direction;
             bullet.move_speed = bullet_speed;
-
-            renderer.flipX = transform.position.x < target_move_position.x;
 
             yield return second;
         }

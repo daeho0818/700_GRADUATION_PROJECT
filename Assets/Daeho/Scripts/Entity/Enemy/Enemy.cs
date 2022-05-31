@@ -41,35 +41,61 @@ public class Enemy : Entity
 {
     [Header("Enemy Information")]
     [SerializeField] EInfo enemy;
-    #region trash
-    // 공격 패턴 유무 여부
-    [SerializeField] protected bool attack_check;
-    // 공격 전/후 딜레이
-    [SerializeField] protected float attack_beforeDelay;
-    [SerializeField] protected float attack_afterDelay;
-    // 공격 쿨타임
-    [SerializeField] protected float attack_coolTime;
-    // 총알 속도
-    [SerializeField] protected float bullet_speed;
+    #region Properties
+    /// <summary>
+    /// 공격 패턴 유무 여부
+    /// </summary>
+    public bool attack_check { get => enemy.attack_check; set => enemy.attack_check = value; }
+    /// <summary>
+    /// 공격 전 딜레이
+    /// </summary>
+    public float attack_beforeDelay { get => enemy.attack_beforeDelay; set => enemy.attack_beforeDelay = value; }
+    /// <summary>
+    /// 공격 후 딜레이
+    /// </summary>
+    public float attack_afterDelay { get => enemy.attack_afterDelay; set => enemy.attack_afterDelay = value; }
+    /// <summary>
+    /// 공격 쿨타임
+    /// </summary>
+    public float attack_coolTime { get => enemy.attack_coolTime; set => enemy.attack_coolTime = value; }
+    /// <summary>
+    /// 총알 속도
+    /// </summary>
+    public float bullet_speed { get => enemy.bullet_speed; set => enemy.bullet_speed = value; }
     #endregion
 
     [Header("AI Moving Information")]
-    [SerializeField] AIInfo ai;
-    #region trash
-    // 플레이어 탐색 여부
-    [SerializeField] protected bool search_player = true;
-    // AI 이동 반경
-    [SerializeField] protected float ai_moving_range;
-    // 이동 간 최소 대기시간
-    [SerializeField] protected float delay_min;
-    // 이동 간 최대 대기시간
-    [SerializeField] protected float delay_max;
-    [Tooltip("플레이어를 탐색하는 범위 (거리)")]
-    [SerializeField] protected float search_distance;
-    [Tooltip("플레이어 추격이 해제되는 거리")]
-    [SerializeField] protected float unSearch_distance;
-    [Tooltip("추격 중 플레이어와 유지할 거리")]
-    [SerializeField] protected float distance_with_player;
+    [SerializeField] protected AIInfo ai;
+    #region Properties
+    /// <summary>
+    /// 플레이어 탐색 여부
+    /// </summary>
+    public bool search_player { get => ai.search_player; set => ai.search_player = value; }
+    /// <summary>
+    /// AI 이동 반경
+    /// </summary>
+    public float ai_moving_range { get => ai.ai_moving_range; set => ai.ai_moving_range = value; }
+    /// <summary>
+    /// 이동 간 최소 대기시간
+    /// </summary>
+    public float delay_min { get => ai.delay_min; set => ai.delay_min = value; }
+    /// <summary>
+    /// 이동 간 최대 대기시간
+    /// </summary>
+    public float delay_max { get => ai.delay_max; set => ai.delay_max = value; }
+    /// <summary>
+    /// 플레이어를 탐색하는 범위 (거리)
+    /// </summary>
+    public float search_distance { get => ai.search_distance; set => ai.search_distance = value; }
+    /// <summary>
+    /// 플레이어 추격이 해제되는 거리
+    /// </summary>
+    public float unSearch_distance { get => ai.unSearch_distance; set => ai.unSearch_distance = value; }
+    // 추격 중 플레이어와 유지할 거리
+    /// <summary>
+    /// 추격 중 플레이어와 유지할 거리
+    /// </summary>
+    public float distance_with_player { get => ai.distance_with_player; set => ai.distance_with_player = value; }
     #endregion
 
     protected Coroutine ai_moving = null;
@@ -130,10 +156,10 @@ public class Enemy : Entity
     {
         float distance = Vector2.Distance(player.transform.position, transform.position);
 
-        if (distance > search_distance && find_player)
-            return distance <= unSearch_distance;
+        if (distance > ai.search_distance && find_player)
+            return distance <= ai.unSearch_distance;
 
-        return distance <= search_distance;
+        return distance <= ai.search_distance;
     }
 
     /// <summary>
@@ -165,6 +191,9 @@ public class Enemy : Entity
 
         yield return new WaitForSeconds(attack_afterDelay);
 
+        // 기본 상태
+        renderer.color = Color.white;
+
         if (!delay_timer.Processing())
             delay_timer.TimerStart(this, attack_afterDelay, () => { movable = true; });
 
@@ -182,9 +211,15 @@ public class Enemy : Entity
     /// <returns></returns>
     protected virtual IEnumerator AIMoving()
     {
-        Vector3 target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
+        Vector3 target;
         Vector3 vec;
         RaycastHit2D[] hits;
+
+        do
+            yield return null;
+        while (rigid.velocity.y != 0);
+
+        target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
 
         while (true)
         {

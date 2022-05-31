@@ -106,7 +106,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &3773191498728899416
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -152,11 +152,25 @@ MonoBehaviour:
   colliders:
   - {fileID: 3773191498728899416}
   - {fileID: 3773191499217095391}
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 1
+    attack_afterDelay: 1
+    attack_coolTime: 7
+    bullet_speed: 0
   attack_check: 0
   attack_beforeDelay: 1
   attack_afterDelay: 1
   attack_coolTime: 7
   bullet_speed: 0
+  ai:
+    search_player: 1
+    ai_moving_range: 5
+    delay_min: 1
+    delay_max: 5
+    search_distance: 5
+    unSearch_distance: 10
+    distance_with_player: 3
   search_player: 1
   ai_moving_range: 5
   delay_min: 1
@@ -164,7 +178,6 @@ MonoBehaviour:
   search_distance: 5
   unSearch_distance: 10
   distance_with_player: 3
-  find_player: 0
 --- !u!1 &3773191499217095389
 GameObject:
   m_ObjectHideFlags: 0

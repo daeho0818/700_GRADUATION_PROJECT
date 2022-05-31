@@ -149,11 +149,25 @@ MonoBehaviour:
   move_speed: 1
   is_hit: 0
   colliders: []
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 1
+    attack_afterDelay: 1
+    attack_coolTime: 5
+    bullet_speed: 3
   attack_check: 0
   attack_beforeDelay: 1
   attack_afterDelay: 1
   attack_coolTime: 5
   bullet_speed: 3
+  ai:
+    search_player: 1
+    ai_moving_range: 0
+    delay_min: 0
+    delay_max: 0
+    search_distance: 5
+    unSearch_distance: 10
+    distance_with_player: 3
   search_player: 1
   ai_moving_range: 0
   delay_min: 0
@@ -161,5 +175,4 @@ MonoBehaviour:
   search_distance: 5
   unSearch_distance: 10
   distance_with_player: 3
-  find_player: 0
   projectile_prefab: {fileID: 4010206706921858180, guid: c8a72341e054d5243ad23e1c7d6a39f4, type: 3}

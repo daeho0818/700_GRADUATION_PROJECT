@@ -297,10 +297,25 @@ MonoBehaviour:
   - {fileID: 682127548247651972}
   - {fileID: 682127549579603505}
   - {fileID: 682127548910200323}
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 0
+    attack_afterDelay: 0
+    attack_coolTime: 0
+    bullet_speed: 0
   attack_check: 0
+  attack_beforeDelay: 0
+  attack_afterDelay: 0
   attack_coolTime: 0
-  cur_attack_coolTime: 0
   bullet_speed: 0
+  ai:
+    search_player: 1
+    ai_moving_range: 0
+    delay_min: 0
+    delay_max: 0
+    search_distance: 0
+    unSearch_distance: 0
+    distance_with_player: 0
   search_player: 1
   ai_moving_range: 0
   delay_min: 0
@@ -308,6 +323,5 @@ MonoBehaviour:
   search_distance: 0
   unSearch_distance: 0
   distance_with_player: 0
-  find_player: 0
   rock_prefab: {fileID: 7215665660045949021, guid: e9951240cc4afb042b677319e8c8fd48, type: 3}
   fragment_prefab: {fileID: 844190010478968155, guid: 5b2b32d75d2d2414d83f810a12600624, type: 3}

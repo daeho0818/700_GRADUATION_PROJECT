@@ -100,12 +100,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &2046547930554384653
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.1740315, y: 0}
@@ -149,17 +149,18 @@ MonoBehaviour:
   move_speed: 1
   is_hit: 0
   colliders: []
-  attack_check: 0
-  attack_beforeDelay: 1
-  attack_afterDelay: 1
-  attack_coolTime: 5
-  bullet_speed: 5
-  search_player: 1
-  ai_moving_range: 5
-  delay_min: 1
-  delay_max: 5
-  search_distance: 5
-  unSearch_distance: 10
-  distance_with_player: 5
-  find_player: 0
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 1
+    attack_afterDelay: 1
+    attack_coolTime: 5
+    bullet_speed: 5
+  ai:
+    search_player: 1
+    ai_moving_range: 5
+    delay_min: 1
+    delay_max: 5
+    search_distance: 5
+    unSearch_distance: 10
+    distance_with_player: 5
   bullet_prefab: {fileID: 7264975374238615822, guid: 37229168379923041a232ade4a45286c, type: 3}

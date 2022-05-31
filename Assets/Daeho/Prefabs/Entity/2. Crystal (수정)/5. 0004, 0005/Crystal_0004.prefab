@@ -150,11 +150,25 @@ MonoBehaviour:
   is_hit: 0
   colliders:
   - {fileID: 7962684145201448622}
+  enemy:
+    attack_check: 0
+    attack_beforeDelay: 1
+    attack_afterDelay: 1
+    attack_coolTime: 0
+    bullet_speed: 0
   attack_check: 0
   attack_beforeDelay: 1
   attack_afterDelay: 1
   attack_coolTime: 0
   bullet_speed: 0
+  ai:
+    search_player: 1
+    ai_moving_range: 0
+    delay_min: 0
+    delay_max: 0
+    search_distance: 2
+    unSearch_distance: 0
+    distance_with_player: 0
   search_player: 1
   ai_moving_range: 0
   delay_min: 0
@@ -162,5 +176,4 @@ MonoBehaviour:
   search_distance: 2
   unSearch_distance: 0
   distance_with_player: 0
-  find_player: 0
   proj_prefab: {fileID: 7928072327248792864, guid: 83b1b708006806a4db74f777ebe129d6, type: 3}
