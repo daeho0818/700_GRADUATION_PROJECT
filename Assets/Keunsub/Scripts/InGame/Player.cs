@@ -106,7 +106,14 @@ public class Player : Entity
         if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround)
         {
             JumpFunc();
+
+            if (curCoroutine != null)
+                StopCoroutine(curCoroutine);
+
+            isCombo = false;
             isAttack = false;
+            isRunAble = true;
+            attackState = 0;
         }
 
         if (Input.GetKeyUp(KeyCode.Z) && isJumping)
