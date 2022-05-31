@@ -24,6 +24,8 @@ public class GameManager : Singleton<GameManager>
 
     public void MoveToScene(int nextScene, int nextDoor)
     {
+        player.transform.SetParent(null);
+
         Scenes[CurSceneIdx].gameObject.SetActive(false);
 
         CurSceneIdx = nextScene;

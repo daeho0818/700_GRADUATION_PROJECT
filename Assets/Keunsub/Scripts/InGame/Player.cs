@@ -114,7 +114,7 @@ public class Player : Entity
             isJumping = false;
         }
 
-        if(Input.GetKeyDown(KeyCode.Z) && !isGround && doubleJumpAble)
+        if (Input.GetKeyDown(KeyCode.Z) && !isGround && doubleJumpAble)
         {
             doubleJumpAble = false;
             RB.velocity = Vector2.zero;
@@ -122,6 +122,11 @@ public class Player : Entity
         }
 
         isGround = Physics2D.OverlapCircle(FeetPos.position, checkRadius, GroundMask);
+
+        if (isGround)
+            transform.SetParent(Physics2D.OverlapCircle(FeetPos.position, checkRadius, GroundMask)!.transform);
+        else
+            transform.SetParent(null);
 
         if (isGround && !doubleJumpAble) doubleJumpAble = true;
     }
@@ -228,7 +233,7 @@ public class Player : Entity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("CameraRoom"))
+        if (collision.CompareTag("CameraRoom"))
         {
             Door door = collision.GetComponent<Door>();
             door.NextScene();
