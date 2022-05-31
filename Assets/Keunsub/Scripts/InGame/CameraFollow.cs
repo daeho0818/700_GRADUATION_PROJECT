@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
     
     void Start()
     {
-        Bound = new CameraBound(Vector3.zero, 20f, 2f);
+        
     }
 
     void Update()
@@ -43,7 +43,7 @@ public class CameraFollow : MonoBehaviour
     }
 }
 
-
+[System.Serializable]
 public class CameraBound
 {
     public Vector2 Pos;
@@ -61,6 +61,7 @@ public class CameraBound
     }
 }
 
+[System.Serializable]
 public class BoundRect
 {
     public float right, left, up, down;

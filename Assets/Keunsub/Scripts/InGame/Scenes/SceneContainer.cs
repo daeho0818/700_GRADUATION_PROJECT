@@ -23,6 +23,7 @@ public abstract class SceneContainer : MonoBehaviour
     public void OnEnter(CameraFollow cam, Transform player, int posIdx)
     {
         cam.Bound = Bound;
+        cam.transform.position = ExitPoses[posIdx].transform.position;
         player.transform.position = ExitPoses[posIdx].transform.position;
     }
 }
