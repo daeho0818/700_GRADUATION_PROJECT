@@ -55,8 +55,8 @@ public class Boss_Orc : GroundObject
 
         // 이동 방향에 따른 이동 위치 설정
         Vector2 target = new Vector2(target_platform.position.x, player.transform.position.y) + // 플랫폼 위치 - - - ①
-            new Vector2(target_platform.localScale.x / 2 * (dir_is_right ? -1 : 1), 0) + // ①에서 구한 플랫폼 위치의 맨 끝 - - - ②
-            new Vector2(transform.localScale.x / 2 * (dir_is_right ? 4 : -4), 0); // ②에서 구한 맨 끝에서 조금 안쪽으로 이동 (플랫폼에 절반만 걸친 상태이기 때문) - - - ③
+            new Vector2(target_platform.localScale.x / 2 * (dir_is_right ? -1 : 1), 0) + // ① 에서 구한 플랫폼 위치의 맨 끝 - - - ②
+            new Vector2(transform.localScale.x / 2 * (dir_is_right ? 4 : -4), 0); // ② 에서 구한 맨 끝에서 조금 안쪽으로 이동 (플랫폼에 절반만 걸친 상태이기 때문) - - - ③
 
         Vector2 start_position = transform.position;
         float moved_distance;
@@ -160,10 +160,16 @@ public class Boss_Orc : GroundObject
             hits = Physics2D.RaycastAll(origin, Vector2.down, 5, LayerMask.GetMask("Platform"));
             Debug.DrawRay(origin, Vector2.down * 5, Color.red, 0.1f);
 
+            if (hits.Length == 0) break; // 낭떠러지일 때
+
+            hits = Physics2D.RaycastAll(transform.position, Vector2.right, 3, LayerMask.GetMask("Wall"));
+            Debug.DrawRay(origin, Vector2.right * 3, Color.red, 0.1f);
+
+            if (hits.Length > 0) break; // 앞에 벽이 있을 때
+
             transform.Translate(direction * move_speed * Time.deltaTime);
             yield return null;
-        }
-        while (hits.Length > 0);
+        } while (true);
 
         SetColliderDirection(colliders[3], direction.x);
 
