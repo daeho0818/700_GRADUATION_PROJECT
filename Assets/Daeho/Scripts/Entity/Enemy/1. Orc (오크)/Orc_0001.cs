@@ -26,7 +26,7 @@ public class Orc_0001 : GroundObject
     /// <returns></returns>
     protected override IEnumerator BaseAttack()
     {
-        WaitForSeconds second = new WaitForSeconds(0.65f);
+        WaitForSeconds second = new WaitForSeconds(0.85f);
         Projectile bullet;
         Vector2 direction = (player.transform.position - transform.position).normalized;
         direction.y = 0;
@@ -41,6 +41,7 @@ public class Orc_0001 : GroundObject
             bullet.transform.position = transform.position;
             bullet.fire_direction = direction;
             bullet.move_speed = bullet_speed;
+            bullet.GetComponent<SpriteRenderer>().flipX = direction.x < 0;
 
             yield return second;
         }

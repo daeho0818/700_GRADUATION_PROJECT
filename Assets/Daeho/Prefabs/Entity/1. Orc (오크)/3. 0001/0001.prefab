@@ -154,7 +154,7 @@ MonoBehaviour:
     attack_beforeDelay: 1
     attack_afterDelay: 1
     attack_coolTime: 5
-    bullet_speed: 5
+    bullet_speed: 10
   ai:
     search_player: 1
     ai_moving_range: 5

@@ -47,7 +47,7 @@ public class Crystal_0001 : GroundObject
             while (Time.time - count < 1f)
             {
                 p = CheckCollision(transform.position, collider, 0);
-                // p?.OnHit();
+                p?.OnHit?.Invoke(1);
                 yield return null;
             }
         }

@@ -38,8 +38,7 @@ public class Crystal_0000 : GroundObject
     {
         yield return new WaitForSeconds(2);
 
-        Vector3 target = player.transform.position;
-        Vector3 force = (target - transform.position);
+        Vector3 force = (renderer.flipX ? Vector2.right : Vector2.left) * 10; // 바라보고 있는 방향으로 돌진
         force.y = 2;
         rigid.AddForce(force, ForceMode2D.Impulse);
         renderer.flipX = force.x > 0;
@@ -78,8 +77,7 @@ public class Crystal_0000 : GroundObject
         SetColliderDirection(collider, dir_x);
 
         Player p = CheckCollision(transform.position, collider, 0);
-        Debug.Log(p);
-        // p?.OnHit();
+        p?.OnHit?.Invoke(1);
         yield return new WaitForSeconds(2f);
 
         smash_attack = null;
