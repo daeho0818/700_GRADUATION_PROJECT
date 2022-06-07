@@ -39,7 +39,7 @@ public class Platform : MonoBehaviour
         temp.y = -10f;
         transform.position = temp;
 
-        transform.DOMoveY(pos.y, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOMoveY(pos.y, 1f).SetEase(Ease.Linear).OnComplete(() =>
         {
             L_Platform.DOLocalRotate(new Vector3(0, 0, 0f), 0.2f);
             R_Platform.DOLocalRotate(new Vector3(0, 0, 0f), 0.2f).OnComplete(() =>

@@ -246,4 +246,12 @@ public class Player : Entity
             door.NextScene();
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Monster"))
+        {
+
+        }
+    }
 }

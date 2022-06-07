@@ -13,6 +13,12 @@ public abstract class WaveBase : MonoBehaviour
     public MonsterCage monsterCage;
     public Platform platform;
 
+    #region debug
+    private void Start()
+    {
+        WaveStart();
+    }
+    #endregion
     public virtual void WaveStart()
     {
         waveCoroutine = StartCoroutine(WaveCoroutine());

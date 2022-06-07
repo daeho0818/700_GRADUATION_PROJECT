@@ -15,7 +15,7 @@ public class OrcWave : WaveBase
 
     private void Awake()
     {
-        Init(FirstWave);
+        Init(FirstWave, SecondWave);
     }
 
     void FirstWave()
@@ -33,10 +33,39 @@ public class OrcWave : WaveBase
 
         while (RemainEnemy.Count > 0)
         {
-            foreach (var item in RemainEnemy) if (item.hp <= 0f) RemainEnemy.Remove(item);
+            for (int i = 0; i < RemainEnemy.Count; i++)
+                if (RemainEnemy[i].IsDestroy) RemainEnemy.Remove(RemainEnemy[i]);
+
             yield return null;
         }
-
+        Debug.Log("wave end");
         waveEnd = true;
+    }
+
+    void SecondWave()
+    {
+        StartCoroutine(SecondWaveCoroutine());
+    }
+
+    IEnumerator SecondWaveCoroutine()
+    {
+        SpawnPlatform(new Vector2(-10f, -2f));
+        SpawnPlatform(new Vector2(-7.5f, -2f));
+        SpawnPlatform(new Vector2(-5f, -2f));
+        SpawnPlatform(new Vector2(10f, -2f));
+        SpawnPlatform(new Vector2(7.5f, -2f));
+        SpawnPlatform(new Vector2(5f, -2f));
+
+        yield return new WaitForSeconds(3f);
+
+        SpawnMonster(ThrowOrc, new Vector2(-7.5f, -1f), EntitySize.Medium);
+        SpawnMonster(ThrowOrc, new Vector2(7.5f, -1f), EntitySize.Medium);
+
+        yield return new WaitForSeconds(3f);
+
+        SpawnMonster(DashOrc, new Vector2(-11f, -6f), EntitySize.Medium);
+        SpawnMonster(DashOrc, new Vector2(11f, -6f), EntitySize.Medium);
+
+        yield return null;
     }
 }
