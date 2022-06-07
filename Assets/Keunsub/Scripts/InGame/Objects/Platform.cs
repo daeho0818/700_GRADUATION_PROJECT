@@ -52,12 +52,12 @@ public class Platform : MonoBehaviour
 
     public void Disappear()
     {
+        L_col.enabled = false;
+        R_col.enabled = false;
 
-        R_Platform.DOShakePosition(3f);
-        L_Platform.DOShakePosition(3f).OnComplete(() =>
+        R_Platform.DOShakePosition(3f, 0.2f).SetEase(Ease.Linear);
+        L_Platform.DOShakePosition(3f, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
         {
-            L_col.enabled = false;
-            R_col.enabled = false;
 
             L_Platform.localPosition = Vector3.zero;
             R_Platform.localPosition = Vector3.zero;

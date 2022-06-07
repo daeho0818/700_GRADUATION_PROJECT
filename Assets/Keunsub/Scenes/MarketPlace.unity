@@ -2949,6 +2949,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f010c026eb05d12489a5828ab14a8954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Monsters: []
+  Platforms: []
   monsterCage: {fileID: 8137271589456504362, guid: a40079228502a1f4d9f0b127e530b90a, type: 3}
   platform: {fileID: 8584535886601064350, guid: 304521b8cd9fd264fba9a01608da319d, type: 3}
   BigOrc: {fileID: 5307416097184919106, guid: bde8557daf4bd0a428edb09de74580fe, type: 3}

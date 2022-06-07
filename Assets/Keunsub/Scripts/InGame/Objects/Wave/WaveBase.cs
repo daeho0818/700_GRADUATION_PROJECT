@@ -9,6 +9,10 @@ public abstract class WaveBase : MonoBehaviour
     protected bool waveEnd;
     Coroutine waveCoroutine;
 
+    [Header("Wave Entities")]
+    public List<Entity> Monsters = new List<Entity>();
+    public List<Platform> Platforms = new List<Platform>();
+
     [Header("Wave Base")]
     public MonsterCage monsterCage;
     public Platform platform;
