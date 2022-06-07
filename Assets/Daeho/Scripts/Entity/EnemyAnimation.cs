@@ -9,11 +9,34 @@ abstract class AnimState
     public Sprite[] frame_sprites;
     public float delay;
 
+    protected Enemy model;
+
     private int index = 0;
 
-    IEnumerator AnimUpdate()
+    public Coroutine update { get; set; } = null;
+
+    public void SetModel(Enemy model)
     {
-        yield return null;
+        if (this.model != null) return;
+
+        this.model = model;
+    }
+    /// <summary>
+    /// 애니메이션 진행
+    /// </summary>
+    /// <returns></returns>
+    public virtual IEnumerator Update()
+    {
+        if (delay == 0) delay = 0.01f;
+
+        while (true)
+        {
+            model.renderer.sprite = frame_sprites[index++];
+
+            if (index >= frame_sprites.Length) index = 0;
+
+            yield return delay;
+        }
     }
 }
 
@@ -21,27 +44,18 @@ abstract class AnimState
 [SB]
 class IdleState : AnimState
 {
-    public IdleState(Enemy model)
-    {
-    }
 }
 
 // 움직임 상태
 [SB]
 class WalkState : AnimState
 {
-    public WalkState(Enemy model)
-    {
-    }
 }
 
 // 피격 상태
 [SB]
 class HitState : AnimState
 {
-    public HitState(Enemy model)
-    {
-    }
 }
 
 // 공격 상태
@@ -49,18 +63,12 @@ class HitState : AnimState
 class AttackState : AnimState
 {
     [SerializeField] (int, int) attack_frame_range;
-    public AttackState(Enemy model)
-    {
-    }
 }
 
 // 죽음 상태
 [SB]
 class DeadState : AnimState
 {
-    public DeadState(Enemy model)
-    {
-    }
 }
 
 public class EnemyAnimation : MonoBehaviour
@@ -68,41 +76,69 @@ public class EnemyAnimation : MonoBehaviour
     Enemy model;
 
     [SerializeField] IdleState idle;
+    [Space(10)]
     [SerializeField] WalkState walk;
+    [Space(10)]
     [SerializeField] HitState hit;
+    [Space(10)]
     [SerializeField] AttackState attack;
+    [Space(10)]
     [SerializeField] DeadState dead;
 
-    private AnimState state;
-    private int index;
+    private AnimState _state;
+    private AnimState state {
+        get => _state;
+        set
+        {
+            _state = value;
+            _state.SetModel(model);
+        }
+    }
+
+    private string s_state = "";
 
     void Start()
     {
         model = GetComponent<Enemy>();
     }
 
+    /// <summary>
+    /// Animation 현재 State 변경 함수
+    /// </summary>
+    /// <param name="name">변경할 State 이름</param>
     public void SetState(string name)
     {
+        // 이전 애니메이션이 진행 중이라면 중단
+        if (state != null && state.update != null) StopCoroutine(state.update);
+
         switch (name)
         {
-            case nameof(IdleState):
-                state = new IdleState(model);
+            case string n when nameof(IdleState).Contains(n):
+                state = idle;
                 break;
-            case nameof(WalkState):
-                state = new WalkState(model);
+            case string n when nameof(WalkState).Contains(n):
+                state = walk;
                 break;
-            case nameof(HitState):
-                state = new HitState(model);
+            case string n when nameof(HitState).Contains(n):
+                state = hit;
                 break;
-            case nameof(AttackState):
-                state = new AttackState(model);
+            case string n when nameof(AttackState).Contains(n):
+                state = attack;
                 break;
-            case nameof(DeadState):
-                state = new DeadState(model);
+            case string n when nameof(DeadState).Contains(n):
+                state = dead;
                 break;
             default:
                 Debug.Assert(false);
-                break;
+                return;
         }
+
+        state.update = StartCoroutine(state.Update());
+        s_state = name;
+    }
+
+    public string GetState()
+    {
+        return s_state;
     }
 }

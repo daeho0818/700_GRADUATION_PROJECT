@@ -44,7 +44,7 @@ public class Orc_0003 : GroundObject
             // 벽을 만났을 때
             if (hits.Length > 0) break;
 
-            hits = Physics2D.RaycastAll((Vector2)transform.position + (dir * 1), Vector2.down, 5f, LayerMask.GetMask("Platform"));
+            hits = Physics2D.RaycastAll((Vector2)transform.position + (dir * 1), Vector2.down, 5f, LayerMask.GetMask("Ground"));
             Debug.DrawRay((Vector2)transform.position + (dir * 1), Vector2.down * 5f, Color.red, 0.1f);
 
             Debug.Log(hits.Length);
