@@ -16,16 +16,19 @@ public abstract class WaveBase : MonoBehaviour
     [Header("Wave Base")]
     public MonsterCage monsterCage;
     public Platform platform;
-/*
-    #region debug
-    private void Start()
-    {
-        WaveStart();
-    }
-    #endregion*/
+    /*
+        #region debug
+        private void Start()
+        {
+            WaveStart();
+        }
+        #endregion*/
 
-    public virtual void WaveStart()
+    InGameManager manager;
+
+    public virtual void WaveStart(InGameManager _manager)
     {
+        manager = _manager;
         waveCoroutine = StartCoroutine(WaveCoroutine());
     }
 
@@ -73,6 +76,8 @@ public abstract class WaveBase : MonoBehaviour
             while (!waveEnd) yield return null;
             waveEnd = false;
         }
+
+        manager.GameEnd();
 
     }
 

@@ -25,7 +25,7 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        MoveToScene(2, 0);
+        MoveToScene(0, 0);
     }
 
     public void MoveToScene(int nextScene, int nextDoor)
