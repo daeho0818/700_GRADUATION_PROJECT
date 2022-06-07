@@ -40,11 +40,12 @@ public class Orc_0002 : GroundObject
         bullet.GetComponent<SpriteRenderer>().sprite = sprite;
         bullet.move_speed = bullet_speed;
         bullet.SetArc(player.transform.position);
+        bullet.SetCollision((p) => { p?.OnHit?.Invoke(1); });
 
         StartCoroutine(RotateProjectile(bullet));
     }
 
-    [Tooltip("발사체 회전 속도")] [SerializeField] float projectile_rot_speed;
+    [Tooltip("발사체 회전 속도")][SerializeField] float projectile_rot_speed;
     /// <summary>
     /// 발사체 회전 애니메이션을 구현한 함수
     /// </summary>
@@ -75,7 +76,7 @@ public class Orc_0002 : GroundObject
             target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, 0);
             target_move_position.y = transform.position.y;
 
-            renderer.flipX = transform.position.x < target_move_position.x;
+            FlipSprite();
             transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
         }
     }

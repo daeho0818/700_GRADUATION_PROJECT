@@ -181,20 +181,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idle:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 0}
     delay: 0
+    loop: 0
   walk:
     frame_sprites: []
     delay: 0
-  hit:
-    frame_sprites: []
-    delay: 0
+    loop: 0
   attack:
     frame_sprites: []
     delay: 0
+    loop: 0
+  hit:
+    frame_sprites: []
+    delay: 0
+    loop: 0
   dead:
     frame_sprites: []
     delay: 0
+    loop: 0
 --- !u!1 &3773191499217095389
 GameObject:
   m_ObjectHideFlags: 0

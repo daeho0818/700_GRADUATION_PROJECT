@@ -44,6 +44,7 @@ public class Orc_0000 : FlyingObject
             bullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
             bullet.fire_direction = dir;
             bullet.move_speed = bullet_speed;
+            bullet.SetCollision((p) => { p?.OnHit?.Invoke(1); });
         }
     }
 
@@ -59,7 +60,7 @@ public class Orc_0000 : FlyingObject
         target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, 0);
         target_move_position.y = transform.position.y;
 
-        renderer.flipX = transform.position.x < player.transform.position.x;
+        FlipSprite();
         transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
     }
 }

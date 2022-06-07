@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 7086769605309212529}
   - component: {fileID: 7086769605309212530}
   - component: {fileID: 826540607724679858}
-  - component: {fileID: 545111452207081206}
+  - component: {fileID: 8981673890058410097}
   - component: {fileID: 3089022477736413627}
   - component: {fileID: -5073177708681448989}
   m_Layer: 9
   m_Name: 0002
-  m_TagString: Monster
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,15 +75,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c278449d95c3d6d4ebcf152941862346, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aa4700b02b8c1284294bae544255e188, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.22, y: 2.14}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &826540607724679858
@@ -107,7 +107,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &545111452207081206
+--- !u!61 &8981673890058410097
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,18 +120,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.61, y: 1.07}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 1, y: 0}
     oldSize: {x: 1.22, y: 2.14}
-    newSize: {x: 1, y: 1}
+    newSize: {x: 1.22, y: 2.14}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
-  m_Size: {x: 1.11, y: 2.11}
+  m_Size: {x: 1.22, y: 2.14}
   m_EdgeRadius: 0
 --- !u!114 &3089022477736413627
 MonoBehaviour:
@@ -149,7 +149,8 @@ MonoBehaviour:
   hp: 5
   move_speed: 1
   is_hit: 0
-  colliders: []
+  colliders:
+  - {fileID: 8981673890058410097}
   enemy:
     animation: {fileID: 0}
     attack_check: 0
@@ -185,17 +186,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idle:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: aa4700b02b8c1284294bae544255e188, type: 3}
     delay: 0
+    loop: 0
   walk:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 8b2f00701aa4cdc45bee7c0892b69585, type: 3}
     delay: 0
-  hit:
-    frame_sprites: []
-    delay: 0
+    loop: 0
   attack:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: f1c7bb418ca187c47ae20e1a664bec6c, type: 3}
+    - {fileID: 21300000, guid: 78c544fbd748cad4f89760cc2bf10770, type: 3}
+    - {fileID: 21300000, guid: 6caca628da30f19439c9a73f69dc0b02, type: 3}
     delay: 0
+    loop: 0
+  hit:
+    frame_sprites:
+    - {fileID: 21300000, guid: 2076fff6bf2eac442a812c87329c5709, type: 3}
+    delay: 0
+    loop: 0
   dead:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 2076fff6bf2eac442a812c87329c5709, type: 3}
     delay: 0
+    loop: 0
