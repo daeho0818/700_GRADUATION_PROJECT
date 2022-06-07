@@ -12,7 +12,9 @@ public class Player : Entity
     public float jumpHoldTime = 2.5f;
     public float dashSpeed;
     public float dashDelay;
+    public float dashCool;
     float curDash;
+    float curCool;
     float curJumpTime;
     #endregion
 
@@ -84,11 +86,15 @@ public class Player : Entity
 
     void DashLogic()
     {
-        if (Input.GetKeyDown(KeyCode.C) && !isDash)
+        if (curCool <= dashCool) curCool += Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.C) && !isDash && curCool > dashCool)
         {
             isDash = true;
             isAttack = false;
-            RB.gravityScale = 0f;
+            curCool = 0f;
+
+            NoGravity();
         }
 
         if (isDash && curDash < dashDelay)
@@ -100,8 +106,19 @@ public class Player : Entity
         {
             isDash = false;
             curDash = 0f;
-            RB.gravityScale = 5f;
+            YesGravity();
         }
+    }
+
+    void NoGravity()
+    {
+        RB.gravityScale = 0f;
+        RB.velocity = Vector2.zero;
+    }
+
+    void YesGravity()
+    {
+        RB.gravityScale = 5f;
     }
 
     private void FixedUpdate()
@@ -134,7 +151,7 @@ public class Player : Entity
         {
             JumpFunc();
             isDash = false;
-            RB.gravityScale = 5f;
+            YesGravity();
             curDash = 0f;
 
             if (curCoroutine != null)
