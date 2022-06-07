@@ -49,23 +49,37 @@ public class OrcWave : WaveBase
 
     IEnumerator SecondWaveCoroutine()
     {
-        SpawnPlatform(new Vector2(-10f, -2f));
-        SpawnPlatform(new Vector2(-7.5f, -2f));
-        SpawnPlatform(new Vector2(-5f, -2f));
-        SpawnPlatform(new Vector2(10f, -2f));
-        SpawnPlatform(new Vector2(7.5f, -2f));
-        SpawnPlatform(new Vector2(5f, -2f));
+        List<Platform> platforms = new List<Platform>();
+        List<Entity> monsters = new List<Entity>();
+
+        platforms.Add(SpawnPlatform(new Vector2(-10f, -2f)));
+        platforms.Add(SpawnPlatform(new Vector2(-7.5f, -2f)));
+        platforms.Add(SpawnPlatform(new Vector2(-5f, -2f)));
+        platforms.Add(SpawnPlatform(new Vector2(10f, -2f)));
+        platforms.Add(SpawnPlatform(new Vector2(7.5f, -2f)));
+        platforms.Add(SpawnPlatform(new Vector2(5f, -2f)));
 
         yield return new WaitForSeconds(3f);
 
-        SpawnMonster(ThrowOrc, new Vector2(-7.5f, -1f), EntitySize.Medium);
-        SpawnMonster(ThrowOrc, new Vector2(7.5f, -1f), EntitySize.Medium);
+        monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-7.5f, -1f), EntitySize.Medium));
+        monsters.Add(SpawnMonster(ThrowOrc, new Vector2(7.5f, -1f), EntitySize.Medium));
 
         yield return new WaitForSeconds(3f);
 
-        SpawnMonster(DashOrc, new Vector2(-11f, -6f), EntitySize.Medium);
-        SpawnMonster(DashOrc, new Vector2(11f, -6f), EntitySize.Medium);
+        monsters.Add(SpawnMonster(DashOrc, new Vector2(-11f, -6f), EntitySize.Medium));
+        monsters.Add(SpawnMonster(DashOrc, new Vector2(11f, -6f), EntitySize.Medium));
 
-        yield return null;
+
+        while (monsters.Count > 0)
+        {
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                if (monsters[i].IsDestroy) monsters.Remove(monsters[i]);
+            }
+            yield return null;
+        }
+
+        Debug.Log("wave end");
+        waveEnd = true;
     }
 }

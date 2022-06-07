@@ -25,7 +25,6 @@ public class MonsterCage : MonoBehaviour
 
     public Entity Appear(Vector2 spawnPos, Entity spawnEnemy, EntitySize size)
     {
-        float time = (spawnPos.y + 6f) / 2f;
 
         CageSprites[(int)size].gameObject.SetActive(true);
         Vector2 temp = new Vector2();
@@ -38,11 +37,11 @@ public class MonsterCage : MonoBehaviour
         Entity entity = Instantiate(spawnEnemy, transform.position, Quaternion.identity, transform.parent);
         entity.gameObject.SetActive(false);
 
-        transform.DOMoveY(spawnPos.y, time).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOMoveY(spawnPos.y, 1f).SetEase(Ease.Linear).OnComplete(() =>
         {
             entity.transform.position = transform.position;
             entity.gameObject.SetActive(true);
-            transform.DOMoveY(-10f, time).SetEase(Ease.Linear).SetDelay(2f).OnComplete(() =>
+            transform.DOMoveY(-10f, 1f).SetEase(Ease.Linear).SetDelay(2f).OnComplete(() =>
             {
                 //Init();
                 Destroy(gameObject);
