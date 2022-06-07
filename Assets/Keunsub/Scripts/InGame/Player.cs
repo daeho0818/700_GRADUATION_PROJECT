@@ -10,6 +10,9 @@ public class Player : Entity
     public float moveSpeed;
     public float attackDelay;
     public float jumpHoldTime = 2.5f;
+    public float dashSpeed;
+    public float dashDelay;
+    float curDash;
     float curJumpTime;
     #endregion
 
@@ -30,6 +33,7 @@ public class Player : Entity
     bool isFalling;
     bool isJumping;
     bool isRunAble = true;
+    bool isDash;
     [SerializeField] int attackState;
     #endregion
 
@@ -75,6 +79,29 @@ public class Player : Entity
         JumpHolding();
         AttackLogic();
         AnimatorLogic();
+        DashLogic();
+    }
+
+    void DashLogic()
+    {
+        if (Input.GetKeyDown(KeyCode.C) && !isDash)
+        {
+            isDash = true;
+            isAttack = false;
+            RB.gravityScale = 0f;
+        }
+
+        if (isDash && curDash < dashDelay)
+        {
+            transform.Translate(Vector3.right * dashSpeed * Time.deltaTime);
+            curDash += Time.deltaTime;
+        }
+        else
+        {
+            isDash = false;
+            curDash = 0f;
+            RB.gravityScale = 5f;
+        }
     }
 
     private void FixedUpdate()
@@ -83,13 +110,13 @@ public class Player : Entity
 
     void RunningLogic()
     {
-        if (Input.GetKey(KeyCode.LeftArrow) && (isRunAble || (!isGround && isAttack)))
+        if (Input.GetKey(KeyCode.LeftArrow) && !isDash && (isRunAble || (!isGround && isAttack)))
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && (isRunAble || (!isGround && isAttack)))
+        else if (Input.GetKey(KeyCode.RightArrow) && !isDash && (isRunAble || (!isGround && isAttack)))
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
@@ -106,6 +133,9 @@ public class Player : Entity
         if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround)
         {
             JumpFunc();
+            isDash = false;
+            RB.gravityScale = 5f;
+            curDash = 0f;
 
             if (curCoroutine != null)
                 StopCoroutine(curCoroutine);
@@ -171,7 +201,7 @@ public class Player : Entity
         // 지상일때는 콤보 가능, 공중에서는 콤보 불가능
         // 콤보에서 다음 콤보로 이어지기 전 짧은 시간동안 isAttack 풀어짐
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) && !isDash)
         {
             if (isGround)
             {

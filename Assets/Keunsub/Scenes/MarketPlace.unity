@@ -1401,6 +1401,8 @@ MonoBehaviour:
   moveSpeed: 5
   attackDelay: 0.4
   jumpHoldTime: 0.5
+  dashSpeed: 20
+  dashDelay: 0.1
   JumpForce: {x: 0, y: 10}
   AttackColliders:
   - {fileID: 1109754058}
