@@ -42,6 +42,7 @@ public class Orc_0001 : GroundObject
             bullet.fire_direction = direction;
             bullet.move_speed = bullet_speed;
             bullet.GetComponent<SpriteRenderer>().flipX = direction.x < 0;
+            bullet.SetCollision((p) => { p.OnHit?.Invoke(1); });
 
             yield return second;
         }
@@ -61,7 +62,7 @@ public class Orc_0001 : GroundObject
             target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, 0);
             target_move_position.y = transform.position.y;
 
-            renderer.flipX = transform.position.x < target_move_position.x;
+            FlipSprite();
             transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
         }
     }
