@@ -31,6 +31,12 @@ abstract class AnimState
 
         while (true)
         {
+            if (frame_sprites == null || frame_sprites.Length == 0)
+            {
+                yield return null;
+                continue;
+            }
+
             model.renderer.sprite = frame_sprites[index++];
 
             if (index >= frame_sprites.Length) index = 0;
@@ -86,7 +92,8 @@ public class EnemyAnimation : MonoBehaviour
     [SerializeField] DeadState dead;
 
     private AnimState _state;
-    private AnimState state {
+    private AnimState state
+    {
         get => _state;
         set
         {

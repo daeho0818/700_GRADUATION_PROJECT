@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 826540607724679858}
   - component: {fileID: 545111452207081206}
   - component: {fileID: 3089022477736413627}
+  - component: {fileID: -5073177708681448989}
   m_Layer: 9
   m_Name: 0002
   m_TagString: Monster
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &826540607724679858
@@ -150,6 +151,7 @@ MonoBehaviour:
   is_hit: 0
   colliders: []
   enemy:
+    animation: {fileID: 0}
     attack_check: 0
     attack_beforeDelay: 1
     attack_afterDelay: 1
@@ -170,3 +172,30 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a281d1ad5af64ce4b8958a2457ca1549, type: 3}
   - {fileID: 21300000, guid: 0172711427e568549b4052af1af25a35, type: 3}
   projectile_rot_speed: 1000
+--- !u!114 &-5073177708681448989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7086769605309212531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00da6ed9f30fef94a89cadb0ac6f7043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idle:
+    frame_sprites: []
+    delay: 0
+  walk:
+    frame_sprites: []
+    delay: 0
+  hit:
+    frame_sprites: []
+    delay: 0
+  attack:
+    frame_sprites: []
+    delay: 0
+  dead:
+    frame_sprites: []
+    delay: 0

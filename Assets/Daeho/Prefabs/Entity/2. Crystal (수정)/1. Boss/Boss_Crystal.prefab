@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6152513494819372573}
   - component: {fileID: 6152513494819372572}
   - component: {fileID: 6152513494819372574}
+  - component: {fileID: -6749219232556756794}
   m_Layer: 9
   m_Name: Boss_Crystal
   m_TagString: Monster
@@ -151,16 +152,12 @@ MonoBehaviour:
   colliders:
   - {fileID: 6152513494819372572}
   enemy:
+    animation: {fileID: 0}
     attack_check: 0
     attack_beforeDelay: 0
     attack_afterDelay: 0
     attack_coolTime: 0
     bullet_speed: 0
-  attack_check: 0
-  attack_beforeDelay: 0
-  attack_afterDelay: 0
-  attack_coolTime: 0
-  bullet_speed: 0
   ai:
     search_player: 0
     ai_moving_range: 0
@@ -169,13 +166,6 @@ MonoBehaviour:
     search_distance: 0
     unSearch_distance: 0
     distance_with_player: 0
-  search_player: 1
-  ai_moving_range: 0
-  delay_min: 0
-  delay_max: 0
-  search_distance: 0
-  unSearch_distance: 0
-  distance_with_player: 0
   platforms:
   - {fileID: 0}
   - {fileID: 0}
@@ -184,3 +174,30 @@ MonoBehaviour:
   - {fileID: 0}
   crystal_prefab: {fileID: 6760627104489221037, guid: 161ea8892a161a04aa97eb56948edbcd, type: 3}
   crystal_bullet_prefab: {fileID: 8280024545463762671, guid: 30949c8b342cf04448e1a79eaeba3248, type: 3}
+--- !u!114 &-6749219232556756794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3302935097203447420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00da6ed9f30fef94a89cadb0ac6f7043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idle:
+    frame_sprites: []
+    delay: 0
+  walk:
+    frame_sprites: []
+    delay: 0
+  hit:
+    frame_sprites: []
+    delay: 0
+  attack:
+    frame_sprites: []
+    delay: 0
+  dead:
+    frame_sprites: []
+    delay: 0
