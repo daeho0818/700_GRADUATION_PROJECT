@@ -126,7 +126,7 @@ public class Enemy : Entity
 
         OnHit += (int damage) =>
         {
-            animation.SetState("Attack");
+            animation.SetState("Hit");
             hp -= damage;
         };
         OnDestroy += () => animation.SetState("Dead");
@@ -192,7 +192,7 @@ public class Enemy : Entity
     /// <returns></returns>
     private IEnumerator Attack()
     {
-        animation.SetState("Hit");
+        animation.SetState("Attack");
 
         #region 애니메이션 프레임 다 들어오면 지워버릴 것.
 
@@ -351,5 +351,15 @@ public class Enemy : Entity
         }
 
         return null;
+    }
+
+    protected void FlipSprite()
+    {
+        Quaternion rot = transform.rotation;
+
+        if (player.transform.position.x > transform.position.x)
+            transform.rotation = Quaternion.Euler(rot.x, 180, rot.y);
+        else
+            transform.rotation = Quaternion.Euler(rot.x, 0, rot.y);
     }
 }

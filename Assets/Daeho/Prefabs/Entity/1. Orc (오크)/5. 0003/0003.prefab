@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1208552863288980799}
   - component: {fileID: 1208552863288980796}
+  - component: {fileID: 432304439579507088}
   - component: {fileID: 8783304912210370812}
-  - component: {fileID: 8434249242699084984}
   - component: {fileID: 2403096259801449647}
   - component: {fileID: -7220509362808753927}
   m_Layer: 9
   m_Name: 0003
-  m_TagString: Monster
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,17 +75,43 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5466a030ec8cec14da6dcefdb7ba3887, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a36a21078615ec245808f422a8376ddc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.34, y: 2.72}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &432304439579507088
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208552863288980797}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -1.67, y: 1.36}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 1, y: 0}
+    oldSize: {x: 3.34, y: 2.72}
+    newSize: {x: 3.34, y: 2.72}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.34, y: 2.72}
+  m_EdgeRadius: 0
 --- !u!50 &8783304912210370812
 Rigidbody2D:
   serializedVersion: 4
@@ -107,32 +133,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &8434249242699084984
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1208552863288980797}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.34, y: 2.72}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3.4, y: 2.6}
-  m_EdgeRadius: 0
 --- !u!114 &2403096259801449647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,7 +149,8 @@ MonoBehaviour:
   hp: 5
   move_speed: 3
   is_hit: 0
-  colliders: []
+  colliders:
+  - {fileID: 432304439579507088}
   enemy:
     animation: {fileID: 0}
     attack_check: 0
@@ -178,17 +179,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idle:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: a36a21078615ec245808f422a8376ddc, type: 3}
     delay: 0
+    loop: 1
   walk:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 9180119937fa04445a6ef47c0063b794, type: 3}
     delay: 0
-  hit:
-    frame_sprites: []
-    delay: 0
+    loop: 1
   attack:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 9dc984b306bc56d46aae21faaf928abc, type: 3}
+    - {fileID: 21300000, guid: c0b41318f8ded7549b8cedcac73ef988, type: 3}
     delay: 0
+    loop: 0
+  hit:
+    frame_sprites:
+    - {fileID: 21300000, guid: 5cace5b81336d774da2f16b1943c085e, type: 3}
+    delay: 0
+    loop: 0
   dead:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 5cace5b81336d774da2f16b1943c085e, type: 3}
     delay: 0
+    loop: 0

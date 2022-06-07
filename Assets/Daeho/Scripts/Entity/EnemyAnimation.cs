@@ -8,6 +8,7 @@ abstract class AnimState
 {
     public Sprite[] frame_sprites;
     public float delay;
+    public bool loop;
 
     protected Enemy model;
 
@@ -17,31 +18,44 @@ abstract class AnimState
 
     public void SetModel(Enemy model)
     {
+        index = 0;
+
         if (this.model != null) return;
 
         this.model = model;
     }
+
     /// <summary>
     /// 애니메이션 진행
     /// </summary>
     /// <returns></returns>
     public virtual IEnumerator Update()
     {
-        if (delay == 0) delay = 0.01f;
+        if (delay == 0)
+            delay = 0.01f;
+
+        // 애니메이션 프레임이 없을 경우 대기
+        if (frame_sprites == null || frame_sprites.Length == 0)
+            yield break;
 
         while (true)
         {
-            if (frame_sprites == null || frame_sprites.Length == 0)
+            if (index >= frame_sprites.Length)
             {
-                yield return null;
-                continue;
+                if (loop == false)
+                    yield break;
             }
 
-            model.renderer.sprite = frame_sprites[index++];
+            try
+            {
+                model.renderer.sprite = frame_sprites[index++];
+            }
+            catch(System.IndexOutOfRangeException e)
+            {
+                Debug.Log("응애"); 
+            }
 
-            if (index >= frame_sprites.Length) index = 0;
-
-            yield return delay;
+            yield return new WaitForSeconds(delay);
         }
     }
 }
@@ -58,17 +72,17 @@ class WalkState : AnimState
 {
 }
 
-// 피격 상태
-[SB]
-class HitState : AnimState
-{
-}
-
 // 공격 상태
 [SB]
 class AttackState : AnimState
 {
     [SerializeField] (int, int) attack_frame_range;
+}
+
+// 피격 상태
+[SB]
+class HitState : AnimState
+{
 }
 
 // 죽음 상태
@@ -85,9 +99,9 @@ public class EnemyAnimation : MonoBehaviour
     [Space(10)]
     [SerializeField] WalkState walk;
     [Space(10)]
-    [SerializeField] HitState hit;
-    [Space(10)]
     [SerializeField] AttackState attack;
+    [Space(10)]
+    [SerializeField] HitState hit;
     [Space(10)]
     [SerializeField] DeadState dead;
 
@@ -97,6 +111,12 @@ public class EnemyAnimation : MonoBehaviour
         get => _state;
         set
         {
+            // 이전 애니메이션이 진행 중이라면 중단
+            if (_state != null && _state.update != null)
+            {
+                StopCoroutine(_state.update);
+            }
+
             _state = value;
             _state.SetModel(model);
         }
@@ -115,9 +135,6 @@ public class EnemyAnimation : MonoBehaviour
     /// <param name="name">변경할 State 이름</param>
     public void SetState(string name)
     {
-        // 이전 애니메이션이 진행 중이라면 중단
-        if (state != null && state.update != null) StopCoroutine(state.update);
-
         switch (name)
         {
             case string n when nameof(IdleState).Contains(n):
@@ -140,8 +157,8 @@ public class EnemyAnimation : MonoBehaviour
                 return;
         }
 
-        state.update = StartCoroutine(state.Update());
         s_state = name;
+        state.update = StartCoroutine(state.Update());
     }
 
     public string GetState()
