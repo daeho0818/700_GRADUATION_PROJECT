@@ -121,7 +121,7 @@ public class Boss_Orc : GroundObject
         do
         {
             origin = fragment.transform.position + new Vector3(fragment.transform.localScale.x * direction.x, 0);
-            hits = Physics2D.RaycastAll(origin, Vector2.down, 3, LayerMask.GetMask("Platform"));
+            hits = Physics2D.RaycastAll(origin, Vector2.down, 3, LayerMask.GetMask("Ground"));
             Debug.DrawRay(origin, Vector2.down * 3, Color.red, 0.1f);
 
             fragment.transform.Translate(direction * fragment_speed * Time.deltaTime);
@@ -157,7 +157,7 @@ public class Boss_Orc : GroundObject
         {
             origin = transform.position + direction * 5;
 
-            hits = Physics2D.RaycastAll(origin, Vector2.down, 5, LayerMask.GetMask("Platform"));
+            hits = Physics2D.RaycastAll(origin, Vector2.down, 5, LayerMask.GetMask("Ground"));
             Debug.DrawRay(origin, Vector2.down * 5, Color.red, 0.1f);
 
             if (hits.Length == 0) break; // 낭떠러지일 때

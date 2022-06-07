@@ -7,6 +7,8 @@ using AIInfo = AIInformation;
 [System.Serializable]
 public struct EnemyInformation
 {
+    // Enemy 애니메이션 관리자
+    public EnemyAnimation animation;
     // 공격 패턴 유무 여부
     public bool attack_check;
     // 공격 전/후 딜레이
@@ -42,6 +44,10 @@ public class Enemy : Entity
     [Header("Enemy Information")]
     [SerializeField] EInfo enemy;
     #region Properties
+    /// <summary>
+    /// Enemy 애니메이션 관리자
+    /// </summary>
+    public new EnemyAnimation animation { get => enemy.animation; set => enemy.animation = value; }
     /// <summary>
     /// 공격 패턴 유무 여부
     /// </summary>
@@ -112,10 +118,18 @@ public class Enemy : Entity
     {
         rigid = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
+        animation = GetComponent<EnemyAnimation>();
 
         player = FindObjectOfType<Player>();
 
         ai_moving = StartCoroutine(AIMoving());
+
+        OnHit += (int damage) =>
+        {
+            animation.SetState("Attack");
+            hp -= damage;
+        };
+        OnDestroy += () => animation.SetState("Dead");
     }
 
     protected override void Update()
@@ -132,6 +146,8 @@ public class Enemy : Entity
 
                 // 플레이어를 향해 움직임 : 초록색
                 renderer.color = Color.green;
+
+                animation.SetState("Walk");
             }
             find_player = tempFInd;
         }
@@ -176,6 +192,10 @@ public class Enemy : Entity
     /// <returns></returns>
     private IEnumerator Attack()
     {
+        animation.SetState("Hit");
+
+        #region 애니메이션 프레임 다 들어오면 지워버릴 것.
+
         // 대기 시간 : 노란색
         renderer.color = Color.yellow;
 
@@ -191,14 +211,22 @@ public class Enemy : Entity
 
         yield return new WaitForSeconds(attack_afterDelay);
 
-        // 기본 상태
-        renderer.color = Color.white;
-
         if (!delay_timer.Processing())
             delay_timer.TimerStart(this, attack_afterDelay, () => { movable = true; });
 
+        #endregion
+
+        // 기본 상태
+        renderer.color = Color.white;
+        animation.SetState("Idle");
+
         if (!coolTime_timer.Processing())
-            coolTime_timer.TimerStart(this, attack_coolTime, () => { attack_check = false; });
+            coolTime_timer.TimerStart(this, attack_coolTime,
+                () =>
+                {
+                    animation.SetState("Idle");
+                    attack_check = false;
+                });
     }
     /// <summary>
     /// 기본적인 공격을 구현하는 가상함수

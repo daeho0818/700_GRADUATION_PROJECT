@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6535990230643327421}
   - component: {fileID: 3861734942267394575}
   - component: {fileID: 3866430921803336416}
+  - component: {fileID: 8886103008683020893}
   m_Layer: 9
   m_Name: 0000
   m_TagString: Monster
@@ -75,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5398ed01b0c2c944aaf96d0869744635, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 20272e0d43bb23a48bf57df07f34e2e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.55, y: 2.46}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -124,8 +125,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.51, y: 2.46}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 2.55, y: 2.46}
+    newSize: {x: 2.55, y: 2.46}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -150,8 +151,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.51, y: 2.46}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 2.55, y: 2.46}
+    newSize: {x: 2.55, y: 2.46}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -177,16 +178,12 @@ MonoBehaviour:
   is_hit: 0
   colliders: []
   enemy:
+    animation: {fileID: 0}
     attack_check: 0
     attack_beforeDelay: 1
     attack_afterDelay: 1
     attack_coolTime: 3
     bullet_speed: 5
-  attack_check: 0
-  attack_beforeDelay: 1
-  attack_afterDelay: 1
-  attack_coolTime: 3
-  bullet_speed: 5
   ai:
     search_player: 1
     ai_moving_range: 0
@@ -195,11 +192,36 @@ MonoBehaviour:
     search_distance: 5
     unSearch_distance: 10
     distance_with_player: 5
-  search_player: 1
-  ai_moving_range: 0
-  delay_min: 0
-  delay_max: 0
-  search_distance: 5
-  unSearch_distance: 10
-  distance_with_player: 5
   bullet_prefab: {fileID: 776741225428772139, guid: 79745eb9cd7986a4a95eb0a815817495, type: 3}
+--- !u!114 &8886103008683020893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4574914976809615416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00da6ed9f30fef94a89cadb0ac6f7043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idle:
+    frame_sprites:
+    - {fileID: 21300000, guid: 20272e0d43bb23a48bf57df07f34e2e5, type: 3}
+    delay: 0.01
+  walk:
+    frame_sprites:
+    - {fileID: 21300000, guid: 06e1380313198134582ddc47c70fee63, type: 3}
+    delay: 0.01
+  hit:
+    frame_sprites:
+    - {fileID: 21300000, guid: e1ca17331c5f70146ae53489ed8996f2, type: 3}
+    delay: 0.01
+  attack:
+    frame_sprites:
+    - {fileID: 21300000, guid: 8c2e43defb0a1df4784cd2ccdfe6f370, type: 3}
+    delay: 0.01
+  dead:
+    frame_sprites:
+    - {fileID: 21300000, guid: 8c2e43defb0a1df4784cd2ccdfe6f370, type: 3}
+    delay: 0.01
