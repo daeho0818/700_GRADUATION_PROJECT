@@ -30,6 +30,6 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
 
-        else if (collision.CompareTag("Platform")) Destroy(gameObject);
+        // else if (collision.CompareTag("Platform")) Destroy(gameObject);
     }
 }

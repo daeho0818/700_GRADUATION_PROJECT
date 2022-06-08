@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -5073177708681448989}
   m_Layer: 9
   m_Name: 0002
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,10 +120,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.61, y: 1.07}
+  m_Offset: {x: 0, y: 1.07}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 1, y: 0}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.22, y: 2.14}
     newSize: {x: 1.22, y: 2.14}
     adaptiveTilingThreshold: 0.5
@@ -154,7 +154,7 @@ MonoBehaviour:
   enemy:
     animation: {fileID: 0}
     attack_check: 0
-    attack_beforeDelay: 1
+    attack_beforeDelay: 2
     attack_afterDelay: 1
     attack_coolTime: 5
     bullet_speed: 5
@@ -163,15 +163,15 @@ MonoBehaviour:
     ai_moving_range: 5
     delay_min: 1
     delay_max: 5
-    search_distance: 5
-    unSearch_distance: 10
+    search_distance: 10
+    unSearch_distance: 15
     distance_with_player: 5
   bullet_prefab: {fileID: 7565348320179908090, guid: 7f8ce8180f41bca41a6de17921176dba, type: 3}
   projectile_sprites:
-  - {fileID: 21300000, guid: 1f4354cc902da2c4185cfbf2d1320e61, type: 3}
-  - {fileID: 21300000, guid: f271dd4411946094da7ee7b87e00bb13, type: 3}
-  - {fileID: 21300000, guid: a281d1ad5af64ce4b8958a2457ca1549, type: 3}
-  - {fileID: 21300000, guid: 0172711427e568549b4052af1af25a35, type: 3}
+  - {fileID: 21300000, guid: bea851c158f6bed46bc088d52c989b59, type: 3}
+  - {fileID: 21300000, guid: c67ffb4bb6088b24ca4c804ca8ff5df3, type: 3}
+  - {fileID: 21300000, guid: 60af1d45f8ff92b49a3a6cbd99a993b3, type: 3}
+  - {fileID: 21300000, guid: b66e1c70d923d0542af7509aabd6d718, type: 3}
   projectile_rot_speed: 1000
 --- !u!114 &-5073177708681448989
 MonoBehaviour:
@@ -200,7 +200,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f1c7bb418ca187c47ae20e1a664bec6c, type: 3}
     - {fileID: 21300000, guid: 78c544fbd748cad4f89760cc2bf10770, type: 3}
     - {fileID: 21300000, guid: 6caca628da30f19439c9a73f69dc0b02, type: 3}
-    delay: 0
+    delay: 1
     loop: 0
   hit:
     frame_sprites:

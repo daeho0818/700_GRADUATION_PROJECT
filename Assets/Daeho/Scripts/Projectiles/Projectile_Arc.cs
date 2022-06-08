@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile_Arc : Projectile
 {
-    Vector3 target_position;
+    Vector2 target_position;
     /// <summary>
     /// 포물선을 그리며 발사할 타겟 위치 설정
     /// </summary>
@@ -12,37 +12,36 @@ public class Projectile_Arc : Projectile
     public void SetArc(Vector2 target)
     {
         target_position = target;
-        target_position.y = transform.position.y;
 
         StartCoroutine(MoveToTarget());
     }
 
     protected override void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T)) Time.timeScale = 0.1f;
     }
 
+    const float y = 3;
     /// <summary>
     /// 포물선을 그리며 타겟을 향해 날아가는 함수
     /// </summary>
     /// <returns></returns>
     IEnumerator MoveToTarget()
     {
-        Vector3 start_position = transform.position;
+        float progress = 0;
 
-        float distance = Mathf.Abs(target_position.x - start_position.x);
-        float gone_distance;
-        float will_distance;
+        Vector2 center = ((Vector2)transform.position + target_position) * 0.5f;
+        center.y -= 3;
 
-        while (Vector2.Distance(transform.position, target_position) > 0.1f)
+        Vector2 pos1 = (Vector2)transform.position - center;
+        Vector2 pos2 = target_position - center;
+
+        while (progress < 1)
         {
-            gone_distance = Mathf.Abs(transform.position.x - start_position.x);
-            will_distance = distance - gone_distance;
+            transform.position = Vector3.Slerp(pos1, pos2, progress);
+            transform.position += (Vector3)center;
 
-            transform.position = new Vector2(transform.position.x, (start_position.y + gone_distance * will_distance / distance * 2));
-            target_position.y = transform.position.y;
-
-            transform.position = Vector2.MoveTowards(transform.position, target_position, Time.deltaTime * move_speed);
-
+            progress += Time.deltaTime;
             yield return null;
         }
     }

@@ -44,16 +44,10 @@ abstract class AnimState
             {
                 if (loop == false)
                     yield break;
+                else index = 0;
             }
 
-            try
-            {
-                model.renderer.sprite = frame_sprites[index++];
-            }
-            catch(System.IndexOutOfRangeException e)
-            {
-                Debug.Log("¿¿æ÷"); 
-            }
+            model.renderer.sprite = frame_sprites[index++];
 
             yield return new WaitForSeconds(delay);
         }

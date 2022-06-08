@@ -34,8 +34,10 @@ public class Orc_0003 : GroundObject
 
         RaycastHit2D[] hits;
         Vector2 dir = new Vector2(dir_x, 0);
+        Player p = null;
 
         FlipSprite();
+
         do
         {
             hits = Physics2D.RaycastAll(transform.position, dir, 2f, LayerMask.GetMask("Wall"));
@@ -47,8 +49,11 @@ public class Orc_0003 : GroundObject
             hits = Physics2D.RaycastAll((Vector2)transform.position + (dir * 1), Vector2.down, 5f, LayerMask.GetMask("Ground"));
             Debug.DrawRay((Vector2)transform.position + (dir * 1), Vector2.down * 5f, Color.red, 0.1f);
 
-            Player p = CheckCollision(transform.position, (BoxCollider2D)colliders[0], 0);
-            p?.OnHit?.Invoke(1);
+            if (p == null)
+            {
+                p = CheckCollision(transform.position, (BoxCollider2D)colliders[0], 0);
+                p?.OnHit?.Invoke(1);
+            }
 
             // ÇÃ·§Æû ³¡¿¡ µµ´ÞÇßÀ» ¶§
             if (hits.Length == 0) break;
