@@ -30,15 +30,22 @@ public class Orc_0000 : FlyingObject
         yield return null;
 
         target_fire_position = player.transform.position;
-        Vector2 dir;
-        float value;
+
+        bool player_right = player.transform.position.x > transform.position.x;
+        bool player_down = player.transform.position.y < transform.position.y;
+
+        // »êÅº ¹æÇâ (ÃÑ ¼¼ °¡Áö)
+        Vector2 dir1 = (player.transform.position - transform.position).normalized;
+        Vector3 point1 = player.transform.position + new Vector3(player_right ? 1 : -1, player_down ? 1 : -1);
+        Vector3 point2 = player.transform.position + new Vector3(player_right ? -1 : 1, player_down ? -1 : 1);
+        var dirs = new Vector2[3] { dir1, (point1 - transform.position).normalized, (point2 - transform.position).normalized };
+
         Projectile bullet;
 
-        for (int i = -1; i < 2; i++)
-        {
-            value = Mathf.Sin(i * Mathf.Deg2Rad) * 50;
-            dir = ((target_fire_position + new Vector3(value, value)) - transform.position).normalized;
+        FlipSprite();
 
+        foreach (var dir in dirs)
+        {
             bullet = Instantiate(bullet_prefab);
             bullet.transform.position = transform.position;
             bullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);

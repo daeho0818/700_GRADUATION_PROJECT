@@ -44,7 +44,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1, y: -1.5}
+  m_Offset: {x: 1, y: 0.8}
   m_Size: {x: 5.5, y: 1.5}
   m_Direction: 1
 --- !u!1 &682127548910200333
@@ -91,7 +91,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.4, y: -0.2}
+  m_Offset: {x: 2.4, y: 2.1}
   m_Size: {x: 2, y: 4}
   m_Direction: 0
 --- !u!1 &682127549579603507
@@ -138,7 +138,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -1}
+  m_Offset: {x: 0, y: 1.3}
   m_Size: {x: 2, y: 2}
   m_Direction: 1
 --- !u!1 &682127549891155794
@@ -264,10 +264,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 2.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 4.05, y: 4.51}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -330,15 +330,20 @@ MonoBehaviour:
   idle:
     frame_sprites: []
     delay: 0
+    loop: 0
   walk:
     frame_sprites: []
     delay: 0
-  hit:
-    frame_sprites: []
-    delay: 0
+    loop: 0
   attack:
     frame_sprites: []
     delay: 0
+    loop: 0
+  hit:
+    frame_sprites: []
+    delay: 0
+    loop: 0
   dead:
     frame_sprites: []
     delay: 0
+    loop: 0

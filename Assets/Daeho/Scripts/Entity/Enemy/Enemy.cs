@@ -256,6 +256,7 @@ public class Enemy : Entity
 
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
             transform.Translate(vec);
+            FlipSprite();
 
             hits = Physics2D.RaycastAll(transform.position, (target - transform.position).normalized, 2, LayerMask.GetMask("Wall"));
 
@@ -353,6 +354,9 @@ public class Enemy : Entity
         return null;
     }
 
+    /// <summary>
+    /// 플레이어를 기준으로 캐릭터 좌 / 우 회전하는 함수
+    /// </summary>
     protected void FlipSprite()
     {
         Quaternion rot = transform.rotation;
