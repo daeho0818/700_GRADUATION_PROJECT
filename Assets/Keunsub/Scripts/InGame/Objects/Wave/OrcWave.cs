@@ -15,7 +15,7 @@ public class OrcWave : WaveBase
 
     private void Awake()
     {
-        Init(FirstWave, SecondWave, ThirdWave);
+        Init(FirstWave, SecondWave, ThirdWave, ForthWave, FifthWave);
     }
 
     void FirstWave()
@@ -108,5 +108,53 @@ public class OrcWave : WaveBase
         Debug.Log("wave end");
         RemovePlatform(Platforms.ToArray());
         waveEnd = true;
+    }
+
+    void ForthWave()
+    {
+        StartCoroutine(ForthWaveCoroutine());
+    }
+
+    IEnumerator ForthWaveCoroutine()
+    {
+        Platforms.Add(SpawnPlatform(new Vector2(11f, -3f)));
+        Platforms.Add(SpawnPlatform(new Vector2(8.5f, -3f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-11f, -3f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-8.5f, -3f)));
+        Platforms.Add(SpawnPlatform(new Vector2(12f, 0f)));
+        Platforms.Add(SpawnPlatform(new Vector2(9.5f, 0f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-12f, 0f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-9.5f, 0f)));
+
+        yield return new WaitForSeconds(3f);
+
+        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(10f, -6f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(-10f, -6f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(10f, -2.5f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(-10f, -2.5f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(12f, 0.5f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-12f, 0.5f), EntitySize.Medium));
+
+        while (Monsters.Count > 4)
+        {
+            for (int i = 0; i < Monsters.Count; i++)
+            {
+                if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
+            }
+            yield return null;
+        }
+
+        Debug.Log("wave end");
+        waveEnd = true;
+    }
+
+    void FifthWave()
+    {
+        StartCoroutine(FifthWaveCoroutine());
+    }
+
+    IEnumerator FifthWaveCoroutine()
+    {
+        yield return null;
     }
 }
