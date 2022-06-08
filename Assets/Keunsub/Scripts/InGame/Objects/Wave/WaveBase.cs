@@ -50,12 +50,14 @@ public abstract class WaveBase : MonoBehaviour
         return temp;
     }
 
-    protected void RemovePlatform(params Platform[] platforms)
+    protected void RemovePlatform(List<Platform> platforms)
     {
         foreach (var item in platforms)
         {
             item.Disappear();
         }
+
+        platforms.Clear();
     }
 
     protected void Init(params Action[] waves)

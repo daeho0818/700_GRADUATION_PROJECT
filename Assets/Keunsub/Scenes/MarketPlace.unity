@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 143280362}
   - component: {fileID: 143280361}
   - component: {fileID: 143280363}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: "\uBCBD-\uC67C"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1484,7 +1484,7 @@ GameObject:
   - component: {fileID: 494781641}
   - component: {fileID: 494781643}
   - component: {fileID: 494781642}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door
   m_TagString: CameraRoom
   m_Icon: {fileID: 0}
@@ -1905,7 +1905,7 @@ GameObject:
   - component: {fileID: 674293862}
   - component: {fileID: 674293861}
   - component: {fileID: 674293863}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: "\uBCBD(\uBB38)-\uC624"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2988,7 +2988,7 @@ GameObject:
   - component: {fileID: 1152344929}
   - component: {fileID: 1152344928}
   - component: {fileID: 1152344930}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: "\uBB38-\uC67C"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
