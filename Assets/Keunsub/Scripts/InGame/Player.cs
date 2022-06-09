@@ -90,6 +90,7 @@ public class Player : Entity
 
         if (Input.GetKeyDown(KeyCode.C) && !isDash && curCool > dashCool)
         {
+            OffAllCollider();
             isDash = true;
             isAttack = false;
             curCool = 0f;
@@ -135,12 +136,14 @@ public class Player : Entity
     {
         if (Input.GetKey(KeyCode.LeftArrow) && !isDash && (isRunAble || (!isGround && isAttack)))
         {
+            OffAllCollider();
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
         }
         else if (Input.GetKey(KeyCode.RightArrow) && !isDash && (isRunAble || (!isGround && isAttack)))
         {
+            OffAllCollider();
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
@@ -151,10 +154,18 @@ public class Player : Entity
         }
     }
 
+    void OffAllCollider()
+    {
+        AttackColliderOff(0);
+        AttackColliderOff(1);
+        AttackColliderOff(2);
+    }
+
     void JumpLogic()
     {
         if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround)
         {
+            OffAllCollider();
             JumpFunc();
             isDash = false;
             YesGravity();
@@ -193,6 +204,7 @@ public class Player : Entity
 
     void JumpFunc()
     {
+        OffAllCollider();
         isJumping = true;
         curJumpTime = jumpHoldTime;
         RB.AddForce(JumpForce, ForceMode2D.Impulse);
