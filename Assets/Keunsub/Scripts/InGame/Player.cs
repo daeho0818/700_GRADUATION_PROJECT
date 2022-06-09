@@ -72,11 +72,11 @@ public class Player : Entity
 
     protected override void Start()
     {
+        hp = max_hp;
     }
 
     protected override void Update()
     {
-        RunningLogic();
         JumpLogic();
         JumpHolding();
         AttackLogic();
@@ -97,17 +97,6 @@ public class Player : Entity
             NoGravity();
         }
 
-        if (isDash && curDash < dashDelay)
-        {
-            transform.Translate(Vector3.right * dashSpeed * Time.deltaTime);
-            curDash += Time.deltaTime;
-        }
-        else
-        {
-            isDash = false;
-            curDash = 0f;
-            YesGravity();
-        }
     }
 
     void NoGravity()
@@ -123,6 +112,23 @@ public class Player : Entity
 
     private void FixedUpdate()
     {
+        RunningLogic();
+        FixedDash();
+    }
+
+    void FixedDash()
+    {
+        if (isDash && curDash < dashDelay)
+        {
+            transform.Translate(Vector3.right * dashSpeed * Time.deltaTime);
+            curDash += Time.deltaTime;
+        }
+        else
+        {
+            isDash = false;
+            curDash = 0f;
+            YesGravity();
+        }
     }
 
     void RunningLogic()

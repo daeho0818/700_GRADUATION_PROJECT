@@ -1393,7 +1393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0026f48498b0e4ea8eb32e155e1e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_hp: 0
+  max_hp: 100
   hp: 0
   move_speed: 0
   is_hit: 0
@@ -1402,8 +1402,8 @@ MonoBehaviour:
   attackDelay: 0.4
   jumpHoldTime: 0.5
   dashSpeed: 20
-  dashDelay: 0.1
-  dashCool: 0.5
+  dashDelay: 0.2
+  dashCool: 1
   JumpForce: {x: 0, y: 10}
   AttackColliders:
   - {fileID: 1109754058}

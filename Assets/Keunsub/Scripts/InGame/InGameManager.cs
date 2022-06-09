@@ -20,7 +20,8 @@ public class InGameManager : MonoBehaviour
     {
         if (!isGameActive)
         {
-            if(Physics2D.OverlapCircle(Pivot.position, 5f).CompareTag("Player"))
+            Collider2D col = Physics2D.OverlapCircle(Pivot.position, 5f, LayerMask.GetMask("Entity"));
+            if (col != null && col.CompareTag("Player"))
             {
                 isGameActive = true;
                 nowWave.WaveStart(this);
