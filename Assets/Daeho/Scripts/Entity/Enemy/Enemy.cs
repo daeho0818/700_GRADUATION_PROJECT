@@ -129,7 +129,10 @@ public class Enemy : Entity
             animation.SetState("Hit");
             hp -= damage;
         };
+        OnHit += KnockBack;
+
         OnDestroy += () => animation.SetState("Dead");
+        OnDestroy += () => Destroy(gameObject, 1);
     }
 
     protected override void Update()
@@ -162,6 +165,18 @@ public class Enemy : Entity
             }
             attack_check = tempAtk;
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+            OnHit(1);
+    }
+
+    protected virtual void KnockBack(int damage)
+    {
+        Vector2 dir;
+        dir.x = player.transform.position.x > transform.position.x ? -1 : 1;
+        dir.y = 1;
+
+        rigid.AddForce(dir * (damage * 2), ForceMode2D.Impulse);
     }
 
     /// <summary>

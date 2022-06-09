@@ -41,4 +41,13 @@ public class FlyingObject : Enemy
     {
         yield return null;
     }
+
+    protected override void KnockBack(int damage)
+    {
+        Vector2 dir;
+        dir.x = player.transform.position.x > transform.position.x ? -1 : 1;
+        dir.y = 0;
+
+        rigid.AddForce(dir * (damage * 2), ForceMode2D.Impulse);
+    }
 }

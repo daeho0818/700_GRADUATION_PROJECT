@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257a20b3539283a448293fda423b55b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_hp: 0
-  hp: 0
+  max_hp: 10
+  hp: 10
   move_speed: 0
   is_hit: 0
   colliders: []
@@ -180,15 +180,20 @@ MonoBehaviour:
   idle:
     frame_sprites: []
     delay: 0
+    loop: 0
   walk:
     frame_sprites: []
     delay: 0
-  hit:
-    frame_sprites: []
-    delay: 0
+    loop: 0
   attack:
     frame_sprites: []
     delay: 0
+    loop: 0
+  hit:
+    frame_sprites: []
+    delay: 0
+    loop: 0
   dead:
     frame_sprites: []
     delay: 0
+    loop: 0

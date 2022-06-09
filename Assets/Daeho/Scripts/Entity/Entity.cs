@@ -10,7 +10,7 @@ public abstract class Entity : MonoBehaviour
     public float move_speed;
     protected bool movable = true;
     public bool is_hit;
-    public bool IsDestroy => hp == 0;
+    public bool IsDestroy => hp <= 0;
 
     // damage 매개변수
     public Action<int> OnHit =null;
