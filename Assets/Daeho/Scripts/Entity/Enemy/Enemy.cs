@@ -165,9 +165,6 @@ public class Enemy : Entity
             }
             attack_check = tempAtk;
         }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-            OnHit(1);
     }
 
     protected virtual void KnockBack(int damage)
