@@ -17,8 +17,13 @@ public class Player : Entity
     float curCool;
     float curJumpTime;
     #endregion
+    public float damage;
+    public float criticalChance;
 
     [SerializeField] Vector2 JumpForce;
+
+    [Header("Effect")]
+    [SerializeField] ParticleSystem DashEffect;
 
     [Header("Attack")]
     [SerializeField] BoxCollider2D[] AttackColliders;
@@ -65,6 +70,13 @@ public class Player : Entity
 
     }
 
+    public void StateInit()
+    {
+        hp = GameManager.Instance.DefaultHp;
+        damage = GameManager.Instance.DefaultDamage;
+        criticalChance = GameManager.Instance.DefaultCritical;
+    }
+
     void OnHitAction(int damage)
     {
         GameManager.Instance.PrintDamage(damage, transform.position);
@@ -95,6 +107,9 @@ public class Player : Entity
             isAttack = false;
             curCool = 0f;
 
+            int dir = transform.localEulerAngles.y == 0f ? 0 : 1;
+            DashEffect.GetComponent<ParticleSystemRenderer>().flip = new Vector3(dir, 0, 0);
+            DashEffect.Play();
             NoGravity();
         }
 
@@ -126,6 +141,7 @@ public class Player : Entity
         }
         else
         {
+            DashEffect.Stop();
             isDash = false;
             curDash = 0f;
             YesGravity();
@@ -140,6 +156,7 @@ public class Player : Entity
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
+
         }
         else if (Input.GetKey(KeyCode.RightArrow) && !isDash && (isRunAble || (!isGround && isAttack)))
         {
@@ -147,6 +164,7 @@ public class Player : Entity
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
+
         }
         else
         {

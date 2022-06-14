@@ -11,6 +11,12 @@ public class GameManager : Singleton<GameManager>
     public Player player;
     public CameraFollow cam;
 
+    [Header("Default State")]
+    public float DefaultDamage;
+    public int DefaultHp;
+    public int DefaultCritical; //critical hit
+
+
     [Header("Scenes")]
     public List<SceneContainer> Scenes = new List<SceneContainer>();
     public int CurSceneIdx;
