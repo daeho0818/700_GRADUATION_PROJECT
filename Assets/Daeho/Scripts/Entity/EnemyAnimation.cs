@@ -4,89 +4,91 @@ using UnityEngine;
 
 using SB = System.SerializableAttribute;
 
-abstract class AnimState
-{
-    public Sprite[] frame_sprites;
-    public float delay;
-    public bool loop;
-
-    protected Enemy model;
-
-    private int index = 0;
-
-    public Coroutine update { get; set; } = null;
-
-    public void SetModel(Enemy model)
-    {
-        index = 0;
-
-        if (this.model != null) return;
-
-        this.model = model;
-    }
-
-    /// <summary>
-    /// 애니메이션 진행
-    /// </summary>
-    /// <returns></returns>
-    public virtual IEnumerator Update()
-    {
-        if (delay == 0)
-            delay = 0.01f;
-
-        // 애니메이션 프레임이 없을 경우 대기
-        if (frame_sprites == null || frame_sprites.Length == 0)
-            yield break;
-
-        while (true)
-        {
-            if (index >= frame_sprites.Length)
-            {
-                if (loop == false)
-                    yield break;
-                else index = 0;
-            }
-
-            model.renderer.sprite = frame_sprites[index++];
-
-            yield return new WaitForSeconds(delay);
-        }
-    }
-}
-
-// 기본 상태
-[SB]
-class IdleState : AnimState
-{
-}
-
-// 움직임 상태
-[SB]
-class WalkState : AnimState
-{
-}
-
-// 공격 상태
-[SB]
-class AttackState : AnimState
-{
-    [SerializeField] (int, int) attack_frame_range;
-}
-
-// 피격 상태
-[SB]
-class HitState : AnimState
-{
-}
-
-// 죽음 상태
-[SB]
-class DeadState : AnimState
-{
-}
 
 public class EnemyAnimation : MonoBehaviour
 {
+    #region Animation states
+    abstract class AnimState
+    {
+        public Sprite[] frame_sprites;
+        public float delay;
+        public bool loop;
+
+        protected Enemy model;
+
+        private int index = 0;
+
+        public Coroutine update { get; set; } = null;
+
+        public void SetModel(Enemy model)
+        {
+            index = 0;
+
+            if (this.model != null) return;
+
+            this.model = model;
+        }
+
+        /// <summary>
+        /// 애니메이션 진행
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerator Update()
+        {
+            if (delay == 0)
+                delay = 0.01f;
+
+            // 애니메이션 프레임이 없을 경우 대기
+            if (frame_sprites == null || frame_sprites.Length == 0)
+                yield break;
+
+            while (true)
+            {
+                if (index >= frame_sprites.Length)
+                {
+                    if (loop == false)
+                        yield break;
+                    else index = 0;
+                }
+
+                model.renderer.sprite = frame_sprites[index++];
+
+                yield return new WaitForSeconds(delay);
+            }
+        }
+    }
+
+    // 기본 상태
+    [SB]
+    class IdleState : AnimState
+    {
+    }
+
+    // 움직임 상태
+    [SB]
+    class WalkState : AnimState
+    {
+    }
+
+    // 공격 상태
+    [SB]
+    class AttackState : AnimState
+    {
+    }
+
+    // 피격 상태
+    [SB]
+    class HitState : AnimState
+    {
+    }
+
+    // 죽음 상태
+    [SB]
+    class DeadState : AnimState
+    {
+    }
+    #endregion
+
     Enemy model;
 
     [SerializeField] IdleState idle;
@@ -155,6 +157,15 @@ public class EnemyAnimation : MonoBehaviour
         state.update = StartCoroutine(state.Update());
     }
 
+    /// <summary>
+    /// 현재 Animation State를 받아오는 함수
+    /// - Idle
+    /// - Walk
+    /// - Hit
+    /// - Attack
+    /// - Dead
+    /// </summary>
+    /// <returns></returns>
     public string GetState()
     {
         return s_state;

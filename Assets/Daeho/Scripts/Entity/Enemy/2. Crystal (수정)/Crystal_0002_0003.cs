@@ -27,14 +27,13 @@ public class Crystal_0002_0003 : FlyingObject
     /// </summary>
     protected override void MoveToPlayer()
     {
-        Debug.Log("ÀÀ¾Ö");
 
         int dir_x = (player.transform.position.x > transform.position.x ? -1 : 1);
 
         target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, 0);
         target_move_position.y = transform.position.y;
 
-        renderer.flipX = transform.position.x < player.transform.position.x;
+        FlipSprite();
         transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
     }
 

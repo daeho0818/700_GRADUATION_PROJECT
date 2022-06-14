@@ -5,6 +5,7 @@ using UnityEngine;
 public class Orc_0001 : GroundObject
 {
     [SerializeField] Projectile bullet_prefab;
+    [SerializeField] Transform shoot_position;
     protected override void Awake()
     {
         base.Awake();
@@ -33,15 +34,15 @@ public class Orc_0001 : GroundObject
 
         yield return null;
 
-        renderer.flipX = transform.position.x < player.transform.position.x;
+        FlipSprite();
 
         for (int i = 0; i < 3; i++)
         {
             bullet = Instantiate(bullet_prefab);
-            bullet.transform.position = transform.position;
+            bullet.transform.position = shoot_position.position;
             bullet.fire_direction = direction;
             bullet.move_speed = bullet_speed;
-            bullet.GetComponent<SpriteRenderer>().flipX = direction.x < 0;
+            bullet.GetComponent<SpriteRenderer>().flipX = direction.x > 0;
             bullet.SetCollision((p) => { p.OnHit?.Invoke(1); });
 
             yield return second;

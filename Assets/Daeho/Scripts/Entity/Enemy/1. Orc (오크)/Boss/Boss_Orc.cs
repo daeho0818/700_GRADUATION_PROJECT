@@ -66,7 +66,7 @@ public class Boss_Orc : GroundObject
             // 시작 지점과 목표 지점 x 죄표 사이의 거리
             Vector2.Distance(transform.position * Vector2.right, target * Vector2.right);
 
-        renderer.flipX = !dir_is_right;
+        FlipSprite(dir_is_right == false);
 
         // 포물선 그리며 점프
         #region
@@ -151,7 +151,7 @@ public class Boss_Orc : GroundObject
         // 공격 대기 시간
         yield return new WaitForSeconds(2);
 
-        renderer.flipX = direction.x < 0;
+        FlipSprite(direction.x < 0);
         Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[2], CapsuleDirection2D.Horizontal, 0);
         do
         {
@@ -170,8 +170,6 @@ public class Boss_Orc : GroundObject
             transform.Translate(direction * move_speed * Time.deltaTime);
             yield return null;
         } while (true);
-
-        SetColliderDirection(colliders[3], direction.x);
 
         p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[3], CapsuleDirection2D.Vertical, 0);
 

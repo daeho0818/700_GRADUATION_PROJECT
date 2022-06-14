@@ -41,7 +41,7 @@ public class Crystal_0001 : GroundObject
             BoxCollider2D collider = (BoxCollider2D)colliders[(int)i + 1];
             SetColliderDirection(collider, player.transform.position.x > transform.position.x ? 1 : -1);
 
-            renderer.flipX = player.transform.position.x > transform.position.x;
+            FlipSprite();
 
             Player p;
             while (Time.time - count < 1f)
