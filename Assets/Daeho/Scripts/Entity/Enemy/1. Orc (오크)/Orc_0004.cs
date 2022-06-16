@@ -36,8 +36,6 @@ public class Orc_0004 : GroundObject
         collider = (BoxCollider2D)colliders[1];
         dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
 
-        SetColliderDirection(collider, dir_x);
-
         p = CheckCollision((Vector2)transform.position + collider.offset, collider, 0);
         p?.OnHit?.Invoke(1);
     }

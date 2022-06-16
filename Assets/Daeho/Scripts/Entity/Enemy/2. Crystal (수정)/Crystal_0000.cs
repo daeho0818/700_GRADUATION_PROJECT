@@ -73,9 +73,6 @@ public class Crystal_0000 : GroundObject
 
         BoxCollider2D collider = (BoxCollider2D)colliders[1];
 
-        int dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
-        SetColliderDirection(collider, dir_x);
-
         Player p = CheckCollision(transform.position, collider, 0);
         p?.OnHit?.Invoke(1);
         yield return new WaitForSeconds(2f);

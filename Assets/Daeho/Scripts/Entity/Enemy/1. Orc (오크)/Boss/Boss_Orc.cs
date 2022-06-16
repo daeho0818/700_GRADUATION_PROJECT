@@ -84,8 +84,6 @@ public class Boss_Orc : GroundObject
                                                       (target.y > start_position.y ? (height / (distance / 2)) * 2.5f : height / (distance / 2))); // 더 위로 점프해야할 경우
         }
 
-        SetColliderDirection(colliders[1], (dir_is_right ? 1 : -1));
-
         Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[1], CapsuleDirection2D.Horizontal, 0);
 
         yield return new WaitForSeconds(0.5f);
