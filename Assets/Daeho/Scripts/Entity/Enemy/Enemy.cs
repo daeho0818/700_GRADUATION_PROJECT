@@ -127,12 +127,17 @@ public class Enemy : Entity
         OnHit += (int damage) =>
         {
             animation.SetState("Hit");
+            if (animation.GetState() == "Attack")
+                animation.SetState("Idle");
+
             hp -= damage;
         };
         OnHit += KnockBack;
 
         OnDestroy += () => animation.SetState("Dead");
         OnDestroy += () => Destroy(gameObject, 1);
+
+        distance_with_player = Random.Range(distance_with_player - 1, distance_with_player + 2);
     }
 
     protected override void Update()
@@ -288,22 +293,7 @@ public class Enemy : Entity
     protected virtual void MoveToPlayer()
     {
         transform.Translate(move_speed * ((new Vector2(player.transform.position.x, 0) - new Vector2(transform.position.x, 0)).normalized) * Time.deltaTime);
-        renderer.flipX = player.transform.position.x > transform.position.x;
-    }
-
-    /// <summary>
-    /// Collider 방향 전환
-    /// </summary>
-    /// <param name="collider"></param>
-    /// <param name="dir_x"></param>
-    protected void SetColliderDirection(Collider2D collider, float dir_x)
-    {
-        Vector2 offset = collider.offset;
-
-        if (offset.x > 0)
-            collider.offset = offset * new Vector2(dir_x, 1);
-        else
-            collider.offset = offset * new Vector2(-dir_x, 1);
+        FlipSprite();
     }
 
     /// <summary>
@@ -374,6 +364,15 @@ public class Enemy : Entity
         Quaternion rot = transform.rotation;
 
         if (player.transform.position.x > transform.position.x)
+            transform.rotation = Quaternion.Euler(rot.x, 180, rot.y);
+        else
+            transform.rotation = Quaternion.Euler(rot.x, 0, rot.y);
+    }
+    protected void FlipSprite(bool flipX)
+    {
+        Quaternion rot = transform.rotation;
+
+        if (flipX)
             transform.rotation = Quaternion.Euler(rot.x, 180, rot.y);
         else
             transform.rotation = Quaternion.Euler(rot.x, 0, rot.y);

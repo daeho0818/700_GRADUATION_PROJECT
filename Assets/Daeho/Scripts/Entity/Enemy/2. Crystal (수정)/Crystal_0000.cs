@@ -41,7 +41,7 @@ public class Crystal_0000 : GroundObject
         Vector3 force = (renderer.flipX ? Vector2.right : Vector2.left) * 10; // 바라보고 있는 방향으로 돌진
         force.y = 2;
         rigid.AddForce(force, ForceMode2D.Impulse);
-        renderer.flipX = force.x > 0;
+        FlipSprite(force.x > 0);
 
         yield return new WaitForSeconds(0.5f);
         base_attack = null;
