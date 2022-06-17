@@ -77,6 +77,10 @@ public abstract class WaveBase : MonoBehaviour
             waveEnd = false;
             while (!waveEnd) yield return null;
             waveEnd = false;
+
+            bool isUpgrade = false;
+
+            if (isUpgrade) yield return StartCoroutine(manager.UpgradePause());
         }
 
         manager.GameEnd();

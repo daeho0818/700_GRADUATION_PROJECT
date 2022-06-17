@@ -10,6 +10,8 @@ public class InGameManager : MonoBehaviour
     public bool isGameActive;
     WaveBase nowWave;
 
+    bool upgradeTrigger;
+
     void Start()
     {
         int waveIdx = 0; //get from game manager
@@ -29,6 +31,30 @@ public class InGameManager : MonoBehaviour
         }
 
 
+    }
+
+    public IEnumerator UpgradePause()
+    {
+        upgradeTrigger = false;
+
+        Upgrade();
+
+        while (!upgradeTrigger) yield return null;
+
+
+    }
+
+    public void Upgrade()
+    {
+        // make three random choose
+        // show it at ui
+        // each button will upgrade player's state 
+
+    }
+
+    public void UpgradeEnd()
+    {
+        upgradeTrigger = true;
     }
 
     public void GameInit()
