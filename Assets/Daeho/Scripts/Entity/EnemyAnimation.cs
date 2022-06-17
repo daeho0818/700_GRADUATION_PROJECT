@@ -8,9 +8,10 @@ using SB = System.SerializableAttribute;
 public class EnemyAnimation : MonoBehaviour
 {
     #region Animation states
-    abstract class AnimState
+    public abstract class AnimState
     {
         public Sprite[] frame_sprites;
+        public System.Action[] frames_actions;
         public float delay;
         public bool loop;
 
@@ -23,6 +24,7 @@ public class EnemyAnimation : MonoBehaviour
         public void SetModel(Enemy model)
         {
             index = 0;
+            frames_actions = new System.Action[frame_sprites.Length];
 
             if (this.model != null) return;
 
@@ -35,6 +37,8 @@ public class EnemyAnimation : MonoBehaviour
         /// <returns></returns>
         public virtual IEnumerator Update()
         {
+            yield return null;
+
             if (delay == 0)
                 delay = 0.01f;
 
@@ -52,6 +56,11 @@ public class EnemyAnimation : MonoBehaviour
                 }
 
                 model.renderer.sprite = frame_sprites[index++];
+
+                if (frames_actions[index - 1] != null)
+                {
+                    frames_actions[index - 1]();
+                }
 
                 yield return new WaitForSeconds(delay);
             }
@@ -89,7 +98,19 @@ public class EnemyAnimation : MonoBehaviour
     }
     #endregion
 
-    Enemy model;
+    Enemy _model;
+    Enemy model
+    {
+        get
+        {
+            if (_model == null)
+            {
+                _model = GetComponent<Enemy>();
+            }
+
+            return _model;
+        }
+    }
 
     [SerializeField] IdleState idle;
     [Space(10)]
@@ -122,7 +143,6 @@ public class EnemyAnimation : MonoBehaviour
 
     void Start()
     {
-        model = GetComponent<Enemy>();
     }
 
     /// <summary>
@@ -166,8 +186,13 @@ public class EnemyAnimation : MonoBehaviour
     /// - Dead
     /// </summary>
     /// <returns></returns>
-    public string GetState()
+    public string GetStateName()
     {
         return s_state;
+    }
+
+    public AnimState GetState()
+    {
+        return state;
     }
 }
