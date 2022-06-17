@@ -78,7 +78,7 @@ public abstract class WaveBase : MonoBehaviour
             while (!waveEnd) yield return null;
             waveEnd = false;
 
-            bool isUpgrade = false;
+            bool isUpgrade = GameManager.Instance.player.Exp > GameManager.Instance.player.MaxExp;
 
             if (isUpgrade) yield return StartCoroutine(manager.UpgradePause());
         }

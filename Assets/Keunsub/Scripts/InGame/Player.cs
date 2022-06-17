@@ -19,6 +19,9 @@ public class Player : Entity
     #endregion
     public float damage;
     public float criticalChance;
+    public float Exp;
+    public float MaxExp;
+    public int level;
 
     [SerializeField] Vector2 JumpForce;
 
@@ -68,6 +71,18 @@ public class Player : Entity
     void OnDestroyAction()
     {
 
+    }
+
+    public int ReturnDamage()
+    {
+        float _damage = damage;
+
+        if (Random.Range(0, 100) < criticalChance)
+        {
+            _damage *= 1.5f;
+        }
+
+        return (int)_damage;
     }
 
     public void StateInit()

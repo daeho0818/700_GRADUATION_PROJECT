@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class InGameManager : MonoBehaviour
+public class InGameManager : Singleton<InGameManager>
 {
     public Transform Pivot;
     public Transform Door;
     public bool isGameActive;
-    WaveBase nowWave;
+    public WaveBase nowWave;
 
-    bool upgradeTrigger;
+    public bool upgradeTrigger;
+    public List<UpgradeClass> Upgrades = new List<UpgradeClass>();
+    public UpgradeUI upgradeUI;
 
     void Start()
     {
         int waveIdx = 0; //get from game manager
         nowWave = GetComponents<WaveBase>()[waveIdx];
+
     }
 
     void Update()
@@ -36,11 +39,13 @@ public class InGameManager : MonoBehaviour
     public IEnumerator UpgradePause()
     {
         upgradeTrigger = false;
+        GameManager.Instance.player.Exp -= GameManager.Instance.player.MaxExp;
 
         Upgrade();
 
         while (!upgradeTrigger) yield return null;
 
+        upgradeUI.RemoveButtons();
 
     }
 
@@ -50,6 +55,10 @@ public class InGameManager : MonoBehaviour
         // show it at ui
         // each button will upgrade player's state 
 
+        upgradeUI.gameObject.SetActive(true);
+
+        int[] rand = new int[3] { Random.Range(0, Upgrades.Count), Random.Range(0, Upgrades.Count), Random.Range(0, Upgrades.Count) };
+        upgradeUI.InitButtons(Upgrades[rand[0]], Upgrades[rand[1]], Upgrades[rand[2]]);
     }
 
     public void UpgradeEnd()
@@ -71,6 +80,16 @@ public class InGameManager : MonoBehaviour
 
         Door.position = new Vector2(-14f, -3.5f);
 
+        Upgrades.Clear();
+
+        Upgrades.Add(new UpgradeATKSpeed());
+        Upgrades.Add(new UpgradeMaxHp());
+        Upgrades.Add(new UpgradeATKDMG());
+        Upgrades.Add(new UpgradeCritical());
+        Upgrades.Add(new UpgradeDashDelay());
+        Upgrades.Add(new UpgradeDashCool());
+
+        Upgrades.ForEach(item => item.Init(GameManager.Instance.player));
     }
 
     public void GameEnd()
