@@ -30,8 +30,6 @@ public class Orc_0003 : GroundObject
     }
     IEnumerator _BaseAttack(float dir_x)
     {
-        StopCoroutine(ai_moving);
-
         RaycastHit2D[] hits;
         Vector2 dir = new Vector2(dir_x, 0);
         Player p = null;

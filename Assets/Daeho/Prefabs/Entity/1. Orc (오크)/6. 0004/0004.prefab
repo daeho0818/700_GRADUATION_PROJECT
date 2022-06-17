@@ -213,9 +213,7 @@ MonoBehaviour:
   enemy:
     animation: {fileID: 0}
     attack_check: 0
-    attack_beforeDelay: 1
-    attack_afterDelay: 2
-    attack_coolTime: 5
+    attack_frame: 1
     bullet_speed: 0
   ai:
     search_player: 1
@@ -251,6 +249,7 @@ MonoBehaviour:
     frame_sprites:
     - {fileID: 21300000, guid: e0d23f2e7139e7b40a8b854a744df19f, type: 3}
     - {fileID: 21300000, guid: e23d629d8877d21479edde1a656ae36d, type: 3}
+    - {fileID: 21300000, guid: e23d629d8877d21479edde1a656ae36d, type: 3}
     delay: 1
     loop: 0
   hit:
@@ -261,5 +260,5 @@ MonoBehaviour:
   dead:
     frame_sprites:
     - {fileID: 21300000, guid: 67ec68248cb3fe9409b68793534c9b2c, type: 3}
-    delay: 0
+    delay: 1
     loop: 0
