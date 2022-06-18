@@ -20,11 +20,11 @@ public class Player : Entity
     public float damage;
     public float criticalChance;
     public float Exp;
-    public float MaxExp;
+    public float MaxExp => GetMaxExp();
     public int level = 1;
     public float ExpAmount = 1f;
     public float Mp;
-    public float MaxMp => GetMaxMp();
+    public float MaxMp = 100f;
     public float MpCool = 3f;
     public float HpAmount = 1f;
 
@@ -86,18 +86,23 @@ public class Player : Entity
         {
             _damage *= 1.5f;
         }
-        Exp += _damage;
         return (int)_damage;
     }
 
-    float GetMaxMp()
+    float GetMaxExp()
     {
         return level * (level + 1) * 25 - 50;
     }
 
+    void SetExpUI()
+    {
+        InGameUIManager.Instance.SetExpUI(Exp, MaxExp);
+    }
+
     public void StateInit()
     {
-        hp = GameManager.Instance.DefaultHp;
+        max_hp = GameManager.Instance.DefaultHp;
+        hp = max_hp;
         damage = GameManager.Instance.DefaultDamage;
         criticalChance = GameManager.Instance.DefaultCritical;
 
@@ -126,6 +131,9 @@ public class Player : Entity
         AttackLogic();
         AnimatorLogic();
         DashLogic();
+
+        SetExpUI();
+        InGameUIManager.Instance.SetHpBar(hp, max_hp);
     }
 
     void DashLogic()
