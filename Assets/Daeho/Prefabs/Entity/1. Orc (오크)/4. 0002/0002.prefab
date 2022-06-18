@@ -154,9 +154,7 @@ MonoBehaviour:
   enemy:
     animation: {fileID: 0}
     attack_check: 0
-    attack_beforeDelay: 2
-    attack_afterDelay: 1
-    attack_coolTime: 5
+    attack_frame: 2
     bullet_speed: 5
   ai:
     search_player: 1

@@ -11,11 +11,8 @@ public struct EnemyInformation
     public EnemyAnimation animation;
     // 공격 패턴 유무 여부
     public bool attack_check;
-    // 공격 전/후 딜레이
-    public float attack_beforeDelay;
-    public float attack_afterDelay;
-    // 공격 쿨타임
-    public float attack_coolTime;
+    // 애니메이션 공격 해당 프레임
+    public int attack_frame;
     // 총알 속도
     public float bullet_speed;
 }
@@ -41,6 +38,241 @@ public struct AIInformation
 
 public class Enemy : Entity
 {
+    abstract class EnemyState
+    {
+        protected Enemy enemy = null;
+        protected Entity player = null;
+
+        abstract public void Update();
+        abstract public void Release();
+    }
+
+    class IdleState : EnemyState
+    {
+        public IdleState(Enemy enemy)
+        {
+            this.enemy = enemy;
+            player = enemy.player;
+
+            enemy.animation.SetState("Idle");
+
+            enemy.StartCoroutine(ChangeToWalk());
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+            enemy.CancelInvoke(nameof(ChangeToWalk));
+        }
+
+        IEnumerator ChangeToWalk()
+        {
+            yield return new WaitForSeconds(Random.Range(enemy.delay_min, enemy.delay_max));
+
+            enemy.ChangeState("Walk");
+        }
+    }
+
+    class WalkState : EnemyState
+    {
+        Coroutine walk_process = null;
+        Coroutine ai_moving = null;
+        public WalkState(Enemy enemy)
+        {
+            this.enemy = enemy;
+            player = enemy.player;
+
+            enemy.animation.SetState("Walk");
+
+            walk_process = enemy.StartCoroutine(Walking());
+        }
+
+        public override void Update()
+        {
+            // 플레이어 탐색과 이동 가능한 경우
+            if (enemy.search_player && enemy.movable)
+            {
+                // 플레이어를 놓쳤을 경우
+                if (enemy.find_player == true && enemy.FindPlayer() == false)
+                {
+                    enemy.find_player = false;
+
+                    enemy.ChangeState("Idle");
+                }
+
+                // 플레이어를 발견했을 경우
+                else if (enemy.FindPlayer() == true)
+                {
+                    enemy.find_player = true;
+
+                    StopWalking();
+
+                    enemy.MoveToPlayer();
+                }
+            }
+
+            // 플레이어를 공격 가능한 경우
+            if (player != null && enemy.AttackCheck())
+            {
+                enemy.ChangeState("Attack");
+            }
+        }
+
+        public override void Release()
+        {
+            StopWalking();
+        }
+
+        /// <summary>
+        /// AI 기반 움직임을 멈추는 함수
+        /// </summary>
+        void StopWalking()
+        {
+            if (walk_process != null)
+            {
+                enemy.StopCoroutine(walk_process);
+            }
+
+            if (ai_moving != null)
+            {
+                enemy.StopCoroutine(ai_moving);
+            }
+        }
+
+        /// <summary>
+        /// AI 기반 움직임 프로세스를 관리하는 함수
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator Walking()
+        {
+            ai_moving = enemy.StartCoroutine(enemy.AIMoving());
+            yield return ai_moving;
+
+            // AI 기반 움직임을 마쳤을 경우 대기 상태
+            enemy.ChangeState("Idle");
+        }
+    }
+
+    class AttackState : EnemyState
+    {
+        Coroutine attack = null;
+        public AttackState(Enemy enemy)
+        {
+            this.enemy = enemy;
+            player = enemy.player;
+
+            enemy.animation.SetState("Attack");
+
+            EnemyAnimation.AnimState state = enemy.animation.GetState();
+            System.Action attack = () => { this.attack = enemy.StartCoroutine(enemy.BaseAttack()); };
+
+            state.frames_actions[enemy.enemy.attack_frame] = attack;
+
+            state.frames_actions[state.frames_actions.Length - 1] = () => enemy.ChangeState("Idle");
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+            StopAttack();
+        }
+
+        /// <summary>
+        /// 공격 상태를 멈추는 함수
+        /// </summary>
+        void StopAttack()
+        {
+            if (attack != null)
+            {
+                enemy.StopCoroutine(attack);
+            }
+        }
+    }
+
+    class HitState : EnemyState
+    {
+        public HitState(Enemy enemy)
+        {
+            this.enemy = enemy;
+            player = enemy.player;
+
+            enemy.animation.SetState("Hit");
+
+            EnemyAnimation.AnimState state = enemy.animation.GetState();
+            state.frames_actions[state.frames_actions.Length - 1] = () => enemy.ChangeState("Idle");
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+
+    class DeadState : EnemyState
+    {
+        public DeadState(Enemy enemy)
+        {
+            this.enemy = enemy;
+            player = enemy.player;
+
+            enemy.animation.SetState("Dead");
+
+            EnemyAnimation.AnimState state = enemy.animation.GetState();
+
+            state.frames_actions[state.frames_actions.Length - 1] =
+                () => Destroy(enemy.gameObject);
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+
+    EnemyState enemy_state = null;
+
+    void ChangeState(string state)
+    {
+        switch (state)
+        {
+            case string s when nameof(IdleState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new IdleState(this);
+                break;
+            case string s when nameof(WalkState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new WalkState(this);
+                break;
+            case string s when nameof(AttackState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new AttackState(this);
+                break;
+            case string s when nameof(HitState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new HitState(this);
+                break;
+            case string s when nameof(DeadState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new DeadState(this);
+                break;
+            default:
+                Debug.Assert(false);
+                return;
+        }
+    }
+
     [Header("Enemy Information")]
     [SerializeField] EInfo enemy;
     #region Properties
@@ -52,18 +284,6 @@ public class Enemy : Entity
     /// 공격 패턴 유무 여부
     /// </summary>
     public bool attack_check { get => enemy.attack_check; set => enemy.attack_check = value; }
-    /// <summary>
-    /// 공격 전 딜레이
-    /// </summary>
-    public float attack_beforeDelay { get => enemy.attack_beforeDelay; set => enemy.attack_beforeDelay = value; }
-    /// <summary>
-    /// 공격 후 딜레이
-    /// </summary>
-    public float attack_afterDelay { get => enemy.attack_afterDelay; set => enemy.attack_afterDelay = value; }
-    /// <summary>
-    /// 공격 쿨타임
-    /// </summary>
-    public float attack_coolTime { get => enemy.attack_coolTime; set => enemy.attack_coolTime = value; }
     /// <summary>
     /// 총알 속도
     /// </summary>
@@ -122,56 +342,36 @@ public class Enemy : Entity
 
         player = FindObjectOfType<Player>();
 
-        ai_moving = StartCoroutine(AIMoving());
-
+        OnHit += KnockBack;
         OnHit += (int damage) =>
         {
-            animation.SetState("Hit");
-            if (animation.GetState() == "Attack")
-                animation.SetState("Idle");
+            ChangeState("Hit");
 
             hp -= damage;
         };
-        OnHit += KnockBack;
 
-        OnDestroy += () => animation.SetState("Dead");
-        OnDestroy += () => Destroy(gameObject, 1);
+        OnDestroy += () => ChangeState("Dead");
 
         distance_with_player = Random.Range(distance_with_player - 1, distance_with_player + 2);
+
+        ChangeState("Idle");
     }
 
     protected override void Update()
     {
-        if (IsDestroy)
-            OnDestroy?.Invoke();
-
-        if (search_player && movable)
+        if (IsDestroy == true && OnDestroy != null)
         {
-            bool tempFInd = FindPlayer();
-            if (tempFInd)
-            {
-                MoveToPlayer();
-
-                // 플레이어를 향해 움직임 : 초록색
-                renderer.color = Color.green;
-
-                animation.SetState("Walk");
-            }
-            find_player = tempFInd;
+            OnDestroy();
+            OnDestroy = null;
         }
 
-        if (!attack_check && player != null)
-        {
-            bool tempAtk = AttackCheck();
-            if (tempAtk)
-            {
-                StartCoroutine(Attack());
-                movable = false;
-            }
-            attack_check = tempAtk;
-        }
+        enemy_state.Update();
     }
 
+    /// <summary>
+    /// 피격 시 넉백당하는 함수
+    /// </summary>
+    /// <param name="damage">피격 데미지</param>
     protected virtual void KnockBack(int damage)
     {
         Vector2 dir;
@@ -201,50 +401,6 @@ public class Enemy : Entity
     /// <returns>공격 가능 여부</returns>
     protected virtual bool AttackCheck() => find_player;
 
-    Timer coolTime_timer = new Timer();
-    Timer delay_timer = new Timer();
-    /// <summary>
-    /// 공격 전/후 딜레이, 쿨타임 등 공격 매커니즘 구현 함수
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator Attack()
-    {
-        animation.SetState("Attack");
-
-        #region 애니메이션 프레임 다 들어오면 지워버릴 것.
-
-        // 대기 시간 : 노란색
-        renderer.color = Color.yellow;
-
-        yield return new WaitForSeconds(attack_beforeDelay);
-
-        // 공격 중 : 빨간색
-        renderer.color = Color.red;
-
-        yield return StartCoroutine(BaseAttack());
-
-        // 대기 시간 : 노란색
-        renderer.color = Color.yellow;
-
-        yield return new WaitForSeconds(attack_afterDelay);
-
-        if (!delay_timer.Processing())
-            delay_timer.TimerStart(this, attack_afterDelay, () => { movable = true; });
-
-        #endregion
-
-        // 기본 상태
-        renderer.color = Color.white;
-        animation.SetState("Idle");
-
-        if (!coolTime_timer.Processing())
-            coolTime_timer.TimerStart(this, attack_coolTime,
-                () =>
-                {
-                    animation.SetState("Idle");
-                    attack_check = false;
-                });
-    }
     /// <summary>
     /// 기본적인 공격을 구현하는 가상함수
     /// </summary>
@@ -262,14 +418,13 @@ public class Enemy : Entity
 
         do
             yield return null;
-        while (rigid.velocity.y != 0);
+        while (rigid.velocity.y != 0); // 바닥에 떨어질 때까지 대기
 
         target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
 
         while (true)
         {
             yield return null;
-            if (find_player || !movable) continue;
 
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
             transform.Translate(vec);
@@ -280,9 +435,7 @@ public class Enemy : Entity
             // 벽에 부딛혔거나, 타겟 위치로의 이동이 완료됐을 때
             if (Vector2.Distance(target, transform.position) <= vec.x || hits.Length > 0)
             {
-                yield return new WaitForSeconds(Random.Range(delay_min, delay_max));
-
-                target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
+                yield break;
             }
         }
     }
@@ -292,7 +445,7 @@ public class Enemy : Entity
     /// </summary>
     protected virtual void MoveToPlayer()
     {
-        transform.Translate(move_speed * ((new Vector2(player.transform.position.x, 0) - new Vector2(transform.position.x, 0)).normalized) * Time.deltaTime);
+        transform.position += (Vector3)(move_speed * ((new Vector2(player.transform.position.x, 0) - new Vector2(transform.position.x, 0)).normalized) * Time.deltaTime);
         FlipSprite();
     }
 
@@ -305,7 +458,10 @@ public class Enemy : Entity
     /// <returns>충돌했다면 player, 아니라면 null</returns>
     protected Player CheckCollision(Vector2 position, BoxCollider2D collider, float rot)
     {
-        var hits = Physics2D.BoxCastAll(position + collider.offset, collider.size, rot, Vector2.zero, 0, LayerMask.GetMask("Entity"));
+        Vector2 offset = collider.offset;
+        if (transform.rotation.y != 0) offset *= Vector2.left;
+
+        var hits = Physics2D.BoxCastAll(position + offset, collider.size, rot, Vector2.zero, 0, LayerMask.GetMask("Entity"));
 
         foreach (var hit in hits)
         {
@@ -326,7 +482,10 @@ public class Enemy : Entity
     /// <returns>충돌했다면 player, 아니라면 null</returns>
     protected Player CheckCollision(Vector2 position, CapsuleCollider2D collider, CapsuleDirection2D capshule_dir, float rot)
     {
-        var hits = Physics2D.CapsuleCastAll(position + collider.offset, collider.size, capshule_dir, 0, Vector2.zero, 0, LayerMask.GetMask("Entity"));
+        Vector2 offset = collider.offset;
+        if (transform.rotation.y != 0) offset *= Vector2.left;
+
+        var hits = Physics2D.CapsuleCastAll(position + offset, collider.size, capshule_dir, 0, Vector2.zero, 0, LayerMask.GetMask("Entity"));
 
         foreach (var hit in hits)
         {
@@ -345,7 +504,10 @@ public class Enemy : Entity
     /// <returns>충돌했다면 player, 아니라면 null</returns>
     protected Player CheckCollision(Vector2 position, CircleCollider2D collider)
     {
-        var hits = Physics2D.CircleCastAll(position + collider.offset, collider.radius, Vector2.zero, 0, LayerMask.GetMask("Entity"));
+        Vector2 offset = collider.offset;
+        if (transform.rotation.y != 0) offset *= Vector2.left;
+
+        var hits = Physics2D.CircleCastAll(position + offset, collider.radius, Vector2.zero, 0, LayerMask.GetMask("Entity"));
 
         foreach (var hit in hits)
         {
