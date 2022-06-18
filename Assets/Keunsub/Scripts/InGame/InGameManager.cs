@@ -39,7 +39,8 @@ public class InGameManager : Singleton<InGameManager>
     public IEnumerator UpgradePause()
     {
         upgradeTrigger = false;
-        GameManager.Instance.player.Exp -= GameManager.Instance.player.MaxExp;
+        GameManager.Instance.player.Exp = 0f;
+        GameManager.Instance.player.level++;
 
         Upgrade();
 

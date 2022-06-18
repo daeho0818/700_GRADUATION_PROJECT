@@ -86,6 +86,7 @@ public class Player : Entity
         {
             _damage *= 1.5f;
         }
+        Exp += _damage;
         return (int)_damage;
     }
 
@@ -116,6 +117,7 @@ public class Player : Entity
 
     void OnHitAction(int damage)
     {
+        hp -= damage;
         GameManager.Instance.PrintDamage(damage, transform.position);
     }
 
