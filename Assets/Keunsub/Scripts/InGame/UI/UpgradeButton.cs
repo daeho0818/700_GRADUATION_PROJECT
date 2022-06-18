@@ -1,20 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeButton : MonoBehaviour
 {
-
+    [SerializeField]
     public UpgradeClass thisUpgrade;
+
+    public Image Icon;
+    public Text Level;
+    public Text Desc;
 
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        
+
     }
 
     public void InitUpgrade(UpgradeClass upgrade)
@@ -22,10 +27,18 @@ public class UpgradeButton : MonoBehaviour
         thisUpgrade = upgrade;
         // to do
         // connect it to UI objects
+
+        Level.text = "Lv. " + thisUpgrade.level.ToString();
+        Desc.text = thisUpgrade.Desc;
     }
 
     public void Upgrade()
     {
-        thisUpgrade.Upgrade();
+        if (!InGameManager.Instance.upgradeTrigger)
+        {
+            thisUpgrade.Upgrade();
+            Level.text = "Lv. " + thisUpgrade.level.ToString();
+            InGameManager.Instance.UpgradeEnd();
+        }
     }
 }

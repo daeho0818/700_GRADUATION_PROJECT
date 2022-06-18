@@ -24,10 +24,8 @@ public class UpgradeUI : MonoBehaviour
         {
             Buttons[i].InitUpgrade(upgrades[i]);
             Buttons[i].GetComponent<RectTransform>().anchoredPosition = new Vector2((i - 1) * 900f, -1600);
-            Buttons[i].GetComponent<RectTransform>().DOAnchorPosY(0f, 0.5f).SetDelay(i).SetEase(Ease.OutBack);
+            Buttons[i].GetComponent<RectTransform>().DOAnchorPosY(0f, 0.5f).SetDelay(i / 3f).SetEase(Ease.OutBack);
         }
-
-        InGameManager.Instance.upgradeTrigger = true;
     }
 
     public void RemoveButtons()

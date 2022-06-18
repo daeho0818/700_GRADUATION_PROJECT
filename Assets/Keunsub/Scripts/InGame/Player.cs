@@ -21,7 +21,12 @@ public class Player : Entity
     public float criticalChance;
     public float Exp;
     public float MaxExp;
-    public int level;
+    public int level = 1;
+    public float ExpAmount = 1f;
+    public float Mp;
+    public float MaxMp => GetMaxMp();
+    public float MpCool = 3f;
+    public float HpAmount = 1f;
 
     [SerializeField] Vector2 JumpForce;
 
@@ -81,8 +86,13 @@ public class Player : Entity
         {
             _damage *= 1.5f;
         }
-
+        Exp += _damage;
         return (int)_damage;
+    }
+
+    float GetMaxMp()
+    {
+        return level * (level + 1) * 25 - 50;
     }
 
     public void StateInit()
@@ -90,6 +100,13 @@ public class Player : Entity
         hp = GameManager.Instance.DefaultHp;
         damage = GameManager.Instance.DefaultDamage;
         criticalChance = GameManager.Instance.DefaultCritical;
+
+        Exp = 0;
+        level = 1;
+        ExpAmount = 1f;
+        HpAmount = 1f;
+
+        Mp = MaxMp;
     }
 
     void OnHitAction(int damage)

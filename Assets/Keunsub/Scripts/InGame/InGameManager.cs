@@ -64,6 +64,7 @@ public class InGameManager : Singleton<InGameManager>
     public void UpgradeEnd()
     {
         upgradeTrigger = true;
+        upgradeUI.gameObject.SetActive(false);
     }
 
     public void GameInit()

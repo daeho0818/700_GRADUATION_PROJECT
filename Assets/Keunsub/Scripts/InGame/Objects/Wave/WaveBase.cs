@@ -70,6 +70,8 @@ public abstract class WaveBase : MonoBehaviour
 
     IEnumerator WaveCoroutine()
     {
+        int curWaveIdx = 0;
+
         foreach (var item in WaveFuncList)
         {
             item?.Invoke();
@@ -81,6 +83,8 @@ public abstract class WaveBase : MonoBehaviour
             bool isUpgrade = GameManager.Instance.player.Exp > GameManager.Instance.player.MaxExp;
 
             if (isUpgrade) yield return StartCoroutine(manager.UpgradePause());
+
+            curWaveIdx++;
         }
 
         manager.GameEnd();
