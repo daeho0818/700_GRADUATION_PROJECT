@@ -15,15 +15,35 @@ public class OrcWave : WaveBase
 
     private void Awake()
     {
-        Init(FirstWave, SecondWave, ThirdWave, ForthWave, FifthWave);
+        Init(Wave1, Wave2, Wave3, Wave4, Wave5, Wave6, Wave7, Wave8);
     }
 
-    void FirstWave()
+    void Wave1()
     {
-        StartCoroutine(FirstWaveCoroutine());
+        StartCoroutine(Wave1Coroutine());
     }
 
-    IEnumerator FirstWaveCoroutine()
+    IEnumerator Wave1Coroutine()
+    {
+        Monsters.Add(SpawnMonster(BigOrc, new Vector2(-10f, -5f), EntitySize.Medium));
+
+
+        while (Monsters.Count > 0)
+        {
+            for (int i = 0; i < Monsters.Count; i++)
+                if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
+
+            yield return null;
+        }
+        waveEnd = true;
+    }
+
+    void Wave2()
+    {
+        StartCoroutine(Wave2Coroutine());
+    }
+
+    IEnumerator Wave2Coroutine()
     {
         Monsters.Add(SpawnMonster(BigOrc, new Vector2(-10f, -5f), EntitySize.Medium));
         Monsters.Add(SpawnMonster(BigOrc, new Vector2(10f, -5f), EntitySize.Medium));
@@ -36,150 +56,155 @@ public class OrcWave : WaveBase
 
             yield return null;
         }
-        Debug.Log("wave end");
         waveEnd = true;
     }
 
-    void SecondWave()
+    void Wave3()
     {
-        StartCoroutine(SecondWaveCoroutine());
+        StartCoroutine(Wave3Coroutine());
     }
 
-    IEnumerator SecondWaveCoroutine()
+    IEnumerator Wave3Coroutine()
     {
-
-        Platforms.Add(SpawnPlatform(new Vector2(-10f, -2f)));
-        Platforms.Add(SpawnPlatform(new Vector2(-7.5f, -2f)));
-        Platforms.Add(SpawnPlatform(new Vector2(-5f, -2f)));
-        Platforms.Add(SpawnPlatform(new Vector2(10f, -2f)));
-        Platforms.Add(SpawnPlatform(new Vector2(7.5f, -2f)));
-        Platforms.Add(SpawnPlatform(new Vector2(5f, -2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-5, -4)));
+        Platforms.Add(SpawnPlatform(new Vector2(5, -4)));
 
         yield return new WaitForSeconds(3f);
 
-        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-7.5f, -1f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(7.5f, -1f), EntitySize.Medium));
-
-        yield return new WaitForSeconds(3f);
-
-        Monsters.Add(SpawnMonster(DashOrc, new Vector2(-11f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(DashOrc, new Vector2(11f, -6f), EntitySize.Medium));
-
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(9, -2), EntitySize.Small)); 
 
         while (Monsters.Count > 0)
         {
             for (int i = 0; i < Monsters.Count; i++)
-            {
                 if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
-            }
+
             yield return null;
         }
-
-        Debug.Log("wave end");
         waveEnd = true;
     }
 
-    void ThirdWave()
+    void Wave4()
     {
-        StartCoroutine(ThirdWaveCoroutine());
+        StartCoroutine(Wave4Coroutine());
     }
 
-    IEnumerator ThirdWaveCoroutine()
+    IEnumerator Wave4Coroutine()
     {
-        Platforms.Add(SpawnPlatform(new Vector2(-2.5f, 2f)));
-        Platforms.Add(SpawnPlatform(new Vector2(0f, 2f)));
-        Platforms.Add(SpawnPlatform(new Vector2(2.5f, 2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(0, -2)));
 
         yield return new WaitForSeconds(3f);
 
-        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(0, 5f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(BigOrc, new Vector2(-7.5f, -1f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(DashOrc, new Vector2(7.5f, -1f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(9, -2), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(-9, -2), EntitySize.Small));
 
         while (Monsters.Count > 0)
         {
             for (int i = 0; i < Monsters.Count; i++)
-            {
                 if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
-            }
+
             yield return null;
         }
-
-        Debug.Log("wave end");
-        RemovePlatform(Platforms);
-        waveEnd = true;
-    }
-
-    void ForthWave()
-    {
-        StartCoroutine(ForthWaveCoroutine());
-    }
-
-    IEnumerator ForthWaveCoroutine()
-    {
-        yield return new WaitForSeconds(3f);
-
-        Platforms.Add(SpawnPlatform(new Vector2(11f, -3f)));
-        Platforms.Add(SpawnPlatform(new Vector2(8.5f, -3f)));
-        Platforms.Add(SpawnPlatform(new Vector2(-11f, -3f)));
-        Platforms.Add(SpawnPlatform(new Vector2(-8.5f, -3f)));
-        Platforms.Add(SpawnPlatform(new Vector2(12f, 0f)));
-        Platforms.Add(SpawnPlatform(new Vector2(9.5f, 0f)));
-        Platforms.Add(SpawnPlatform(new Vector2(-12f, 0f)));
-        Platforms.Add(SpawnPlatform(new Vector2(-9.5f, 0f)));
-
-        yield return new WaitForSeconds(3f);
-
-        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(10f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(-10f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(10f, -2.5f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(-10f, -2.5f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(12f, 0.5f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-12f, 0.5f), EntitySize.Medium));
-
-        while (Monsters.Count > 0)
-        {
-            for (int i = 0; i < Monsters.Count; i++)
-            {
-                if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
-            }
-            yield return null;
-        }
-
-        Debug.Log("wave end");
 
         RemovePlatform(Platforms);
+        yield return new WaitForSeconds(3f);
+
         waveEnd = true;
     }
 
-    void FifthWave()
+    void Wave5()
     {
-        StartCoroutine(FifthWaveCoroutine());
+        StartCoroutine(Wave5Coroutine());
     }
 
-    IEnumerator FifthWaveCoroutine()
+    IEnumerator Wave5Coroutine()
     {
-        yield return new WaitForSeconds(3f);
+        Monsters.Add(SpawnMonster(DashOrc, new Vector2(-10f, -5f), EntitySize.Medium));
 
-        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(12f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(-12f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(BigOrc, new Vector2(10f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(BigOrc, new Vector2(-10f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(BigOrc, new Vector2(8f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(BigOrc, new Vector2(-8f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(DashOrc, new Vector2(6f, -6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(DashOrc, new Vector2(-6f, -6f), EntitySize.Medium));
 
         while (Monsters.Count > 0)
         {
             for (int i = 0; i < Monsters.Count; i++)
-            {
                 if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
-            }
+
+            yield return null;
+        }
+        waveEnd = true;
+    }
+
+    void Wave6()
+    {
+        StartCoroutine(Wave6Coroutine());
+    }
+
+    IEnumerator Wave6Coroutine()
+    {
+        Monsters.Add(SpawnMonster(DashOrc, new Vector2(-10f, -5f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(DashOrc, new Vector2(10f, -5f), EntitySize.Medium));
+
+
+        while (Monsters.Count > 0)
+        {
+            for (int i = 0; i < Monsters.Count; i++)
+                if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
+
+            yield return null;
+        }
+        waveEnd = true;
+    }
+
+    void Wave7()
+    {
+        StartCoroutine(Wave7Coroutine());
+    }
+
+    IEnumerator Wave7Coroutine()
+    {
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-10f, -5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(10f, -5f), EntitySize.Small));
+
+
+        while (Monsters.Count > 0)
+        {
+            for (int i = 0; i < Monsters.Count; i++)
+                if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
+
+            yield return null;
+        }
+        waveEnd = true;
+    }
+
+    void Wave8()
+    {
+        StartCoroutine(Wave8Coroutine());
+    }
+
+    IEnumerator Wave8Coroutine()
+    {
+        Platforms.Add(SpawnPlatform(new Vector2(-5, -4)));
+        Platforms.Add(SpawnPlatform(new Vector2(0, -2)));
+        Platforms.Add(SpawnPlatform(new Vector2(6, 0)));
+        Platforms.Add(SpawnPlatform(new Vector2(0, 3)));
+        Platforms.Add(SpawnPlatform(new Vector2(-5, 5)));
+
+        yield return new WaitForSeconds(3f);
+
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-5, -3.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(0, -1.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(6, 0.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(0, 3.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-5, 5.5f), EntitySize.Small));
+
+        while (Monsters.Count > 0)
+        {
+            for (int i = 0; i < Monsters.Count; i++)
+                if (Monsters[i].IsDestroy) Monsters.Remove(Monsters[i]);
+
             yield return null;
         }
 
-        Debug.Log("wave end");
+        RemovePlatform(Platforms);
+        yield return new WaitForSeconds(3f);
+
         waveEnd = true;
     }
 }

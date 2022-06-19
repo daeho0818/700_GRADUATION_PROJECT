@@ -84,6 +84,7 @@ public abstract class WaveBase : MonoBehaviour
 
             if (isUpgrade && curWaveIdx != WaveFuncList.Count - 1) yield return StartCoroutine(manager.UpgradePause());
 
+            yield return new WaitForSeconds(2f);
             curWaveIdx++;
         }
 

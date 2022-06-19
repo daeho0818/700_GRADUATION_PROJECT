@@ -55,8 +55,8 @@ public class Platform : MonoBehaviour
         L_col.enabled = false;
         R_col.enabled = false;
 
-        R_Platform.DOShakePosition(3f, 0.2f).SetEase(Ease.Linear);
-        L_Platform.DOShakePosition(3f, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
+        R_Platform.DOShakePosition(3f, 0.2f).SetEase(Ease.Flash);
+        L_Platform.DOShakePosition(3f, 0.2f).SetEase(Ease.Flash).OnComplete(() =>
         {
 
             L_Platform.localPosition = Vector3.zero;
