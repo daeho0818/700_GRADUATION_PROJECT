@@ -8,17 +8,11 @@ public class Platform : MonoBehaviour
 
     public Transform L_Platform;
     public Transform R_Platform;
-
-    Collider2D L_col;
-    Collider2D R_col;
+    public Collider2D col;
 
     public void Init()
     {
-        L_col = L_Platform.GetComponent<Collider2D>();
-        R_col = R_Platform.GetComponent<Collider2D>();
-
-        L_col.enabled = false;
-        R_col.enabled = false;
+        col.enabled = false;
 
         transform.position = new Vector3(0, -10f, 0);
 
@@ -31,9 +25,7 @@ public class Platform : MonoBehaviour
         L_Platform.rotation = Quaternion.Euler(0, 0, 90f);
         R_Platform.rotation = Quaternion.Euler(0, 0, -90f);
 
-        L_col.enabled = false;
-        R_col.enabled = false;
-
+        col.enabled = false;
         Vector2 temp = new Vector2();
         temp.x = pos.x;
         temp.y = -10f;
@@ -44,20 +36,17 @@ public class Platform : MonoBehaviour
             L_Platform.DOLocalRotate(new Vector3(0, 0, 0f), 0.2f);
             R_Platform.DOLocalRotate(new Vector3(0, 0, 0f), 0.2f).OnComplete(() =>
             {
-                L_col.enabled = true;
-                R_col.enabled = true;
+                col.enabled = true;
             });
         });
     }
 
     public void Disappear()
     {
-        L_col.enabled = false;
-        R_col.enabled = false;
-
         R_Platform.DOShakePosition(3f, 0.2f, 30, 90, false, false);
         L_Platform.DOShakePosition(3f, 0.2f, 30, 90, false, false).OnComplete(() =>
         {
+            col.enabled = false;
 
             L_Platform.localPosition = Vector3.zero;
             R_Platform.localPosition = Vector3.zero;

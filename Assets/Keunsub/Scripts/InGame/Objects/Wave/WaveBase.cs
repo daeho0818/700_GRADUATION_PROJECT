@@ -93,4 +93,15 @@ public abstract class WaveBase : MonoBehaviour
 
     }
 
+    protected IEnumerator WaitUntilMonsterDie(List<Entity> EntityList, int remainCnt = 0)
+    {
+        while (EntityList.Count > remainCnt)
+        {
+            for (int i = 0; i < EntityList.Count; i++)
+                if (EntityList[i].IsDestroy) EntityList.Remove(EntityList[i]);
+
+            yield return null;
+        }
+    }
+
 }

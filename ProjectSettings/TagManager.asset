@@ -9,6 +9,7 @@ TagManager:
   - CameraRoom
   - Store
   - PlayerAttack
+  - Obstruction
   layers:
   - Default
   - TransparentFX

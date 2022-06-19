@@ -54,6 +54,7 @@ public class Player : Entity
 
     bool isCombo;
     bool doubleJumpAble = true;
+    bool obstructionCool = false;
     Coroutine activeCoroutine;
 
     #region Component
@@ -363,6 +364,21 @@ public class Player : Entity
         ANIM.SetBool("IsGround", isGround);
         ANIM.SetBool("IsAttack", isAttack);
         ANIM.SetInteger("attackState", attackState);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstruction") && !obstructionCool)
+        {
+            obstructionCool = true;
+            OnHit(10);
+            Invoke("ObstructionCoolFalse", 2f);
+        }
+    }
+
+    void ObstructionCoolFalse()
+    {
+        obstructionCool = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
