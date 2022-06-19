@@ -46,7 +46,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 3.8, y: 0.5}
+  m_Offset: {x: 3.08, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -57,7 +57,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6, y: 6}
+  m_Size: {x: 7.89, y: 8.56}
   m_EdgeRadius: 0
 --- !u!114 &7966685810525101747
 MonoBehaviour:
@@ -168,7 +168,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 3.6, y: -1}
+  m_Offset: {x: 1.9, y: -0.7}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -179,7 +179,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6, y: 4}
+  m_Size: {x: 10.83, y: 5.97}
   m_EdgeRadius: 0
 --- !u!114 &7966685811253340996
 MonoBehaviour:
@@ -5132,8 +5132,15 @@ MonoBehaviour:
   dashSpeed: 20
   dashDelay: 0.2
   dashCool: 1
-  damage: 0
+  damage: 3
   criticalChance: 0
+  Exp: 0
+  level: 1
+  ExpAmount: 1
+  Mp: 0
+  MaxMp: 100
+  MpCool: 3
+  HpAmount: 1
   JumpForce: {x: 0, y: 10}
   DashEffect: {fileID: 7966685811891366738}
   AttackColliders:
@@ -5250,7 +5257,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 3.76, y: 0.5}
+  m_Offset: {x: 2.21, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5261,7 +5268,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 8.16, y: 6.43}
+  m_Size: {x: 11.52, y: 7.86}
   m_EdgeRadius: 0
 --- !u!114 &7966685812381622445
 MonoBehaviour:

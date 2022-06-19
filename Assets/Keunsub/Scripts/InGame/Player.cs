@@ -194,7 +194,8 @@ public class Player : Entity
     {
         if (Input.GetKey(KeyCode.LeftArrow) && !isDash && (isRunAble || (!isGround && isAttack)))
         {
-            OffAllCollider();
+            if (isGround)
+                OffAllCollider();
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
@@ -202,7 +203,8 @@ public class Player : Entity
         }
         else if (Input.GetKey(KeyCode.RightArrow) && !isDash && (isRunAble || (!isGround && isAttack)))
         {
-            OffAllCollider();
+            if (isGround)
+                OffAllCollider();
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
             isRunning = true;
