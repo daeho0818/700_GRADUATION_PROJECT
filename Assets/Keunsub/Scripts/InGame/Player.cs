@@ -80,13 +80,13 @@ public class Player : Entity
 
     public int ReturnDamage()
     {
-        float _damage = damage;
+        float _damage = damage + Random.Range(0, 5);
 
         if (Random.Range(0, 100) < criticalChance)
         {
             _damage *= 1.5f;
         }
-        Exp += _damage;
+        Exp += _damage * ExpAmount;
         return (int)_damage;
     }
 

@@ -58,7 +58,21 @@ public class InGameManager : Singleton<InGameManager>
 
         upgradeUI.gameObject.SetActive(true);
 
-        int[] rand = new int[3] { Random.Range(0, Upgrades.Count), Random.Range(0, Upgrades.Count), Random.Range(0, Upgrades.Count) };
+        List<int> idxList = new List<int>();
+        for (int i = 0; i < Upgrades.Count; i++)
+        {
+            if (Upgrades[i].level < Upgrades[i].maxLevel)
+                idxList.Add(i);
+        }
+
+        int[] rand = new int[3];
+
+        for (int i = 0; i < rand.Length; i++)
+        {
+            rand[i] = idxList[Random.Range(0, idxList.Count)];
+            idxList.Remove(rand[i]);
+        }
+
         upgradeUI.InitButtons(Upgrades[rand[0]], Upgrades[rand[1]], Upgrades[rand[2]]);
     }
 
@@ -90,6 +104,10 @@ public class InGameManager : Singleton<InGameManager>
         Upgrades.Add(new UpgradeCritical());
         Upgrades.Add(new UpgradeDashDelay());
         Upgrades.Add(new UpgradeDashCool());
+        Upgrades.Add(new UpgradeEXP());
+        Upgrades.Add(new UpgradeMP());
+        Upgrades.Add(new UpgradeHP());
+        Upgrades.Add(new UpgradeMoveSpeed());
 
         Upgrades.ForEach(item => item.Init(GameManager.Instance.player));
     }
