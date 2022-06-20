@@ -243,6 +243,9 @@ public class OrcWave : WaveBase
         Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(-11, 0), EntitySize.Small));
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
+        RemovePlatform(Platforms);
+
+        waveEnd = true;
     }
 
     void Wave12()
@@ -252,8 +255,6 @@ public class OrcWave : WaveBase
 
     IEnumerator Wave12Coroutine()
     {
-        RemovePlatform(Platforms);
-
         Platforms.Add(SpawnPlatform(new Vector2(-3.75f, -3)));
         Platforms.Add(SpawnPlatform(new Vector2(-1.25f, -3)));
         Platforms.Add(SpawnPlatform(new Vector2(1.25f, -3)));
@@ -267,5 +268,7 @@ public class OrcWave : WaveBase
         Monsters.Add(SpawnMonster(PistolOrc, new Vector2(-10, -2.5f), EntitySize.Small));
         Monsters.Add(SpawnMonster(BigOrc, new Vector2(3.75f, -2.5f), EntitySize.Medium));
         Monsters.Add(SpawnMonster(BigOrc, new Vector2(-3.75f, -2.5f), EntitySize.Medium));
+
+        waveEnd = true;
     }
 }
