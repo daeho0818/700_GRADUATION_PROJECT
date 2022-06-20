@@ -24,7 +24,7 @@ public class InGameUIManager : Singleton<InGameUIManager>
     {
         // 1025 + 20 * add
 
-        int add = (int)hp - 100;
+        int add = (int)maxHp - 100;
         int cnt = add / 20;
 
         HpBarContainer.rectTransform.sizeDelta = new Vector2(1025 + cnt * 100, 70);
