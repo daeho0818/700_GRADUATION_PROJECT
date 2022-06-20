@@ -110,11 +110,23 @@ public abstract class WaveBase : MonoBehaviour
             for (int i = 0; i < EntityList.Count; i++)
                 if (EntityList[i].IsDestroy)
                 {
+                    StartCoroutine(DestroyMonster(EntityList[i]));
                     EntityList.Remove(EntityList[i]);
                 }
 
             yield return null;
         }
+    }
+
+    protected IEnumerator DestroyMonster(Entity monster)
+    {
+        yield return new WaitForSeconds(3f);
+
+        monster.GetComponentInChildren<Collider2D>().isTrigger = true;
+
+        while (monster.transform.position.y > -10f) yield return null;
+
+        Destroy(monster.gameObject);
     }
 
 }
