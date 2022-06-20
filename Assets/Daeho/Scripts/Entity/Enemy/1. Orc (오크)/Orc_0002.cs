@@ -45,7 +45,7 @@ public class Orc_0002 : GroundObject
         StartCoroutine(RotateProjectile(bullet));
     }
 
-    [Tooltip("발사체 회전 속도")][SerializeField] float projectile_rot_speed;
+    [Tooltip("발사체 회전 속도")] [SerializeField] float projectile_rot_speed;
 
     /// <summary>
     /// 발사체 회전 애니메이션을 구현한 함수

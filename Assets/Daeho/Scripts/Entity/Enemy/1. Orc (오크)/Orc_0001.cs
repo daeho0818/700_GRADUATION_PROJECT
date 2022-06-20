@@ -21,12 +21,28 @@ public class Orc_0001 : GroundObject
         base.Update();
     }
 
+    int loop_count = 0;
     /// <summary>
     /// 플레이어를 향해 3번 연속 총알을 발사하는 공격 함수
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator BaseAttack()
     {
+        System.Action action;
+
+        // 3번 발사를 위한 설정
+        if (++loop_count <= 3)
+            action = () => ChangeState("Attack");
+        else
+        {
+            action = () => ChangeState("Idle");
+            loop_count = 0;
+            yield break;
+        }
+
+        EnemyAnimation.AnimState state = animation.GetState();
+        state.frames_actions[state.frames_actions.Length - 1] = action;
+
         WaitForSeconds second = new WaitForSeconds(0.85f);
         Projectile bullet;
         Vector2 direction = (player.transform.position - transform.position).normalized;
@@ -36,17 +52,12 @@ public class Orc_0001 : GroundObject
 
         FlipSprite();
 
-        for (int i = 0; i < 3; i++)
-        {
-            bullet = Instantiate(bullet_prefab);
-            bullet.transform.position = shoot_position.position;
-            bullet.fire_direction = direction;
-            bullet.move_speed = bullet_speed;
-            bullet.GetComponent<SpriteRenderer>().flipX = direction.x > 0;
-            bullet.SetCollision((p) => { p.OnHit?.Invoke(1); });
-
-            yield return second;
-        }
+        bullet = Instantiate(bullet_prefab);
+        bullet.transform.position = shoot_position.position;
+        bullet.fire_direction = direction;
+        bullet.move_speed = bullet_speed;
+        bullet.GetComponent<SpriteRenderer>().flipX = direction.x > 0;
+        bullet.SetCollision((p) => { p.OnHit?.Invoke(1); });
     }
 
     Vector2 target_move_position;
