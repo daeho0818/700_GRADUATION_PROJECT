@@ -15,7 +15,7 @@ public class OrcWave : WaveBase
 
     private void Awake()
     {
-        Init(Wave1, Wave2, Wave3, Wave4, Wave5, Wave6, Wave7, Wave8, Wave9, Wave10, Wave11, Wave12);
+        Init(Wave1, Wave2, Wave3, Wave4, Wave5, Wave6, Wave7, Wave8, Wave9, Wave10, Wave11, Wave12, Wave13);
     }
 
     void Wave1()
@@ -243,7 +243,6 @@ public class OrcWave : WaveBase
         Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(-11, 0), EntitySize.Small));
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
-        RemovePlatform(Platforms);
 
         waveEnd = true;
     }
@@ -255,6 +254,8 @@ public class OrcWave : WaveBase
 
     IEnumerator Wave12Coroutine()
     {
+        RemovePlatform(Platforms);
+
         Platforms.Add(SpawnPlatform(new Vector2(-3.75f, -3)));
         Platforms.Add(SpawnPlatform(new Vector2(-1.25f, -3)));
         Platforms.Add(SpawnPlatform(new Vector2(1.25f, -3)));
@@ -269,6 +270,31 @@ public class OrcWave : WaveBase
         Monsters.Add(SpawnMonster(BigOrc, new Vector2(3.75f, -2.5f), EntitySize.Medium));
         Monsters.Add(SpawnMonster(BigOrc, new Vector2(-3.75f, -2.5f), EntitySize.Medium));
 
+        yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
+        waveEnd = true;
+    }
+
+    void Wave13()
+    {
+        StartCoroutine(Wave13Coroutine());
+    }
+
+    IEnumerator Wave13Coroutine()
+    {
+        RemovePlatform(Platforms);
+
+        Platforms.Add(SpawnPlatform(new Vector2(-1.25f, 0)));
+        Platforms.Add(SpawnPlatform(new Vector2(1.25f, 0)));
+
+        yield return new WaitForSeconds(2f);
+
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(8, 5), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(-8, 5), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(6, 2), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(-6, 2), EntitySize.Small));
+
+        yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
+        RemovePlatform(Platforms);
         waveEnd = true;
     }
 }
