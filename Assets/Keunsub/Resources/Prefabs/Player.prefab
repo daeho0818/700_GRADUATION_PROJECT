@@ -5123,7 +5123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 100
   hp: 0
-  move_speed: 0
+  move_speed: 5
   is_hit: 0
   colliders: []
   moveSpeed: 5

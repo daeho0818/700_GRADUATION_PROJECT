@@ -154,8 +154,9 @@ MonoBehaviour:
   enemy:
     animation: {fileID: 0}
     attack_check: 0
-    attack_frame: 0
+    attack_frame: 1
     bullet_speed: 0
+    long_attack: 0
   ai:
     search_player: 1
     ai_moving_range: 5
@@ -183,28 +184,35 @@ MonoBehaviour:
     delay: 0
     loop: 1
     wait: 0
+    wait_index: 0
   walk:
     frame_sprites:
     - {fileID: 21300000, guid: 9180119937fa04445a6ef47c0063b794, type: 3}
     delay: 0
     loop: 1
     wait: 0
+    wait_index: 0
   attack:
     frame_sprites:
+    - {fileID: 21300000, guid: a36a21078615ec245808f422a8376ddc, type: 3}
     - {fileID: 21300000, guid: 9dc984b306bc56d46aae21faaf928abc, type: 3}
     - {fileID: 21300000, guid: c0b41318f8ded7549b8cedcac73ef988, type: 3}
-    delay: 1
+    - {fileID: 21300000, guid: a36a21078615ec245808f422a8376ddc, type: 3}
+    delay: 0.5
     loop: 0
     wait: 1
+    wait_index: 1
   hit:
     frame_sprites:
     - {fileID: 21300000, guid: 5cace5b81336d774da2f16b1943c085e, type: 3}
     delay: 0
     loop: 0
     wait: 0
+    wait_index: 0
   dead:
     frame_sprites:
     - {fileID: 21300000, guid: 5cace5b81336d774da2f16b1943c085e, type: 3}
     delay: 0
     loop: 0
     wait: 0
+    wait_index: 0

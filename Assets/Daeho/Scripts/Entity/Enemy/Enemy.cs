@@ -15,6 +15,8 @@ public struct EnemyInformation
     public int attack_frame;
     // 총알 속도
     public float bullet_speed;
+    // 원거리 공격 여부
+    public bool long_attack;
 }
 
 [System.Serializable]
@@ -383,7 +385,7 @@ public class Enemy : Entity
         dir.x = player.transform.position.x > transform.position.x ? -1 : 1;
         dir.y = 1;
 
-        rigid.AddForce(dir * (damage * 0.5f), ForceMode2D.Impulse);
+        rigid.AddForce(dir * 3, ForceMode2D.Impulse);
     }
 
     /// <summary>
@@ -425,14 +427,19 @@ public class Enemy : Entity
             yield return null;
         while (rigid.velocity.y != 0); // 바닥에 떨어질 때까지 대기
 
-        target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
+        do
+        {
+            target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
+            hits = Physics2D.RaycastAll(target, Vector2.down, 1, LayerMask.GetMask("Ground"));
+            Debug.DrawRay(target, Vector2.down, Color.red, 0.5f);
+        } while (enemy.long_attack && hits.Length == 0);
 
         while (true)
         {
             yield return null;
 
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
-            transform.Translate(vec);
+            transform.position += (vec);
             FlipSprite(vec.x > 0);
 
             hits = Physics2D.RaycastAll(transform.position, (target - transform.position).normalized, 2, LayerMask.GetMask("Wall"));

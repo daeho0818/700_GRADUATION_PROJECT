@@ -37,6 +37,7 @@ public class Orc_0001 : GroundObject
         {
             action = () => ChangeState("Idle");
             loop_count = 0;
+            yield break;
         }
 
         EnemyAnimation.AnimState state = animation.GetState();
