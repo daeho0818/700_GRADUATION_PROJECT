@@ -5664,6 +5664,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7966685811938002661, guid: f8eb73943816078488e839b8cfcd073b, type: 3}
+      propertyPath: temp
+      value: 
+      objectReference: {fileID: 7400000, guid: 46067e02d63b3064cbe42517a090ed2e, type: 2}
+    - target: {fileID: 7966685811938002661, guid: f8eb73943816078488e839b8cfcd073b, type: 3}
       propertyPath: mainCam
       value: 
       objectReference: {fileID: 1186945511}
