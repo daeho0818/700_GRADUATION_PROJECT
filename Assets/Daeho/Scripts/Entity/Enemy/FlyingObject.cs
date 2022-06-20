@@ -48,6 +48,6 @@ public class FlyingObject : Enemy
         dir.x = player.transform.position.x > transform.position.x ? -1 : 1;
         dir.y = 0;
 
-        rigid.AddForce(dir * (damage * 2), ForceMode2D.Impulse);
+        rigid.AddForce(dir * (damage * 0.5f), ForceMode2D.Impulse);
     }
 }

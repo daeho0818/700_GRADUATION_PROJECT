@@ -38,6 +38,7 @@ public struct AIInformation
 
 public class Enemy : Entity
 {
+    #region Enemy States
     abstract class EnemyState
     {
         protected Enemy enemy = null;
@@ -229,7 +230,13 @@ public class Enemy : Entity
             EnemyAnimation.AnimState state = enemy.animation.GetState();
 
             state.frames_actions[state.frames_actions.Length - 1] =
-                () => Destroy(enemy.gameObject);
+                () =>
+                {
+                    enemy.enabled = false;
+                    enemy.renderer.color = Color.red;
+                    enemy.rigid.gravityScale = 1;
+                    enemy.OnHit = (d) => { };
+                };
         }
 
         public override void Update()
@@ -272,6 +279,7 @@ public class Enemy : Entity
                 return;
         }
     }
+    #endregion
 
     [Header("Enemy Information")]
     [SerializeField] EInfo enemy;
@@ -378,7 +386,7 @@ public class Enemy : Entity
         dir.x = player.transform.position.x > transform.position.x ? -1 : 1;
         dir.y = 1;
 
-        rigid.AddForce(dir * (damage * 2), ForceMode2D.Impulse);
+        rigid.AddForce(dir * (damage * 0.5f), ForceMode2D.Impulse);
     }
 
     /// <summary>
