@@ -369,7 +369,7 @@ public class Enemy : Entity
             OnDestroy = null;
         }
 
-        enemy_state.Update();
+        enemy_state?.Update();
         enemyStateName = enemy_state.GetType().Name;
     }
 

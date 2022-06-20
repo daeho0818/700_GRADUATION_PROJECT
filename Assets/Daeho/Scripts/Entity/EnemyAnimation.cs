@@ -19,10 +19,14 @@ public class EnemyAnimation : MonoBehaviour
         public bool loop;
         [Tooltip("대기 후 애니메이션이 끝난 후 마지막 프레임 실행")]
         public bool wait;
+        [Tooltip("대기할 인덱스")]
+        public int wait_index;
 
         protected Enemy model;
 
         internal int index = 0;
+
+        internal bool anim_end = false;
 
         public Coroutine update { get; set; } = null;
 
@@ -51,6 +55,8 @@ public class EnemyAnimation : MonoBehaviour
             if (frame_sprites == null || frame_sprites.Length == 0)
                 yield break;
 
+            anim_end = wait;
+
             while (true)
             {
                 // 마지막 애니메이션 프레임에 도달했을 경우
@@ -60,20 +66,19 @@ public class EnemyAnimation : MonoBehaviour
                         yield break;
                     else index = 0;
                 }
-                else if (index == frame_sprites.Length - 1)
+                // 실행이 끝날 때까지 대기
+                else if (anim_end && index == wait_index + 1)
                 {
                     yield return null;
                     continue;
                 }
 
-                model.renderer.sprite = frame_sprites[index++];
+                model.renderer.sprite = frame_sprites[index];
 
-                if (frames_actions[index - 1] != null)
-                {
-                    frames_actions[index - 1]();
-                }
+                frames_actions[index++]?.Invoke();
 
                 yield return new WaitForSeconds(delay);
+
             }
         }
     }
@@ -196,16 +201,7 @@ public class EnemyAnimation : MonoBehaviour
     {
         if (state.wait == false) yield break;
 
-        model.renderer.sprite = state.frame_sprites[state.index];
-
-        if (state.frames_actions[state.index] != null)
-        {
-            state.frames_actions[state.index]();
-        }
-
-        yield return new WaitForSeconds(state.delay);
-
-        StopCoroutine(state.update);
+        state.anim_end = false;
     }
 
     /// <summary>
@@ -222,6 +218,15 @@ public class EnemyAnimation : MonoBehaviour
         return s_state;
     }
 
+    /// <summary>
+    /// 현재 Animation State 이름을 받아오는 함수
+    /// - Idle
+    /// - Walk
+    /// - Hit
+    /// - Attack
+    /// - Dead
+    /// </summary>
+    /// <returns></returns>
     public AnimState GetState()
     {
         return state;
