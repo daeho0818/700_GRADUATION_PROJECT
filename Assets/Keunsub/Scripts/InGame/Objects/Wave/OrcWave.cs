@@ -15,7 +15,7 @@ public class OrcWave : WaveBase
 
     private void Awake()
     {
-        Init(Wave1, Wave2, Wave3, Wave4, Wave5, Wave6, Wave7, Wave8, Wave9);
+        Init(Wave1, Wave2, Wave3, Wave4, Wave5, Wave6, Wave7, Wave8, Wave9, Wave10, Wave11);
     }
 
     void Wave1()
@@ -180,12 +180,8 @@ public class OrcWave : WaveBase
 
         temp.Add(SpawnMonster(DashOrc, new Vector2(-10, -6.5f), EntitySize.Medium));
         temp.Add(SpawnMonster(DashOrc, new Vector2(-8, -6.5f), EntitySize.Medium));
-        temp.Add(SpawnMonster(DashOrc, new Vector2(-6, -6.5f), EntitySize.Medium));
-        temp.Add(SpawnMonster(DashOrc, new Vector2(-4, -6.5f), EntitySize.Medium));
         temp.Add(SpawnMonster(DashOrc, new Vector2(10, -6.5f), EntitySize.Medium));
         temp.Add(SpawnMonster(DashOrc, new Vector2(8, -6.5f), EntitySize.Medium));
-        temp.Add(SpawnMonster(DashOrc, new Vector2(6, -6.5f), EntitySize.Medium));
-        temp.Add(SpawnMonster(DashOrc, new Vector2(4, -6.5f), EntitySize.Medium));
 
         yield return new WaitForSeconds(1f);
 
@@ -199,5 +195,53 @@ public class OrcWave : WaveBase
         RemovePlatform(Platforms);
         yield return new WaitForSeconds(3f);
         waveEnd = true;
+    }
+
+    void Wave10()
+    {
+        StartCoroutine(Wave10Coroutine());
+    }
+
+    IEnumerator Wave10Coroutine()
+    {
+
+        Platforms.Add(SpawnPlatform(new Vector2(0, -3.5f)));
+        Platforms.Add(SpawnPlatform(new Vector2(6, -1)));
+        Platforms.Add(SpawnPlatform(new Vector2(-6, -1)));
+
+        yield return new WaitForSeconds(3f);
+
+        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(10, -6.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(PistolOrc, new Vector2(-10, -6.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-6, -0.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(6, -0.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(11, 1), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(-11, 1), EntitySize.Small));
+
+        yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
+        waveEnd = true;
+
+    }
+
+    void Wave11()
+    {
+        StartCoroutine(Wave11Coroutine());
+    }
+
+    IEnumerator Wave11Coroutine()
+    {
+        Platforms.Add(SpawnPlatform(new Vector2(3, 3)));
+        Platforms.Add(SpawnPlatform(new Vector2(-3, 3)));
+
+        yield return new WaitForSeconds(1f);
+
+        SpawnSharp();
+
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(3, 3.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ThrowOrc, new Vector2(-3, 3.5f), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(11, 0), EntitySize.Small));
+        Monsters.Add(SpawnMonster(ShotgunOrc, new Vector2(-11, 0), EntitySize.Small));
+
+        yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
     }
 }

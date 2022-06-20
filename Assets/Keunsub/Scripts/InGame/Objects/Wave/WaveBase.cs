@@ -50,6 +50,16 @@ public abstract class WaveBase : MonoBehaviour
         return temp;
     }
 
+    protected void SpawnSharp()
+    {
+
+    }
+
+    protected void RemoveSharp()
+    {
+
+    }
+        
     protected void RemovePlatform(List<Platform> platforms)
     {
         foreach (var item in platforms)
@@ -98,7 +108,10 @@ public abstract class WaveBase : MonoBehaviour
         while (EntityList.Count > remainCnt)
         {
             for (int i = 0; i < EntityList.Count; i++)
-                if (EntityList[i].IsDestroy) EntityList.Remove(EntityList[i]);
+                if (EntityList[i].IsDestroy)
+                {
+                    EntityList.Remove(EntityList[i]);
+                }
 
             yield return null;
         }
