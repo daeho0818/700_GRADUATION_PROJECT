@@ -189,6 +189,8 @@ public class OrcWave : WaveBase
 
         Platforms.Add(SpawnPlatform(new Vector2(1.25f, -1)));
         Platforms.Add(SpawnPlatform(new Vector2(-1.25f, -1)));
+        Platforms.Add(SpawnPlatform(new Vector2(5f, -4f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-5f, -4f)));
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
 
@@ -296,5 +298,15 @@ public class OrcWave : WaveBase
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
         RemovePlatform(Platforms);
         waveEnd = true;
+    }
+
+    void Wave14()
+    {
+
+    }
+
+    IEnumerator Wave14Coroutine()
+    {
+        yield return null;
     }
 }

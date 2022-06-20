@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
     public int DefaultHp;
     public int DefaultCritical; //critical hit
 
+    [Header("Items")] // 재화, 장신구
+    public int money; // 파이트머니
+    public List<ItemBase> ItemList = new List<ItemBase>();
 
     [Header("Scenes")]
     public List<SceneContainer> Scenes = new List<SceneContainer>();
@@ -30,8 +33,10 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
+        ItemList.ForEach(item => item.Init(player));
+
         DontDestroyOnLoad(gameObject);
-        MoveToScene(2, 0);
+        MoveToScene(0, 0);
     }
 
     public void MoveToScene(int nextScene, int nextDoor)
