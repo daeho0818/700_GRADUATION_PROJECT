@@ -10,14 +10,19 @@ public class EnemyAnimation : MonoBehaviour
     #region Animation states
     public abstract class AnimState
     {
+        [Tooltip("애니메이션 프레임")]
         public Sprite[] frame_sprites;
         public System.Action[] frames_actions;
+        [Tooltip("애니메이션 딜레이")]
         public float delay;
+        [Tooltip("애니메이션 반복")]
         public bool loop;
+        [Tooltip("대기 후 애니메이션이 끝난 후 마지막 프레임 실행")]
+        public bool wait;
 
         protected Enemy model;
 
-        private int index = 0;
+        internal int index = 0;
 
         public Coroutine update { get; set; } = null;
 
@@ -42,17 +47,23 @@ public class EnemyAnimation : MonoBehaviour
             if (delay == 0)
                 delay = 0.01f;
 
-            // 애니메이션 프레임이 없을 경우 대기
+            // 애니메이션 프레임이 없을 경우 종료
             if (frame_sprites == null || frame_sprites.Length == 0)
                 yield break;
 
             while (true)
             {
+                // 마지막 애니메이션 프레임에 도달했을 경우
                 if (index >= frame_sprites.Length)
                 {
                     if (loop == false)
                         yield break;
                     else index = 0;
+                }
+                else if (index == frame_sprites.Length - 1)
+                {
+                    yield return null;
+                    continue;
                 }
 
                 model.renderer.sprite = frame_sprites[index++];
@@ -175,6 +186,26 @@ public class EnemyAnimation : MonoBehaviour
 
         s_state = name;
         state.update = StartCoroutine(state.Update());
+    }
+
+    /// <summary>
+    /// wait이 true로 설정되었을 경우 호출 가능
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator AnimEnd()
+    {
+        if (state.wait == false) yield break;
+
+        model.renderer.sprite = state.frame_sprites[state.index];
+
+        if (state.frames_actions[state.index] != null)
+        {
+            state.frames_actions[state.index]();
+        }
+
+        yield return new WaitForSeconds(state.delay);
+
+        StopCoroutine(state.update);
     }
 
     /// <summary>

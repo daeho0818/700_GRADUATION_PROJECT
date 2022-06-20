@@ -25,7 +25,7 @@ public class Orc_0003 : GroundObject
     {
         float dir_x;
 
-        dir_x = (player.transform.position - transform.position).normalized.x;
+        dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
         yield return StartCoroutine(_BaseAttack(dir_x));
     }
     IEnumerator _BaseAttack(float dir_x)
@@ -34,7 +34,7 @@ public class Orc_0003 : GroundObject
         Vector2 dir = new Vector2(dir_x, 0);
         Player p = null;
 
-        FlipSprite();
+        FlipSprite(dir_x > 0);
 
         do
         {
@@ -56,12 +56,12 @@ public class Orc_0003 : GroundObject
             // ÇÃ·§Æû ³¡¿¡ µµ´ÞÇßÀ» ¶§
             if (hits.Length == 0) break;
 
-            transform.Translate(dir * move_speed * 2 * Time.deltaTime);
+            transform.position += (Vector3)(dir * move_speed * 2 * Time.deltaTime);
             yield return null;
 
         } while (true);
 
-        ai_moving = StartCoroutine(AIMoving());
+        StartCoroutine(animation.AnimEnd());
     }
 
 

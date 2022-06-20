@@ -154,9 +154,7 @@ MonoBehaviour:
   enemy:
     animation: {fileID: 0}
     attack_check: 0
-    attack_beforeDelay: 1
-    attack_afterDelay: 1
-    attack_coolTime: 5
+    attack_frame: 0
     bullet_speed: 0
   ai:
     search_player: 1
@@ -192,7 +190,7 @@ MonoBehaviour:
     frame_sprites:
     - {fileID: 21300000, guid: 9dc984b306bc56d46aae21faaf928abc, type: 3}
     - {fileID: 21300000, guid: c0b41318f8ded7549b8cedcac73ef988, type: 3}
-    delay: 0
+    delay: 1
     loop: 0
   hit:
     frame_sprites:

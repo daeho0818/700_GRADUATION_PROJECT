@@ -224,7 +224,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 4ecde6fa4e39dfd4895cfc1a38fe69df, type: 3}
     - {fileID: 21300000, guid: e3169b63b87175e409852153ca5b2c6b, type: 3}
     - {fileID: 21300000, guid: 4ecde6fa4e39dfd4895cfc1a38fe69df, type: 3}
-    delay: 0
+    delay: 1
     loop: 0
   hit:
     frame_sprites:

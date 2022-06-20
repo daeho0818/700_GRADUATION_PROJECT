@@ -229,14 +229,7 @@ public class Enemy : Entity
 
             EnemyAnimation.AnimState state = enemy.animation.GetState();
 
-            state.frames_actions[state.frames_actions.Length - 1] =
-                () =>
-                {
-                    enemy.enabled = false;
-                    enemy.renderer.color = Color.red;
-                    enemy.rigid.gravityScale = 1;
-                    enemy.OnHit = (d) => { };
-                };
+            state.frames_actions[state.frames_actions.Length - 1] = enemy.Release;
         }
 
         public override void Update()
@@ -250,7 +243,7 @@ public class Enemy : Entity
 
     EnemyState enemy_state = null;
 
-    void ChangeState(string state)
+    protected void ChangeState(string state)
     {
         switch (state)
         {
@@ -338,6 +331,9 @@ public class Enemy : Entity
     public bool find_player { get; set; }
 
     protected Player player;
+
+    [Space(10)]
+    [SerializeField] string enemyStateName;
     protected override void Awake()
     {
     }
@@ -374,6 +370,7 @@ public class Enemy : Entity
         }
 
         enemy_state.Update();
+        enemyStateName = enemy_state.GetType().Name;
     }
 
     /// <summary>
@@ -436,7 +433,7 @@ public class Enemy : Entity
 
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
             transform.Translate(vec);
-            FlipSprite();
+            FlipSprite(vec.x > 0);
 
             hits = Physics2D.RaycastAll(transform.position, (target - transform.position).normalized, 2, LayerMask.GetMask("Wall"));
 
@@ -546,5 +543,15 @@ public class Enemy : Entity
             transform.rotation = Quaternion.Euler(rot.x, 180, rot.y);
         else
             transform.rotation = Quaternion.Euler(rot.x, 0, rot.y);
+    }
+
+    public void Release()
+    {
+        StopAllCoroutines();
+
+        enabled = false;
+        renderer.color = Color.red;
+        rigid.gravityScale = 1;
+        OnHit = (d) => { };
     }
 }
