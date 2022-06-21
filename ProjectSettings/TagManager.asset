@@ -21,7 +21,7 @@ TagManager:
   - Wall
   - Ground
   - Entity
-  - 
+  - Text
   - 
   - 
   - 
@@ -46,4 +46,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Text
+    uniqueID: 74754121
     locked: 0
