@@ -28,6 +28,12 @@ public class Player : Entity
     public float MpCool = 3f;
     public float HpAmount = 1f;
 
+    public float damageIncrease = 1f;
+    public float defenseIncrease = 1f;
+    public float skillDamageIncrease = 1f;
+    public float moneyIncrease = 1f;
+    public float dodge = 10f; // 0~100
+
     [SerializeField] Vector2 JumpForce;
 
     [Header("Effect")]
@@ -79,9 +85,9 @@ public class Player : Entity
 
     }
 
-    public int ReturnDamage()
+    public int ReturnDamage(Entity monster)
     {
-        float _damage = damage + Random.Range(0, 5);
+        float _damage = (damage + Random.Range(0, 5)) * damageIncrease;
 
         if (Random.Range(0, 100) < criticalChance)
         {
@@ -118,8 +124,14 @@ public class Player : Entity
 
     void OnHitAction(int damage)
     {
-        hp -= damage;
-        GameManager.Instance.PrintDamage(damage, transform.position);
+
+        int rand = Random.Range(0, 100);
+
+        if (rand > dodge)
+        {
+            hp -= damage;
+            GameManager.Instance.PrintDamage(damage, transform.position);
+        }
     }
 
     protected override void Start()

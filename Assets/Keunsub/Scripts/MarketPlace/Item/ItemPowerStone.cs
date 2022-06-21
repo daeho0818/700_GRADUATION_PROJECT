@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item", menuName = "Item/OrcAxe", order = 0)]
-public class ItemOrcAxe : ItemBase
+public class ItemPowerStone : ItemBase //위력의 돌
 {
     public override void AtAttack(Entity monster)
     {
+        int chance = Random.Range(0, 100);
+        if(chance < 10)
+        {
+            player.OnHit(10);
+        }
     }
 
     public override void AtButtonClick()
@@ -15,7 +19,7 @@ public class ItemOrcAxe : ItemBase
 
     public override void AtGameInit()
     {
-        player.damageIncrease += 0.5f;
+        player.damageIncrease += 0.8f;
     }
 
     public override void AtKill()

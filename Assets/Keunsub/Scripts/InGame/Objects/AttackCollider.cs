@@ -9,7 +9,7 @@ public class AttackCollider : MonoBehaviour
         if (collision.CompareTag("Monster"))
         {
             if (!collision.GetComponent<Enemy>().IsDestroy)
-                collision.GetComponent<Enemy>().OnHit(GameManager.Instance.player.ReturnDamage());
+                collision.GetComponent<Enemy>().OnHit(GameManager.Instance.player.ReturnDamage(collision.GetComponent<Enemy>()));
         }
     }
 }

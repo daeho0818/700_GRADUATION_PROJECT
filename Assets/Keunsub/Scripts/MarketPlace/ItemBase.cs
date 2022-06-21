@@ -20,6 +20,7 @@ public abstract class ItemBase : MonoBehaviour
 
     public abstract void AtGameInit();
     public abstract void AtAttack(Entity monster);
+    public abstract void EndAttack();
     public abstract void AtKill();
     public abstract void AtOnDamage();
     public abstract void AtButtonClick();

@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item", menuName = "Item/OrcAxe", order = 0)]
-public class ItemOrcAxe : ItemBase
+public class ItemNecronomicon : ItemBase
 {
     public override void AtAttack(Entity monster)
     {
@@ -15,11 +14,12 @@ public class ItemOrcAxe : ItemBase
 
     public override void AtGameInit()
     {
-        player.damageIncrease += 0.5f;
+        player.skillDamageIncrease += 0.25f;
     }
 
     public override void AtKill()
     {
+        // 스킬 쿨타임 1초 감소
     }
 
     public override void AtOnDamage()
