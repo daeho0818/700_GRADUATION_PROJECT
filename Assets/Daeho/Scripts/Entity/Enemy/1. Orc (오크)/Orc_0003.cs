@@ -11,6 +11,8 @@ public class Orc_0003 : GroundObject
     protected override void Start()
     {
         base.Start();
+
+        ChangeState("Attack");
     }
 
     protected override void Update()
@@ -34,8 +36,6 @@ public class Orc_0003 : GroundObject
         Vector2 dir = new Vector2(dir_x, 0);
         Player p = null;
 
-        FlipSprite(dir_x > 0);
-
         do
         {
             hits = Physics2D.RaycastAll(transform.position, dir, 2f, LayerMask.GetMask("Wall"));
@@ -51,6 +51,8 @@ public class Orc_0003 : GroundObject
             {
                 p = CheckCollision(transform.position, (BoxCollider2D)colliders[0], 0);
                 p?.OnHit?.Invoke(1);
+                if (p != null)
+                    Debug.Log(p);
             }
 
             // 플랫폼 끝에 도달했을 때
@@ -64,6 +66,12 @@ public class Orc_0003 : GroundObject
         StartCoroutine(animation.AnimEnd());
     }
 
+    protected override bool AttackCheck()
+    {
+        float distance_y = Mathf.Abs(player.transform.position.y - transform.position.y);
 
+        // 일직선상에 위치했을 경우 돌진
+        return distance_y <= 1;
+    }
     protected override void MoveToPlayer() { }
 }

@@ -186,7 +186,9 @@ MonoBehaviour:
     animation: {fileID: 0}
     attack_check: 0
     attack_frame: 1
+    attack_coolTime: 3
     bullet_speed: 10
+    attack_distance: 10
     long_attack: 1
   ai:
     search_player: 1

@@ -32,7 +32,6 @@ public class Orc_0002 : GroundObject
 
         yield return null;
 
-        FlipSprite();
         sprite = projectile_sprites[Random.Range(0, projectile_sprites.Length)];
 
         bullet = Instantiate(bullet_prefab);
@@ -62,6 +61,10 @@ public class Orc_0002 : GroundObject
         }
     }
 
+    protected override bool AttackCheck()
+    {
+        return true;
+    }
 
     Vector2 target_move_position;
 
