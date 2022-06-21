@@ -14,70 +14,73 @@ public class Crystal_0000 : GroundObject
         base.Start();
     }
 
+    Player p;
     protected override void Update()
     {
         base.Update();
+
+        if (p == null && animation.GetStateName() == "Attack")
+        {
+            p = CheckCollision(transform.position, (BoxCollider2D)colliders[0], 0);
+            p?.OnHit?.Invoke(1);
+        }
     }
 
-    protected override bool FindPlayer() => base_attack == null;
-
-    protected override bool AttackCheck() => smash_attack == null;
+    protected override bool AttackCheck() => true;
 
     /// <summary>
-    /// 플레이어를 향해 돌진하는 공격 스킬
+    /// 플레이어를 향해 할퀴거나 돌진하는 공격 스킬
     /// </summary>
     protected override IEnumerator BaseAttack()
     {
-        if (base_attack != null) StopCoroutine(base_attack);
-        base_attack = StartCoroutine(_BaseAttack());
+        float distance = Vector2.Distance(transform.position, player.transform.position);
+        IEnumerator enumerator;
 
-        yield return base_attack;
+        if (distance <= attack_distance)
+            enumerator = SmashAttack();
+        else
+            enumerator = DashAttack();
+
+        p = null;
+
+        yield return StartCoroutine(enumerator);
     }
-    Coroutine base_attack = null;
-    IEnumerator _BaseAttack()
+    IEnumerator DashAttack()
     {
-        yield return new WaitForSeconds(2);
+        yield return null;
 
-        Vector3 force = (renderer.flipX ? Vector2.right : Vector2.left) * 10; // 바라보고 있는 방향으로 돌진
+        Vector3 force = (player.transform.position.x > transform.position.x ? Vector2.right : Vector2.left) * 10; // 바라보고 있는 방향으로 돌진
         force.y = 2;
         rigid.AddForce(force, ForceMode2D.Impulse);
         FlipSprite(force.x > 0);
 
-        yield return new WaitForSeconds(0.5f);
-        base_attack = null;
-    }
+        Player p = null;
 
-    /// <summary>
-    /// 플레이어를 향해 이동하며 가까이 도착했을 경우 할퀴기
-    /// </summary>
-    protected override void MoveToPlayer()
-    {
-        if (smash_attack != null) return;
-
-        if (Vector2.Distance(player.transform.position, transform.position) <= distance_with_player)
+        while (rigid.velocity.x != 0)
         {
-            smash_attack = StartCoroutine(SmashAttack());
-            return;
-        }
+            if (p == null)
+            {
+                var collider = (BoxCollider2D)colliders[0];
 
-        base.MoveToPlayer();
+                p = CheckCollision(transform.position, collider, 0);
+                p?.OnHit?.Invoke(1);
+            }
+
+            yield return null;
+        }
     }
 
-    Coroutine smash_attack = null;
     /// <summary>
     /// 할퀴기 공격
     /// </summary>
     IEnumerator SmashAttack()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return null;
 
-        BoxCollider2D collider = (BoxCollider2D)colliders[1];
+        var collider = (BoxCollider2D)colliders[1];
 
         Player p = CheckCollision(transform.position, collider, 0);
         p?.OnHit?.Invoke(1);
-        yield return new WaitForSeconds(2f);
-
-        smash_attack = null;
     }
 
     protected override IEnumerator AIMoving()
