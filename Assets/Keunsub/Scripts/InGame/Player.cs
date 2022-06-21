@@ -129,7 +129,7 @@ public class Player : Entity
 
         if (rand > dodge)
         {
-            hp -= damage;
+            hp -= damage * defenseIncrease;
             GameManager.Instance.PrintDamage(damage, transform.position, Color.red);
         }
     }

@@ -309,4 +309,30 @@ public class OrcWave : WaveBase
     {
         yield return null;
     }
+
+    void BossWave()
+    {
+        StartCoroutine(BossWaveCoroutine());
+    }
+
+    IEnumerator BossWaveCoroutine()
+    {
+        Platforms.Add(SpawnPlatform(new Vector2(-11, 0)));
+        Platforms.Add(SpawnPlatform(new Vector2(-8.5f, 0)));
+        Platforms.Add(SpawnPlatform(new Vector2(-6, 0)));
+        Platforms.Add(SpawnPlatform(new Vector2(11, 0)));
+        Platforms.Add(SpawnPlatform(new Vector2(8.5f, 0)));
+        Platforms.Add(SpawnPlatform(new Vector2(6, 0)));
+        Platforms.Add(SpawnPlatform(new Vector2(-2.5f, -2.75f)));
+        Platforms.Add(SpawnPlatform(new Vector2(0, -2.75f)));
+        Platforms.Add(SpawnPlatform(new Vector2(2.5f, -2.75f)));
+
+        yield return new WaitForSeconds(5f);
+
+        Monsters.Add(SpawnMonster(OrcBoss, new Vector2(0f, -1.5f), EntitySize.Big));
+
+        yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
+
+        RemoveSharp();
+    }
 }

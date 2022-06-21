@@ -384,7 +384,7 @@ public class Enemy : Entity
 
             hp -= damage;
         };
-        OnHit += (d) => GameManager.Instance.PrintDamage(d, transform.position);
+        OnHit += (d) => GameManager.Instance.PrintDamage(d, transform.position, Color.yellow);
 
         OnDestroy += () => ChangeState("Dead");
         // 코인 떨구는 내용 OnDestroy += () => { };

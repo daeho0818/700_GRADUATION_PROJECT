@@ -15,7 +15,7 @@ public class ItemChampionHelmet : ItemBase
     public override void AtGameInit()
     {
         player.damageIncrease += 0.25f;
-        player.defenseIncrease += 0.15f;
+        player.defenseIncrease -= 0.15f;
     }
 
     public override void AtKill()

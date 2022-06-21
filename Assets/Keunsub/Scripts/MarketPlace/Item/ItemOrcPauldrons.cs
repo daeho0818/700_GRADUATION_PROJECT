@@ -14,7 +14,7 @@ public class ItemOrcPauldrons : ItemBase
 
     public override void AtGameInit()
     {
-        player.defenseIncrease += 0.35f;
+        player.defenseIncrease -= 0.35f;
     }
 
     public override void AtKill()
