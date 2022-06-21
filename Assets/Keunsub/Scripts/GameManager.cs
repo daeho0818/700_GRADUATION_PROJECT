@@ -36,7 +36,7 @@ public class GameManager : Singleton<GameManager>
         ItemList.ForEach(item => item.Init(player));
 
         DontDestroyOnLoad(gameObject);
-        MoveToScene(0, 0);
+        MoveToScene(2, 0);
     }
 
     public void MoveToScene(int nextScene, int nextDoor)
@@ -99,11 +99,11 @@ public class GameManager : Singleton<GameManager>
         healTxt.GetComponent<TextMesh>().color = Color.green;
     }
 
-    public void PrintDamage(int damage, Vector3 pos)
+    public void PrintDamage(int damage, Vector3 pos, Color color)
     {
         GameObject damageTxt = PrintTM(damage, pos);
         damageTxt.name = "DamageTxt: " + damage.ToString();
-        damageTxt.GetComponent<TextMesh>().color = Color.red;
+        damageTxt.GetComponent<TextMesh>().color = color;
     }
 
     GameObject PrintTM(int amount, Vector3 pos)

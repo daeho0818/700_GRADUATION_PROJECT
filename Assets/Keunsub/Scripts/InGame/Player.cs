@@ -130,7 +130,7 @@ public class Player : Entity
         if (rand > dodge)
         {
             hp -= damage;
-            GameManager.Instance.PrintDamage(damage, transform.position);
+            GameManager.Instance.PrintDamage(damage, transform.position, Color.red);
         }
     }
 
@@ -289,7 +289,7 @@ public class Player : Entity
     {
         if (Input.GetKey(KeyCode.Z) && isJumping && curJumpTime > 0f)
         {
-            RB.AddForce(JumpForce / 2);
+            RB.AddForce(JumpForce / 2, ForceMode2D.Force);
             curJumpTime -= Time.deltaTime;
         }
 
