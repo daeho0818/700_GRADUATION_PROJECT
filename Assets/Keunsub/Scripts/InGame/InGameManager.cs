@@ -9,6 +9,7 @@ public class InGameManager : Singleton<InGameManager>
     public Transform Door;
     public bool isGameActive;
     public WaveBase nowWave;
+    WaveBase[] Waves;
 
     public bool upgradeTrigger;
     public List<UpgradeClass> Upgrades = new List<UpgradeClass>();
@@ -16,9 +17,7 @@ public class InGameManager : Singleton<InGameManager>
 
     void Start()
     {
-        int waveIdx = 0; //get from game manager
-        nowWave = GetComponents<WaveBase>()[waveIdx];
-
+        Waves = GetComponents<WaveBase>();
     }
 
     void Update()
@@ -29,11 +28,23 @@ public class InGameManager : Singleton<InGameManager>
             if (col != null && col.CompareTag("Player"))
             {
                 isGameActive = true;
-                nowWave.WaveStart(this);
+                StartCoroutine(WaveCoroutine());
             }
         }
+    }
 
+    IEnumerator WaveCoroutine()
+    {
+        for (int i = 0; i < Waves.Length; i++)
+        {
+            nowWave = Waves[i];
+            yield return StartCoroutine(nowWave.WaveStart(this));
+        }
 
+        // wait
+
+        GameManager.Instance.player.StateInit();
+        GameEnd();
     }
 
     public IEnumerator UpgradePause()

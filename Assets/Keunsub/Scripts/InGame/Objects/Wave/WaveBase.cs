@@ -26,10 +26,10 @@ public abstract class WaveBase : MonoBehaviour
 
     InGameManager manager;
 
-    public virtual void WaveStart(InGameManager _manager)
+    public virtual IEnumerator WaveStart(InGameManager _manager)
     {
         manager = _manager;
-        waveCoroutine = StartCoroutine(WaveCoroutine());
+        yield return waveCoroutine = StartCoroutine(WaveCoroutine());
     }
 
     protected Entity SpawnMonster(Entity monster, Vector2 spawnPos, EntitySize size)
@@ -97,10 +97,6 @@ public abstract class WaveBase : MonoBehaviour
             yield return new WaitForSeconds(2f);
             curWaveIdx++;
         }
-
-        GameManager.Instance.player.StateInit();
-        manager.GameEnd();
-
     }
 
     protected IEnumerator WaitUntilMonsterDie(List<Entity> EntityList, int remainCnt = 0)
