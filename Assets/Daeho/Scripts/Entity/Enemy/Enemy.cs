@@ -183,9 +183,11 @@ public class Enemy : Entity
             EnemyAnimation.AnimState state = enemy.animation.GetState();
             System.Action attack = () => { this.attack = enemy.StartCoroutine(enemy.BaseAttack()); };
 
-            state.frames_actions[enemy.enemy.attack_frame] = attack;
-
-            state.frames_actions[state.frames_actions.Length - 1] = () => enemy.ChangeState("Idle");
+            if (state.frames_actions.Length > 0)
+            {
+                state.frames_actions[enemy.enemy.attack_frame] = attack;
+                state.frames_actions[state.frames_actions.Length - 1] = () => enemy.ChangeState("Idle");
+            }
         }
 
         public override void Update()
@@ -499,12 +501,12 @@ public class Enemy : Entity
     /// <param name="collider">BoxCollider2D</param>
     /// <param name="rot">회전</param>
     /// <returns>충돌했다면 player, 아니라면 null</returns>
-    protected Player CheckCollision(Vector2 position, BoxCollider2D collider, float rot)
+    protected Player CheckCollision(Vector2 position, BoxCollider2D collider, float rot, float size = 1)
     {
         Vector2 offset = collider.offset;
         if (transform.rotation.y != 0) offset *= Vector2.left;
 
-        var hits = Physics2D.BoxCastAll(position + offset, collider.size, rot, Vector2.zero, 0, LayerMask.GetMask("Entity"));
+        var hits = Physics2D.BoxCastAll(position + (offset * size), collider.size, rot, Vector2.zero, 0, LayerMask.GetMask("Entity"));
 
         foreach (var hit in hits)
         {
