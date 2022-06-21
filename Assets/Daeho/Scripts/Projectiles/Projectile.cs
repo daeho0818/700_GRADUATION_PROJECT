@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     public Vector2 fire_direction { get; set; }
     public float move_speed { get; set; }
 
-    protected event System.Action<Player> onCollision = null;
+    protected System.Action<Player> onCollision = null;
 
     protected virtual void Update()
     {

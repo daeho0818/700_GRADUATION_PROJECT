@@ -20,16 +20,12 @@ public class Orc_0000 : FlyingObject
         base.Update();
     }
 
-    Vector3 target_fire_position;
-
     /// <summary>
     /// 플레이어를 향해 산탄총 발사하는 기본 공격 함수
     /// </summary>
     protected override IEnumerator BaseAttack()
     {
         yield return null;
-
-        target_fire_position = player.transform.position;
 
         bool player_right = player.transform.position.x > transform.position.x;
         bool player_down = player.transform.position.y < transform.position.y;
@@ -42,8 +38,6 @@ public class Orc_0000 : FlyingObject
 
         Projectile bullet;
 
-        FlipSprite();
-
         foreach (var dir in dirs)
         {
             bullet = Instantiate(bullet_prefab);
@@ -55,6 +49,13 @@ public class Orc_0000 : FlyingObject
         }
     }
 
+    protected override bool AttackCheck()
+    {
+        float distance = Vector2.Distance(player.transform.position, transform.position);
+
+        return distance <= attack_distance;
+    }
+
     Vector2 target_move_position;
 
     /// <summary>
@@ -64,8 +65,7 @@ public class Orc_0000 : FlyingObject
     {
         int dir_x = (player.transform.position.x > transform.position.x ? -1 : 1);
 
-        target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, 0);
-        target_move_position.y = transform.position.y;
+        target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, distance_with_player / 2);
 
         FlipSprite();
         transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);

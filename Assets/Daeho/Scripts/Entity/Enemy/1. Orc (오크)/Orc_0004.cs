@@ -33,12 +33,10 @@ public class Orc_0004 : GroundObject
 
         yield return null;
 
-        FlipSprite();
-
         collider = (BoxCollider2D)colliders[1];
         dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
 
-        p = CheckCollision((Vector2)transform.position + collider.offset, collider, 0);
+        p = CheckCollision(transform.position, collider, 0);
         p?.OnHit?.Invoke(1);
     }
 

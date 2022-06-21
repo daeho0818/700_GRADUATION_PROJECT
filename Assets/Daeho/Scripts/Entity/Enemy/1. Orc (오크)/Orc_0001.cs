@@ -31,13 +31,12 @@ public class Orc_0001 : GroundObject
         System.Action action;
 
         // 3번 발사를 위한 설정
-        if (++loop_count <= 3)
+        if (++loop_count <= 2)
             action = () => ChangeState("Attack");
         else
         {
             action = () => ChangeState("Idle");
             loop_count = 0;
-            yield break;
         }
 
         EnemyAnimation.AnimState state = animation.GetState();
@@ -50,14 +49,21 @@ public class Orc_0001 : GroundObject
 
         yield return null;
 
-        FlipSprite();
-
         bullet = Instantiate(bullet_prefab);
         bullet.transform.position = shoot_position.position;
         bullet.fire_direction = direction;
         bullet.move_speed = bullet_speed;
         bullet.GetComponent<SpriteRenderer>().flipX = direction.x > 0;
         bullet.SetCollision((p) => { p.OnHit?.Invoke(1); });
+    }
+
+    protected override bool AttackCheck()
+    {
+        float y = Mathf.Abs(transform.position.y - transform.position.y);
+        float dis = Vector2.Distance(transform.position, player.transform.position);
+
+        // 플레이어가 일직선상 일정 거리 이하에 있을 경우
+        return y <= 1 && dis <= attack_distance;
     }
 
     Vector2 target_move_position;

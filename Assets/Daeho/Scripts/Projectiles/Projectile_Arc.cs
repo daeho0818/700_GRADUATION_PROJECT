@@ -44,6 +44,8 @@ public class Projectile_Arc : Projectile
             yield return null;
         }
 
+        onCollision = (p) => { };
+
         progress = 0;
 
         var renderer = GetComponent<SpriteRenderer>();

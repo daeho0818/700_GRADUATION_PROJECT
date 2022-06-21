@@ -155,13 +155,15 @@ MonoBehaviour:
     animation: {fileID: 0}
     attack_check: 0
     attack_frame: 1
+    attack_coolTime: 5
     bullet_speed: 5
+    attack_distance: 5
     long_attack: 1
   ai:
     search_player: 1
-    ai_moving_range: 0
-    delay_min: 0
-    delay_max: 0
+    ai_moving_range: 5
+    delay_min: 2
+    delay_max: 3
     search_distance: 5
     unSearch_distance: 10
     distance_with_player: 5

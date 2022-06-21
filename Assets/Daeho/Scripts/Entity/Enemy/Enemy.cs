@@ -7,28 +7,32 @@ using AIInfo = AIInformation;
 [System.Serializable]
 public struct EnemyInformation
 {
-    // Enemy 애니메이션 관리자
+    [Tooltip("Enemy 애니메이션 관리자")]
     public EnemyAnimation animation;
-    // 공격 패턴 유무 여부
+    [Tooltip("공격 패턴 유무 여부")]
     public bool attack_check;
-    // 애니메이션 공격 해당 프레임
+    [Tooltip("애니메이션 공격 해당 프레임")]
     public int attack_frame;
-    // 총알 속도
+    [Tooltip("공격 대기 시간")]
+    public int attack_coolTime;
+    [Tooltip("총알 속도")]
     public float bullet_speed;
-    // 원거리 공격 여부
+    [Tooltip("공격 범위")]
+    public float attack_distance;
+    [Tooltip("원거리 공격 여부")]
     public bool long_attack;
 }
 
 [System.Serializable]
 public struct AIInformation
 {
-    // 플레이어 탐색 여부
+    [Tooltip("플레이어 탐색 여부")]
     public bool search_player;
-    // AI 이동 반경
+    [Tooltip("AI 이동 반경")]
     public float ai_moving_range;
-    // 이동 간 최소 대기시간
+    [Tooltip("이동 간 최소 대기시간")]
     public float delay_min;
-    // 이동 간 최대 대기시간
+    [Tooltip("이동 간 최대 대기시간")]
     public float delay_max;
     [Tooltip("플레이어를 탐색하는 범위 (거리)")]
     public float search_distance;
@@ -83,10 +87,15 @@ public class Enemy : Entity
     {
         Coroutine walk_process = null;
         Coroutine ai_moving = null;
+
+        Timer attack_coolTimer = new Timer();
+        bool attackable = false;
         public WalkState(Enemy enemy)
         {
             this.enemy = enemy;
             player = enemy.player;
+
+            attack_coolTimer.TimerStart(enemy, enemy.attack_coolTime, () => { attackable = true; });
 
             enemy.animation.SetState("Walk");
 
@@ -118,7 +127,7 @@ public class Enemy : Entity
             }
 
             // 플레이어를 공격 가능한 경우
-            if (player != null && enemy.AttackCheck())
+            if (enemy.AttackCheck() && attackable == true)
             {
                 enemy.ChangeState("Attack");
             }
@@ -168,6 +177,8 @@ public class Enemy : Entity
             player = enemy.player;
 
             enemy.animation.SetState("Attack");
+
+            enemy.FlipSprite();
 
             EnemyAnimation.AnimState state = enemy.animation.GetState();
             System.Action attack = () => { this.attack = enemy.StartCoroutine(enemy.BaseAttack()); };
@@ -288,11 +299,27 @@ public class Enemy : Entity
     /// </summary>
     public bool attack_check { get => enemy.attack_check; set => enemy.attack_check = value; }
     /// <summary>
+    /// 애니메이션 공격 해당 프레임
+    /// </summary>
+    public int attack_frame { get => enemy.attack_frame; set => enemy.attack_frame = value; }
+    /// <summary>
+    /// 공격 대기 시간
+    /// </summary>
+    public int attack_coolTime { get => enemy.attack_coolTime; set => enemy.attack_coolTime = value; }
+    /// <summary>
     /// 총알 속도
     /// </summary>
     public float bullet_speed { get => enemy.bullet_speed; set => enemy.bullet_speed = value; }
     #endregion
+    /// <summary>
+    /// 공격 범위
+    /// </summary>
+    public float attack_distance { get => enemy.attack_distance; set => enemy.attack_distance = value; }
 
+    /// <summary>
+    /// 원거리 공격 여부
+    /// </summary>
+    public bool long_attack { get => enemy.long_attack; set => enemy.long_attack = value; }
     [Header("AI Moving Information")]
     [SerializeField] protected AIInfo ai;
     #region Properties
@@ -329,7 +356,9 @@ public class Enemy : Entity
 
     protected Coroutine ai_moving = null;
 
-    // 플레이어 발견 여부
+    /// <summary>
+    /// 플레이어 발견 여부
+    /// </summary>
     public bool find_player { get; set; }
 
     protected Player player;
@@ -355,12 +384,14 @@ public class Enemy : Entity
 
             hp -= damage;
         };
+        OnHit += (d) => GameManager.Instance.PrintDamage(d, transform.position);
 
         OnDestroy += () => ChangeState("Dead");
+        // 코인 떨구는 내용 OnDestroy += () => { };
 
         distance_with_player = Random.Range(distance_with_player - 1, distance_with_player + 2);
 
-        ChangeState("Idle");
+        ChangeState("Walk");
     }
 
     protected override void Update()
@@ -432,7 +463,7 @@ public class Enemy : Entity
             target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
             hits = Physics2D.RaycastAll(target, Vector2.down, 1, LayerMask.GetMask("Ground"));
             Debug.DrawRay(target, Vector2.down, Color.red, 0.5f);
-        } while (enemy.long_attack && hits.Length == 0);
+        } while (long_attack == true && hits.Length == 0);
 
         while (true)
         {
