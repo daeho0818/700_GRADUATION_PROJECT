@@ -153,18 +153,20 @@ MonoBehaviour:
   enemy:
     animation: {fileID: 0}
     attack_check: 0
-    attack_beforeDelay: 1
-    attack_afterDelay: 1
+    attack_frame: 0
     attack_coolTime: 5
     bullet_speed: 3
+    attack_distance: 0
+    long_attack: 0
   ai:
     search_player: 1
-    ai_moving_range: 0
-    delay_min: 0
-    delay_max: 0
+    ai_moving_range: 5
+    delay_min: 3
+    delay_max: 4
     search_distance: 5
     unSearch_distance: 10
-    distance_with_player: 3
+    distance_with_player: 8
+  enemyStateName: 
   projectile_prefab: {fileID: 4010206706921858180, guid: c8a72341e054d5243ad23e1c7d6a39f4, type: 3}
 --- !u!114 &8055693626393840847
 MonoBehaviour:
@@ -179,17 +181,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idle:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 38891d4b72b2764428bc4488c03cc9f7, type: 3}
     delay: 0
+    loop: 0
+    wait: 0
+    wait_index: 0
   walk:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 38891d4b72b2764428bc4488c03cc9f7, type: 3}
     delay: 0
-  hit:
-    frame_sprites: []
-    delay: 0
+    loop: 0
+    wait: 0
+    wait_index: 0
   attack:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 38891d4b72b2764428bc4488c03cc9f7, type: 3}
+    - {fileID: 21300000, guid: 38891d4b72b2764428bc4488c03cc9f7, type: 3}
     delay: 0
+    loop: 0
+    wait: 0
+    wait_index: 0
+  hit:
+    frame_sprites:
+    - {fileID: 21300000, guid: 38891d4b72b2764428bc4488c03cc9f7, type: 3}
+    delay: 0
+    loop: 0
+    wait: 0
+    wait_index: 0
   dead:
-    frame_sprites: []
+    frame_sprites:
+    - {fileID: 21300000, guid: 38891d4b72b2764428bc4488c03cc9f7, type: 3}
     delay: 0
+    loop: 0
+    wait: 0
+    wait_index: 0

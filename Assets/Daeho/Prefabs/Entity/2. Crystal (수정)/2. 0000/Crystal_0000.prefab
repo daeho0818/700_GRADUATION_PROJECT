@@ -157,7 +157,7 @@ MonoBehaviour:
     animation: {fileID: 0}
     attack_check: 0
     attack_frame: 0
-    attack_coolTime: 3
+    attack_coolTime: 0
     bullet_speed: 0
     attack_distance: 3
     long_attack: 0
@@ -198,6 +198,7 @@ MonoBehaviour:
     wait_index: 0
   attack:
     frame_sprites:
+    - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
     - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
     delay: 0
     loop: 0
