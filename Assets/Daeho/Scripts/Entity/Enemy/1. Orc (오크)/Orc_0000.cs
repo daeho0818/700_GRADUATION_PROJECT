@@ -42,7 +42,6 @@ public class Orc_0000 : FlyingObject
         {
             bullet = Instantiate(bullet_prefab);
             bullet.transform.position = transform.position;
-            bullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
             bullet.fire_direction = dir;
             bullet.move_speed = bullet_speed;
             bullet.SetCollision((p) => { p?.OnHit?.Invoke(1); });

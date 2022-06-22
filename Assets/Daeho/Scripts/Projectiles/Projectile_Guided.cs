@@ -34,6 +34,7 @@ public class Projectile_Guided : Projectile
 
         while (true)
         {
+            // 일정 시간이 지나기 전까지 타겟을 유도
             if (Time.time - time < 2 && target)
                 fire_direction = (target.position - transform.position).normalized;
 

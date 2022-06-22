@@ -165,7 +165,7 @@ MonoBehaviour:
     delay_max: 4
     search_distance: 5
     unSearch_distance: 10
-    distance_with_player: 8
+    distance_with_player: 7
   enemyStateName: 
   projectile_prefab: {fileID: 4010206706921858180, guid: c8a72341e054d5243ad23e1c7d6a39f4, type: 3}
 --- !u!114 &8055693626393840847
