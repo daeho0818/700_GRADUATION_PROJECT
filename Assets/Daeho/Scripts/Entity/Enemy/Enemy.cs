@@ -369,7 +369,7 @@ public class Enemy : Entity
     [SerializeField] string enemyStateName;
     protected override void Awake()
     {
-        hp = max_hp
+        hp = max_hp;
     }
 
     protected override void Start()
