@@ -11,6 +11,13 @@ public class Projectile : MonoBehaviour
 
     protected System.Action<Player> onCollision = null;
 
+    protected virtual void Start()
+    {
+        Invoke(nameof(Destroy), 10);
+
+        transform.rotation = Quaternion.Euler(0, 0, 180 + Mathf.Atan2(fire_direction.y, fire_direction.x) * Mathf.Rad2Deg);
+    }
+
     protected virtual void Update()
     {
         transform.position += (Vector3)fire_direction * move_speed * Time.deltaTime;
@@ -24,12 +31,17 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Player"))
+        if (collision.transform.TryGetComponent(out Player p))
         {
-            onCollision?.Invoke(collision.GetComponent<Player>());
+            onCollision?.Invoke(p);
             Destroy(gameObject);
         }
 
         // else if (collision.CompareTag("Platform")) Destroy(gameObject);
+    }
+
+    private void Destroy()
+    {
+        Destroy(gameObject);
     }
 }

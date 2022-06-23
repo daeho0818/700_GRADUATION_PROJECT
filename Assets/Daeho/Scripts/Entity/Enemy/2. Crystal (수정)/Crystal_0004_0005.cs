@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//사랑해요 사랑해요
 public class Crystal_0004_0005 : FlyingObject
 {
     [SerializeField] Projectile proj_prefab;
@@ -16,6 +17,8 @@ public class Crystal_0004_0005 : FlyingObject
 
         // 정지 오브젝트.
         move_speed = 0;
+
+        attack = StartCoroutine(Attack());
     }
 
     protected override void Update()
@@ -28,6 +31,11 @@ public class Crystal_0004_0005 : FlyingObject
         yield return null;
     }
 
+    protected override bool FindPlayer()
+    {
+        float dis = Vector2.Distance(player.transform.position, transform.position);
+        return search_distance >= dis;
+    }
     protected override void MoveToPlayer()
     {
     }
@@ -35,12 +43,47 @@ public class Crystal_0004_0005 : FlyingObject
     protected override bool AttackCheck()
     {
         float distance = Vector2.Distance(player.transform.position, transform.position);
-        return search_distance >= distance;
+        return attack_distance >= distance;
     }
 
+    Coroutine attack = null;
+    /// <summary>
+    /// 사방으로 가시를 날리며 대기하는 패턴  
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Attack()
+    {
+        yield return new WaitForSeconds(1);
+
+        float deg;
+        Vector2 dir;
+        Projectile proj;
+
+        while (true)
+        {
+            deg = Random.Range(0, 360);
+            deg = deg * Mathf.Deg2Rad;
+
+            dir = new Vector2(Mathf.Cos(deg), Mathf.Sin(deg));
+
+            proj = Instantiate(proj_prefab);
+            proj.transform.position = transform.position;
+            proj.move_speed = bullet_speed;
+            proj.fire_direction = dir;
+            proj.SetCollision((p) => { p?.OnHit?.Invoke(1); });
+
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    /// <summary>
+    /// 자폭 공격 패턴
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator BaseAttack()
     {
-        // 자폭 애니메이션
+        StopCoroutine(attack);
+        Debug.Log("응애!");
 
         const int FIRE_COUNT = 8;
 
@@ -48,7 +91,8 @@ public class Crystal_0004_0005 : FlyingObject
         Vector2 fire_direction;
         float rad;
 
-        yield return null;
+        yield return new WaitForSeconds(5f);
+        Debug.Log("응애?");
 
         for (int i = 0; i <= 360; i += 360 / FIRE_COUNT)
         {
@@ -59,9 +103,10 @@ public class Crystal_0004_0005 : FlyingObject
             proj = Instantiate(proj_prefab);
             proj.transform.position = transform.position;
             proj.fire_direction = fire_direction;
-            proj.SetCollision((p) => { p?.OnHit(1); });
+            proj.move_speed = bullet_speed;
+            proj.SetCollision((p) => { p?.OnHit?.Invoke(1); });
         }
 
-        Destroy(gameObject);
+        hp = 0;
     }
 }

@@ -19,39 +19,38 @@ public class Crystal_0001 : GroundObject
         base.Update();
     }
 
-    protected override IEnumerator BaseAttack()
-    {
-        yield return StartCoroutine(_BaseAttack());
-    }
-
     /// <summary>
     /// 3연타 이동 펀치 (막타는 어퍼컷)
     /// </summary>
     /// <returns></returns>
-    IEnumerator _BaseAttack()
+    protected override IEnumerator BaseAttack()
     {
-        yield return new WaitForSeconds(1f);
+        float delay = animation.GetState().delay;
 
-        for (float i = 0f; i < 1.5f; i += 0.5f)
+        Vector2 force;
+        float count;
+        BoxCollider2D collider;
+        Player p;
+
+        for (int i = 0; i < 3; i++)
         {
-            rigid.AddForce((player.transform.position - transform.position).normalized * 5, ForceMode2D.Impulse);
+            force = new Vector2(player.transform.position.x > transform.position.x ? 1 : -1, 0) * 5;
+            if (i == 2) force = new Vector2(0, 5);
 
-            float count = Time.time;
-
-            BoxCollider2D collider = (BoxCollider2D)colliders[(int)i + 1];
-
+            rigid.AddForce(force, ForceMode2D.Impulse);
             FlipSprite();
 
-            Player p;
-            while (Time.time - count < 1f)
+            count = Time.time;
+
+            collider = (BoxCollider2D)colliders[i];
+
+            while (Time.time - count < delay)
             {
                 p = CheckCollision(transform.position, collider, 0);
                 p?.OnHit?.Invoke(1);
                 yield return null;
             }
         }
-
-        yield return new WaitForSeconds(1f);
     }
 
     protected override void MoveToPlayer()

@@ -429,9 +429,11 @@ public class Enemy : Entity
     {
         float distance = Vector2.Distance(player.transform.position, transform.position);
 
+        // 플레이어가 탐색 범위를 벗어났을 때
         if (distance > ai.search_distance && find_player)
             return distance <= ai.unSearch_distance;
 
+        // else case : 플레이어가 탐색 범위 안에 있을 때
         return distance <= ai.search_distance;
     }
 
