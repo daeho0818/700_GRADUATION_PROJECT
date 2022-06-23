@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df322850a7f972e4f83019e41cf82685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_hp: 10
-  hp: 10
+  max_hp: 1500
+  hp: 1500
   move_speed: 0
   is_hit: 0
   colliders:
@@ -154,10 +154,11 @@ MonoBehaviour:
   enemy:
     animation: {fileID: 0}
     attack_check: 0
-    attack_beforeDelay: 0
-    attack_afterDelay: 0
+    attack_frame: 0
     attack_coolTime: 0
     bullet_speed: 0
+    attack_distance: 0
+    long_attack: 0
   ai:
     search_player: 0
     ai_moving_range: 0
@@ -166,6 +167,7 @@ MonoBehaviour:
     search_distance: 0
     unSearch_distance: 0
     distance_with_player: 0
+  enemyStateName: 
   platforms:
   - {fileID: 0}
   - {fileID: 0}
@@ -190,19 +192,29 @@ MonoBehaviour:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0
   walk:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0
   attack:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0
   hit:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0
   dead:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0

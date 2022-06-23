@@ -289,8 +289,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8fbca6c1f674b498dbfb9ccc4b1b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_hp: 10
-  hp: 10
+  max_hp: 500
+  hp: 500
   move_speed: 0
   is_hit: 0
   colliders:
@@ -301,10 +301,11 @@ MonoBehaviour:
   enemy:
     animation: {fileID: 0}
     attack_check: 0
-    attack_beforeDelay: 0
-    attack_afterDelay: 0
+    attack_frame: 0
     attack_coolTime: 0
     bullet_speed: 0
+    attack_distance: 0
+    long_attack: 0
   ai:
     search_player: 1
     ai_moving_range: 0
@@ -313,6 +314,7 @@ MonoBehaviour:
     search_distance: 0
     unSearch_distance: 0
     distance_with_player: 0
+  enemyStateName: 
   rock_prefab: {fileID: 7215665660045949021, guid: e9951240cc4afb042b677319e8c8fd48, type: 3}
   fragment_prefab: {fileID: 844190010478968155, guid: 5b2b32d75d2d2414d83f810a12600624, type: 3}
 --- !u!114 &-3541510763321698038
@@ -331,19 +333,29 @@ MonoBehaviour:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0
   walk:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0
   attack:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0
   hit:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0
   dead:
     frame_sprites: []
     delay: 0
     loop: 0
+    wait: 0
+    wait_index: 0

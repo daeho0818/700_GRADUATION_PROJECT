@@ -87,7 +87,7 @@ public class Player : Entity
 
     public int ReturnDamage(Entity monster)
     {
-        float _damage = (damage + Random.Range(0, 5)) * damageIncrease;
+        float _damage = (damage + Random.Range(0, 3)) * damageIncrease;
 
         if (Random.Range(0, 100) < criticalChance)
         {
@@ -289,7 +289,7 @@ public class Player : Entity
     {
         if (Input.GetKey(KeyCode.Z) && isJumping && curJumpTime > 0f)
         {
-            RB.AddForce(JumpForce / 2, ForceMode2D.Force);
+            RB.AddForce(JumpForce * Time.deltaTime * 4f, ForceMode2D.Impulse);
             curJumpTime -= Time.deltaTime;
         }
 

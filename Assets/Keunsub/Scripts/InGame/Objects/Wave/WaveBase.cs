@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public abstract class WaveBase : MonoBehaviour
 {
@@ -30,6 +31,12 @@ public abstract class WaveBase : MonoBehaviour
     {
         manager = _manager;
         yield return waveCoroutine = StartCoroutine(WaveCoroutine());
+    }
+
+    protected Entity SpawnMonster(Entity[] monsters, Vector2 spawnPos, EntitySize size)
+    {
+        int rand = Random.Range(0, monsters.Length);
+        return SpawnMonster(monsters[rand], spawnPos, size);
     }
 
     protected Entity SpawnMonster(Entity monster, Vector2 spawnPos, EntitySize size)

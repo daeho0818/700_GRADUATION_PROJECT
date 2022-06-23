@@ -369,6 +369,7 @@ public class Enemy : Entity
     [SerializeField] string enemyStateName;
     protected override void Awake()
     {
+        hp = max_hp
     }
 
     protected override void Start()
@@ -418,6 +419,7 @@ public class Enemy : Entity
         dir.x = player.transform.position.x > transform.position.x ? -1 : 1;
         dir.y = 1;
 
+        rigid.velocity = Vector2.zero;
         rigid.AddForce(dir * 3, ForceMode2D.Impulse);
     }
 

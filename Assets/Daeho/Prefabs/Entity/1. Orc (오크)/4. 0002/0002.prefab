@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce18efc02ad84bf478b92aeabf0d47d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_hp: 5
-  hp: 5
+  max_hp: 25
+  hp: 25
   move_speed: 1
   is_hit: 0
   colliders:
@@ -155,7 +155,9 @@ MonoBehaviour:
     animation: {fileID: 0}
     attack_check: 0
     attack_frame: 2
+    attack_coolTime: 0
     bullet_speed: 5
+    attack_distance: 0
     long_attack: 1
   ai:
     search_player: 1

@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Orc_0003 : GroundObject
 {
+
+    Coroutine AttackCoroutine;
+
     protected override void Awake()
     {
         base.Awake();
+        OnHit += DashKnockBack;
     }
     protected override void Start()
     {
@@ -20,6 +24,13 @@ public class Orc_0003 : GroundObject
         base.Update();
     }
 
+
+    void DashKnockBack(int damage)
+    {
+        StopCoroutine(AttackCoroutine);
+        StartCoroutine(animation.AnimEnd());
+    }
+
     /// <summary>
     /// 벽이 나타날 때까지 돌진하는 공격 패턴
     /// </summary>
@@ -28,7 +39,7 @@ public class Orc_0003 : GroundObject
         float dir_x;
 
         dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
-        yield return StartCoroutine(_BaseAttack(dir_x));
+        yield return AttackCoroutine = StartCoroutine(_BaseAttack(dir_x));
     }
     IEnumerator _BaseAttack(float dir_x)
     {
