@@ -27,8 +27,11 @@ public class Orc_0003 : GroundObject
 
     void DashKnockBack(int damage)
     {
-        StopCoroutine(AttackCoroutine);
-        StartCoroutine(animation.AnimEnd());
+        if (AttackCoroutine != null)
+        {
+            StopCoroutine(AttackCoroutine);
+            StartCoroutine(animation.AnimEnd());
+        }
     }
 
     /// <summary>

@@ -417,10 +417,10 @@ public class Enemy : Entity
     {
         Vector2 dir;
         dir.x = player.transform.position.x > transform.position.x ? -1 : 1;
-        dir.y = 1;
+        dir.y = 1f;
 
         rigid.velocity = Vector2.zero;
-        rigid.AddForce(dir * 3, ForceMode2D.Impulse);
+        rigid.AddForce(dir * 2, ForceMode2D.Impulse);
     }
 
     /// <summary>
