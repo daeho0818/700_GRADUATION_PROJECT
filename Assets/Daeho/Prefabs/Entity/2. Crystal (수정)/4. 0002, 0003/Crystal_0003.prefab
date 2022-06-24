@@ -147,17 +147,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 65
   hp: 65
-  move_speed: 1
+  move_speed: 2
   is_hit: 0
   colliders: []
   enemy:
     animation: {fileID: 0}
     attack_check: 0
     attack_frame: 0
-    attack_coolTime: 5
+    attack_coolTime: 3
     bullet_speed: 3
-    attack_distance: 0
+    attack_distance: 10
     long_attack: 0
+    super_armor: 0
   ai:
     search_player: 1
     ai_moving_range: 5
@@ -212,7 +213,8 @@ MonoBehaviour:
   dead:
     frame_sprites:
     - {fileID: 21300000, guid: 38891d4b72b2764428bc4488c03cc9f7, type: 3}
-    delay: 0
+    - {fileID: 21300000, guid: 38891d4b72b2764428bc4488c03cc9f7, type: 3}
+    delay: 1
     loop: 0
     wait: 0
     wait_index: 0

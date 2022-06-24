@@ -157,15 +157,16 @@ MonoBehaviour:
     attack_frame: 1
     attack_coolTime: 5
     bullet_speed: 5
-    attack_distance: 5
+    attack_distance: 10
     long_attack: 1
+    super_armor: 0
   ai:
     search_player: 1
     ai_moving_range: 5
     delay_min: 2
     delay_max: 3
-    search_distance: 5
-    unSearch_distance: 10
+    search_distance: 10
+    unSearch_distance: 15
     distance_with_player: 5
   enemyStateName: 
   bullet_prefab: {fileID: 776741225428772139, guid: 79745eb9cd7986a4a95eb0a815817495, type: 3}

@@ -161,6 +161,7 @@ MonoBehaviour:
     bullet_speed: 0
     attack_distance: 3
     long_attack: 0
+    super_armor: 0
   ai:
     search_player: 1
     ai_moving_range: 5
@@ -207,14 +208,16 @@ MonoBehaviour:
   hit:
     frame_sprites:
     - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    delay: 0
+    - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
+    delay: 1
     loop: 0
     wait: 0
     wait_index: 0
   dead:
     frame_sprites:
     - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    delay: 0
+    - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
+    delay: 1
     loop: 0
     wait: 0
     wait_index: 0

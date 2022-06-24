@@ -81,7 +81,13 @@ public class Orc_0001 : GroundObject
             target_move_position.y = transform.position.y;
 
             FlipSprite();
-            transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
+
+            Vector2 vec = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
+
+            // 원거리 몬스터 플랫폼에서 안떨어지게 제어
+            if (long_attack && Physics2D.RaycastAll(vec, Vector2.down, 2, LayerMask.GetMask("Ground")).Length == 0) return;
+
+            transform.position = vec;
         }
     }
 }

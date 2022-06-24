@@ -56,6 +56,8 @@ public class Crystal_0000 : GroundObject
 
         Player p = null;
 
+        super_armor = true;
+
         while (rigid.velocity.x != 0)
         {
             if (p == null)
@@ -68,6 +70,8 @@ public class Crystal_0000 : GroundObject
 
             yield return null;
         }
+
+        super_armor = false;
     }
 
     /// <summary>

@@ -194,7 +194,7 @@ public class EnemyAnimation : MonoBehaviour
     }
 
     /// <summary>
-    /// wait이 true로 설정되었을 경우 호출 가능
+    /// wait이 true로 설정되었을 경우 호출 가능, 패턴 실행이 종료되었음을 통지하는 함수
     /// </summary>
     /// <returns></returns>
     public IEnumerator AnimEnd()
