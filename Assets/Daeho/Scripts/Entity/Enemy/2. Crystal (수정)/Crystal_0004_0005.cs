@@ -83,7 +83,6 @@ public class Crystal_0004_0005 : FlyingObject
     protected override IEnumerator BaseAttack()
     {
         StopCoroutine(attack);
-        Debug.Log("응애!");
 
         const int FIRE_COUNT = 8;
 
@@ -92,7 +91,6 @@ public class Crystal_0004_0005 : FlyingObject
         float rad;
 
         yield return new WaitForSeconds(5f);
-        Debug.Log("응애?");
 
         for (int i = 0; i <= 360; i += 360 / FIRE_COUNT)
         {

@@ -158,6 +158,7 @@ MonoBehaviour:
     bullet_speed: 0
     attack_distance: 0
     long_attack: 0
+    super_armor: 1
   ai:
     search_player: 0
     ai_moving_range: 0

@@ -32,6 +32,8 @@ public class Crystal_0001 : GroundObject
         BoxCollider2D collider;
         Player p;
 
+        super_armor = true;
+
         for (int i = 0; i < 3; i++)
         {
             force = new Vector2(player.transform.position.x > transform.position.x ? 1 : -1, 0) * 5;
@@ -51,6 +53,8 @@ public class Crystal_0001 : GroundObject
                 yield return null;
             }
         }
+
+        super_armor = false;
     }
 
     protected override void MoveToPlayer()

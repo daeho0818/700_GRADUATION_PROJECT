@@ -10,7 +10,6 @@ public class Orc_0003 : GroundObject
     protected override void Awake()
     {
         base.Awake();
-        OnHit += DashKnockBack;
     }
     protected override void Start()
     {
@@ -22,16 +21,6 @@ public class Orc_0003 : GroundObject
     protected override void Update()
     {
         base.Update();
-    }
-
-
-    void DashKnockBack(int damage)
-    {
-        if (AttackCoroutine != null)
-        {
-            StopCoroutine(AttackCoroutine);
-            StartCoroutine(animation.AnimEnd());
-        }
     }
 
     /// <summary>
@@ -49,6 +38,8 @@ public class Orc_0003 : GroundObject
         RaycastHit2D[] hits;
         Vector2 dir = new Vector2(dir_x, 0);
         Player p = null;
+
+        super_armor = true;
 
         do
         {
@@ -76,6 +67,8 @@ public class Orc_0003 : GroundObject
             yield return null;
 
         } while (true);
+
+        super_armor = true;
 
         StartCoroutine(animation.AnimEnd());
     }

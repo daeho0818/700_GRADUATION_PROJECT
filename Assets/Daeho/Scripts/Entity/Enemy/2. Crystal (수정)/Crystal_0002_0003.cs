@@ -31,6 +31,11 @@ public class Crystal_0002_0003 : FlyingObject
 
         target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, distance_with_player / 2);
 
+        if (Physics2D.RaycastAll(transform.position, new Vector2(dir_x, 0), 2, LayerMask.GetMask("Wall")).Length > 0)
+        {
+            return;
+        }
+
         FlipSprite();
         transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);
     }

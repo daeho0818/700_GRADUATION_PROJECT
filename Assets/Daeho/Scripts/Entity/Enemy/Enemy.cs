@@ -21,6 +21,8 @@ public struct EnemyInformation
     public float attack_distance;
     [Tooltip("원거리 공격 여부")]
     public bool long_attack;
+    [Tooltip("피격 시 넉백 여부")]
+    public bool super_armor;
 }
 
 [System.Serializable]
@@ -111,6 +113,8 @@ public class Enemy : Entity
                 if (enemy.find_player == true && enemy.FindPlayer() == false)
                 {
                     enemy.find_player = false;
+
+                    Debug.Log("플레이어 탐색 실패");
 
                     enemy.ChangeState("Idle");
                 }
@@ -312,16 +316,19 @@ public class Enemy : Entity
     /// 총알 속도
     /// </summary>
     public float bullet_speed { get => enemy.bullet_speed; set => enemy.bullet_speed = value; }
-    #endregion
     /// <summary>
     /// 공격 범위
     /// </summary>
     public float attack_distance { get => enemy.attack_distance; set => enemy.attack_distance = value; }
-
     /// <summary>
     /// 원거리 공격 여부
     /// </summary>
     public bool long_attack { get => enemy.long_attack; set => enemy.long_attack = value; }
+    /// <summary>
+    /// 피격 시 넉백 여부
+    /// </summary>
+    public bool super_armor { get => enemy.super_armor; set => enemy.super_armor = value; }
+    #endregion
     [Header("AI Moving Information")]
     [SerializeField] protected AIInfo ai;
     #region Properties
@@ -383,7 +390,10 @@ public class Enemy : Entity
         OnHit += KnockBack;
         OnHit += (int damage) =>
         {
-            ChangeState("Hit");
+            if (super_armor == false)
+            {
+                ChangeState("Hit");
+            }
 
             hp -= damage;
         };
@@ -432,7 +442,7 @@ public class Enemy : Entity
         float distance = Vector2.Distance(player.transform.position, transform.position);
 
         // 플레이어가 탐색 범위를 벗어났을 때
-        if (distance > ai.search_distance && find_player)
+        if (find_player == true && distance > ai.search_distance)
             return distance <= ai.unSearch_distance;
 
         // else case : 플레이어가 탐색 범위 안에 있을 때
@@ -594,6 +604,8 @@ public class Enemy : Entity
         StopAllCoroutines();
 
         enabled = false;
+        animation.enabled = false;
+
         renderer.color = Color.red;
         rigid.gravityScale = 1;
         OnHit = (d) => { };

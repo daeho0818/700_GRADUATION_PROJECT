@@ -37,11 +37,6 @@ public class FlyingObject : Enemy
         }
     }
 
-    protected override IEnumerator AIMoving()
-    {
-        yield return null;
-    }
-
     protected override void KnockBack(int damage)
     {
         Vector2 dir;
