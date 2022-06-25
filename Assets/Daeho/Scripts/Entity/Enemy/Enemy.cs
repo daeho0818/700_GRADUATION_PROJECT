@@ -114,8 +114,6 @@ public class Enemy : Entity
                 {
                     enemy.find_player = false;
 
-                    Debug.Log("플레이어 탐색 실패");
-
                     enemy.ChangeState("Idle");
                 }
 

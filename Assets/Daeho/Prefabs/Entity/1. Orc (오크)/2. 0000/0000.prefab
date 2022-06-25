@@ -158,7 +158,7 @@ MonoBehaviour:
     attack_coolTime: 5
     bullet_speed: 5
     attack_distance: 10
-    long_attack: 1
+    long_attack: 0
     super_armor: 0
   ai:
     search_player: 1
