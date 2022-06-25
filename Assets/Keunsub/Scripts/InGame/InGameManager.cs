@@ -38,6 +38,7 @@ public class InGameManager : Singleton<InGameManager>
         for (int i = 0; i < Waves.Length; i++)
         {
             nowWave = Waves[i];
+            nowWave = Waves[1]; //remove when after debug
             yield return StartCoroutine(nowWave.WaveStart(this));
         }
 

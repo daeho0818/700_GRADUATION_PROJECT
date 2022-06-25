@@ -124,13 +124,15 @@ public class Player : Entity
 
     void OnHitAction(int damage)
     {
-
-        int rand = Random.Range(0, 100);
-
-        if (rand > dodge)
+        if (!isDash)
         {
-            hp -= damage * defenseIncrease;
-            GameManager.Instance.PrintDamage(damage, transform.position, Color.red);
+            int rand = Random.Range(0, 100);
+
+            if (rand > dodge)
+            {
+                hp -= damage * defenseIncrease;
+                GameManager.Instance.PrintDamage(damage, transform.position, Color.red);
+            }
         }
     }
 

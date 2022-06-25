@@ -125,7 +125,7 @@ public abstract class WaveBase : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        monster.GetComponentInChildren<Collider2D>().isTrigger = true;
+        monster.GetComponent<Collider2D>().isTrigger = true;
 
         while (monster.transform.position.y > -10f) yield return null;
 
