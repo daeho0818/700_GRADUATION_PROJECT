@@ -54,12 +54,12 @@ public class Lift : MonoBehaviour
     void MoveUp()
     {
         Scene2.MoveUp();
-        transform.DOMoveY(4.7f, 2f).SetEase(Ease.InOutBack);
+        transform.DOMoveY(3.15f, 2f).SetEase(Ease.InOutBack);
     }
 
     void MoveDown()
     {
         Scene2.MoveDown();
-        transform.DOMoveY(-10.31f, 2f).SetEase(Ease.InOutBack);
+        transform.DOMoveY(-12.48f, 2f).SetEase(Ease.InOutBack);
     }
 }

@@ -22,6 +22,7 @@ public class CameraFollow : MonoBehaviour
     void CameraSystem()
     {
         Vector3 vec = Vector3.Lerp(transform.position, Target.position + new Vector3(0, 0, -10f), Time.deltaTime * followSpeed);
+        Camera.main.orthographicSize = Bound.Size;
         if(vec.x < Bound.rect.right)
         {
             vec.x = Bound.rect.right;
@@ -49,13 +50,15 @@ public class CameraBound
     public Vector2 Pos;
     public float Width;
     public float Height;
+    public float Size;
     public BoundRect rect;
 
-    public CameraBound(Vector2 _pos, float _width, float _height)
+    public CameraBound(Vector2 _pos, float _width, float _height, float _size)
     {
         Pos = _pos;
         Width = _width;
         Height = _height;
+        Size = _size;
 
         rect = new BoundRect(Pos.x - Width, Pos.x + Width, Pos.y + Height, Pos.y - Height);
     }

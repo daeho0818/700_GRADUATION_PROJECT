@@ -91,7 +91,7 @@ public class Player : Entity
 
         if (Random.Range(0, 100) < criticalChance)
         {
-            _damage *= 1.5f;
+            _damage *= 2f;
         }
         Exp += _damage * ExpAmount;
         return (int)_damage;
@@ -264,6 +264,11 @@ public class Player : Entity
 
         if (Input.GetKeyDown(KeyCode.Z) && !isGround && doubleJumpAble)
         {
+            OffAllCollider();
+            YesGravity();
+            isDash = false;
+            curDash = 0f;
+
             doubleJumpAble = false;
             RB.velocity = Vector2.zero;
             RB.AddForce(JumpForce * 2, ForceMode2D.Impulse);
