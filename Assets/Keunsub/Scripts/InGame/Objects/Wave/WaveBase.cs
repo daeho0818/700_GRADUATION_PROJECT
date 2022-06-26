@@ -57,6 +57,16 @@ public abstract class WaveBase : MonoBehaviour
         return temp;
     }
 
+    protected void SpawnRoof(float y)
+    {
+        manager.SetRoof(y);
+    }
+
+    protected void RemoveRoof()
+    {
+        manager.RemoveRoof();
+    }
+
     protected void SpawnSharp()
     {
         // 바닥 가시 소환

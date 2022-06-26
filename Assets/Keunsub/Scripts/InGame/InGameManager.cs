@@ -7,6 +7,7 @@ public class InGameManager : Singleton<InGameManager>
 {
     public Transform Pivot;
     public Transform Door;
+    public Transform Roof;
     public bool isGameActive;
     public WaveBase nowWave;
     WaveBase[] Waves;
@@ -33,12 +34,22 @@ public class InGameManager : Singleton<InGameManager>
         }
     }
 
+    public void SetRoof(float y)
+    {
+        Roof.DOLocalMoveY(y, 0.5f).SetEase(Ease.InOutCubic);
+    }
+
+    public void RemoveRoof()
+    {
+        Roof.DOLocalMoveY(8.2f, 0.5f).SetEase(Ease.InSine);
+    }
+
     IEnumerator WaveCoroutine()
     {
         for (int i = 0; i < Waves.Length; i++)
         {
             nowWave = Waves[i];
-            nowWave = Waves[1]; //remove when after debug
+            //nowWave = Waves[1]; //remove when after debug
             yield return StartCoroutine(nowWave.WaveStart(this));
         }
 
