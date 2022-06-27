@@ -20,6 +20,15 @@ public class Boss_Orc : GroundObject
     {
         base.Update();
 
+        OnDestroy = () =>
+        {
+            enabled = false;
+
+            renderer.color = Color.red;
+
+            OnDestroy = null;
+        };
+
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(AttackPattern1(20));
 
