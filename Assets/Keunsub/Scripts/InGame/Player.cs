@@ -55,6 +55,7 @@ public class Player : Entity
     [Header("Skill")]
     public float SkillDamage;
     [SerializeField] Transform skillAtkPos;
+    [SerializeField] Transform skillGroundPos;
 
     #region AnimatorState
     bool isRunning;
@@ -73,6 +74,7 @@ public class Player : Entity
     bool doubleJumpAble = true;
     bool obstructionCool = false;
 
+    bool orcDashSkillActive;
     Coroutine activeCoroutine;
 
     #region Component
@@ -99,9 +101,10 @@ public class Player : Entity
 
     void OrcDashSkill()
     {
-        if (Input.GetKeyDown(KeyCode.A) && !isSkill && isGround)
+        if (Input.GetKeyDown(KeyCode.A) && !isSkill && isGround && !orcDashSkillActive)
         {
             isSkill = true;
+            orcDashSkillActive = true;
             StartCoroutine(OrcDashSkillCoroutine());
         }
     }
@@ -117,13 +120,14 @@ public class Player : Entity
         ANIM.SetTrigger("SkillActive");
         do
         {
-            if (!isGround)
+            RaycastHit2D[] hit = Physics2D.RaycastAll(skillGroundPos.position, Vector3.down, 2f, LayerMask.GetMask("Ground"));
+            if (hit.Length <= 0)
             {
                 Debug.Log("Out of ground");
                 break;
             }
 
-            RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, transform.right, 1f, LayerMask.GetMask("Wall"));
+            hit = Physics2D.RaycastAll(transform.position, transform.right, 0.5f, LayerMask.GetMask("Wall"));
             if (hit.Length > 0)
             {
                 Debug.Log("Hit at wall");
@@ -139,10 +143,13 @@ public class Player : Entity
 
 
         Physics2D.OverlapCircleAll(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity")).ToList().ForEach(item => item.GetComponent<Entity>().OnHit((int)(SkillDamage * skillDamageIncrease * 2f)));
-        yield return new WaitForSeconds(2f); // skill delay
-
+        yield return new WaitForSeconds(0.5f); // 공격 후 반동
+        
         isSkill = false;
         ANIM.SetBool("IsSkill", isSkill);
+
+        yield return new WaitForSeconds(20f); // skill delay
+        orcDashSkillActive = false;
     }
 
     private void OnDrawGizmos()
