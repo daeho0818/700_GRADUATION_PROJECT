@@ -347,6 +347,7 @@ public class OrcWave : WaveBase
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
 
+        RemovePlatform(Platforms);
         RemoveSharp();
         waveEnd = true;
     }
