@@ -53,5 +53,6 @@ public class Crystal_0002_0003 : FlyingObject
         proj.transform.position = transform.position;
         proj.move_speed = bullet_speed;
         proj.SetTarget(player.transform);
+        proj.SetCollision((p) => { p?.OnHit?.Invoke(1); });
     }
 }

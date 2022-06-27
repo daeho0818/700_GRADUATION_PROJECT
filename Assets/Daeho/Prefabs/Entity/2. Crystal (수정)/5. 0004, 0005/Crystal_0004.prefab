@@ -165,8 +165,8 @@ MonoBehaviour:
     ai_moving_range: 0
     delay_min: 0
     delay_max: 0
-    search_distance: 9999
-    unSearch_distance: 9999
+    search_distance: 0
+    unSearch_distance: 0
     distance_with_player: 0
   enemyStateName: 
   proj_prefab: {fileID: 7928072327248792864, guid: 83b1b708006806a4db74f777ebe129d6, type: 3}
@@ -199,6 +199,14 @@ MonoBehaviour:
   attack:
     frame_sprites:
     - {fileID: 21300000, guid: 9220fadc3d7fa204b81c3ab052551613, type: 3}
+    - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
+    - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
+    - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
+    - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
+    - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
+    - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
+    - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
+    - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
     - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
     - {fileID: 21300000, guid: e51573d18f8cba749aeb84a41c9c0a9d, type: 3}
     delay: 1

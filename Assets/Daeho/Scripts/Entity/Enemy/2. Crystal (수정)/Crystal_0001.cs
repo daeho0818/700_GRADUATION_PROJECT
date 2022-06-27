@@ -25,7 +25,8 @@ public class Crystal_0001 : GroundObject
     /// <returns></returns>
     protected override IEnumerator BaseAttack()
     {
-        float delay = animation.GetState().delay;
+        float delay;
+        EnemyAnimation.AnimState state = animation.GetState();
 
         Vector2 force;
         float count;
@@ -37,6 +38,8 @@ public class Crystal_0001 : GroundObject
         for (int i = 0; i < 3; i++)
         {
             force = new Vector2(player.transform.position.x > transform.position.x ? 1 : -1, 0) * 5;
+
+            // 3타는 어퍼컷
             if (i == 2) force = new Vector2(0, 5);
 
             rigid.AddForce(force, ForceMode2D.Impulse);
@@ -46,6 +49,9 @@ public class Crystal_0001 : GroundObject
 
             collider = (BoxCollider2D)colliders[i];
 
+            delay = state.GetDelay();
+
+            // 다음 공격까지 딜레이
             while (Time.time - count < delay)
             {
                 p = CheckCollision(transform.position, collider, 0);
@@ -54,7 +60,12 @@ public class Crystal_0001 : GroundObject
             }
         }
 
+        // 바닥에 떨어질 때까지 대기
+        while (rigid.velocity.y != 0)
+            yield return null;
+
         super_armor = false;
+        StartCoroutine(animation.AnimEnd());
     }
 
     protected override void MoveToPlayer()

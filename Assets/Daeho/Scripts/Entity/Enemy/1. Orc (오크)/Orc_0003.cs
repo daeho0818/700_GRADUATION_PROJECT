@@ -30,7 +30,7 @@ public class Orc_0003 : GroundObject
     {
         float dir_x;
 
-        dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
+        dir_x = transform.rotation.y == 0 ? -1 : 1;
         yield return AttackCoroutine = StartCoroutine(_BaseAttack(dir_x));
     }
     IEnumerator _BaseAttack(float dir_x)

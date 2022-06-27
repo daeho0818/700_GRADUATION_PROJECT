@@ -31,11 +31,8 @@ public class Crystal_0004_0005 : FlyingObject
         yield return null;
     }
 
-    protected override bool FindPlayer()
-    {
-        float dis = Vector2.Distance(player.transform.position, transform.position);
-        return search_distance >= dis;
-    }
+    protected override bool FindPlayer() => false;
+
     protected override void MoveToPlayer()
     {
     }
