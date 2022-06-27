@@ -16,7 +16,7 @@ public class Scene2_Ready : SceneContainer
 
     public void MoveDown()
     {
-        OutDoor.DOMoveY(-12.5f, 0.3f);
+        OutDoor.DOMoveY(-14.84f, 0.3f);
     }
 
     public void MoveUp()

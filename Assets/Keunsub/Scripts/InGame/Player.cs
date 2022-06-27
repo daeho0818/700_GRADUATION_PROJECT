@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Linq;
+using Random = UnityEngine.Random;
 
 public class Player : Entity
 {
@@ -34,6 +37,8 @@ public class Player : Entity
     public float moneyIncrease = 1f;
     public float dodge = 10f; // 0~100
 
+    public Vector2 Nockback;
+
     [SerializeField] Vector2 JumpForce;
 
     [Header("Effect")]
@@ -47,6 +52,10 @@ public class Player : Entity
     [SerializeField] float checkRadius;
     [SerializeField] LayerMask GroundMask;
 
+    [Header("Skill")]
+    public float SkillDamage;
+    [SerializeField] Transform skillAtkPos;
+
     #region AnimatorState
     bool isRunning;
     bool isGround;
@@ -58,9 +67,12 @@ public class Player : Entity
     [SerializeField] int attackState;
     #endregion
 
+    bool gameOver;
     bool isCombo;
+    bool isSkill;
     bool doubleJumpAble = true;
     bool obstructionCool = false;
+
     Coroutine activeCoroutine;
 
     #region Component
@@ -83,6 +95,70 @@ public class Player : Entity
     void OnDestroyAction()
     {
 
+    }
+
+    void OrcDashSkill()
+    {
+        if (Input.GetKeyDown(KeyCode.A) && !isSkill && isGround)
+        {
+            isSkill = true;
+            StartCoroutine(OrcDashSkillCoroutine());
+        }
+    }
+
+    IEnumerator OrcDashSkillCoroutine()
+    {
+        ANIM.SetInteger("SkillKind", 0);
+        ANIM.SetTrigger("SkillTrigger");
+        ANIM.SetBool("IsSkill", isSkill);
+
+        yield return new WaitForSeconds(1.5f);
+
+        ANIM.SetTrigger("SkillActive");
+        do
+        {
+            if (!isGround)
+            {
+                Debug.Log("Out of ground");
+                break;
+            }
+
+            RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, transform.right, 1f, LayerMask.GetMask("Wall"));
+            if (hit.Length > 0)
+            {
+                Debug.Log("Hit at wall");
+                break;
+            }
+
+            transform.Translate(Vector3.right * Time.deltaTime * dashSpeed);
+
+            Physics2D.OverlapCircle(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity"))?.GetComponent<Entity>()?.OnHit((int)(SkillDamage * skillDamageIncrease));
+            yield return null;
+
+        } while (true);
+
+
+        Physics2D.OverlapCircleAll(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity")).ToList().ForEach(item => item.GetComponent<Entity>().OnHit((int)(SkillDamage * skillDamageIncrease * 2f)));
+        yield return new WaitForSeconds(2f); // skill delay
+
+        isSkill = false;
+        ANIM.SetBool("IsSkill", isSkill);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(skillAtkPos.position, 0.4f);
+    }
+
+    void GameOverFunc()
+    {
+        RB.AddForce(Nockback);
+        Time.timeScale = 0.5f;
+        ANIM.SetTrigger("GameOver");
+
+        GameManager.Instance.GameOver();
     }
 
     public int ReturnDamage(Entity monster)
@@ -133,6 +209,13 @@ public class Player : Entity
                 hp -= damage * defenseIncrease;
                 GameManager.Instance.PrintDamage(damage, transform.position, Color.red);
             }
+
+
+            if (hp <= 0 && !gameOver)
+            {
+                gameOver = true;
+                GameOverFunc();
+            }
         }
     }
 
@@ -143,11 +226,19 @@ public class Player : Entity
 
     protected override void Update()
     {
-        JumpLogic();
-        JumpHolding();
-        AttackLogic();
-        AnimatorLogic();
-        DashLogic();
+        if (!gameOver)
+        {
+            if (!isSkill)
+            {
+                JumpHolding();
+                AttackLogic();
+                DashLogic();
+            }
+
+            JumpLogic();
+            OrcDashSkill();
+            AnimatorLogic();
+        }
 
         SetExpUI();
         InGameUIManager.Instance.SetHpBar(hp, max_hp);
@@ -185,8 +276,11 @@ public class Player : Entity
 
     private void FixedUpdate()
     {
-        RunningLogic();
-        FixedDash();
+        if (!gameOver && !isSkill)
+        {
+            RunningLogic();
+            FixedDash();
+        }
     }
 
     void FixedDash()
@@ -240,7 +334,7 @@ public class Player : Entity
 
     void JumpLogic()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround)
+        if (Input.GetKeyDown(KeyCode.Z) && !isJumping && isGround && !isSkill)
         {
             OffAllCollider();
             JumpFunc();

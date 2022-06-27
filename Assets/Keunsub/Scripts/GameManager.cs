@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using DG.Tweening;
 using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
@@ -35,7 +37,6 @@ public class GameManager : Singleton<GameManager>
     {
         ItemList.ForEach(item => item.Init(player));
 
-        DontDestroyOnLoad(gameObject);
         MoveToScene(0, 0);
     }
 
@@ -60,6 +61,25 @@ public class GameManager : Singleton<GameManager>
         }
         ));
         
+    }
+
+    public void GameOver()
+    {
+        StartCoroutine(GameOverCoroutine(3f));
+    }
+
+    IEnumerator GameOverCoroutine(float duration)
+    {
+        Camera.main.transform.DOMove(player.transform.position - new Vector3(0, 0, 10f), duration);
+        yield return Camera.main.DOOrthoSize(1f, duration);
+        
+        yield return new WaitForSeconds(3f);
+
+        yield return StartCoroutine(FadeIn(0.5f, () =>
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }));
     }
 
     IEnumerator FadeOut(float duration, Action action = null)
