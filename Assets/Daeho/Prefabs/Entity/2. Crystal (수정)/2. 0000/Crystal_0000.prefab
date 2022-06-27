@@ -157,6 +157,7 @@ MonoBehaviour:
     animation: {fileID: 0}
     attack_check: 0
     attack_frame: 0
+    walk_frame: 0
     attack_coolTime: 0
     bullet_speed: 0
     attack_distance: 3
@@ -186,41 +187,46 @@ MonoBehaviour:
   idle:
     frame_sprites:
     - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    delay: 0
+    delay: []
     loop: 1
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   walk:
     frame_sprites:
     - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    delay: 0
+    delay: []
     loop: 1
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   attack:
     frame_sprites:
     - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    delay: 0
+    delay:
+    - 1
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   hit:
     frame_sprites:
     - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    delay: 0.5
+    delay:
+    - 1
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   dead:
     frame_sprites:
     - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    - {fileID: 21300000, guid: cb8adf61fae16ee43ae40940b9485ad6, type: 3}
-    delay: 1
+    delay:
+    - 1
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
 --- !u!1 &3773191499217095389
 GameObject:
   m_ObjectHideFlags: 0

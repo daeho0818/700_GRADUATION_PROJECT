@@ -40,12 +40,11 @@ public class Orc_0001 : GroundObject
         }
 
         EnemyAnimation.AnimState state = animation.GetState();
-        state.frames_actions[state.frames_actions.Length - 1] = action;
+        state.OnAnimationEnd = action;
 
         WaitForSeconds second = new WaitForSeconds(0.85f);
         Projectile bullet;
-        Vector2 direction = (player.transform.position - transform.position).normalized;
-        direction.y = 0;
+        Vector2 direction = new Vector2(transform.rotation.y != 0 ? 1 : -1, 0);
 
         yield return null;
 
@@ -63,7 +62,7 @@ public class Orc_0001 : GroundObject
         float dis = Vector2.Distance(transform.position, player.transform.position);
 
         // 플레이어가 일직선상 일정 거리 이하에 있을 경우
-        return y <= 1 && dis <= attack_distance;
+        return y <= 2 && dis <= attack_distance;
     }
 
     Vector2 target_move_position;

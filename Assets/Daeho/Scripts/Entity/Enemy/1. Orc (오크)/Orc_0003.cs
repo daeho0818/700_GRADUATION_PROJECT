@@ -30,7 +30,7 @@ public class Orc_0003 : GroundObject
     {
         float dir_x;
 
-        dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
+        dir_x = transform.rotation.y != 0 ? 1 : -1;
         yield return AttackCoroutine = StartCoroutine(_BaseAttack(dir_x));
     }
     IEnumerator _BaseAttack(float dir_x)
@@ -56,8 +56,6 @@ public class Orc_0003 : GroundObject
             {
                 p = CheckCollision(transform.position, (BoxCollider2D)colliders[0], 0);
                 p?.OnHit?.Invoke(1);
-                if (p != null)
-                    Debug.Log(p);
             }
 
             // 플랫폼 끝에 도달했을 때
@@ -78,7 +76,7 @@ public class Orc_0003 : GroundObject
         float distance_y = Mathf.Abs(player.transform.position.y - transform.position.y);
 
         // 일직선상에 위치했을 경우 돌진
-        return distance_y <= 1;
+        return distance_y <= 2;
     }
     protected override void MoveToPlayer() { }
 }

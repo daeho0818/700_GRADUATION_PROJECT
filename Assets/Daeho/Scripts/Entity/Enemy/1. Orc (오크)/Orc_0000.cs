@@ -64,7 +64,7 @@ public class Orc_0000 : FlyingObject
     {
         int dir_x = (player.transform.position.x > transform.position.x ? -1 : 1);
 
-        target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, distance_with_player / 2);
+        target_move_position = player.transform.position + new Vector3(distance_with_player * dir_x, distance_with_player / 4);
 
         FlipSprite();
         transform.position = Vector2.Lerp(transform.position, target_move_position, Time.deltaTime * move_speed);

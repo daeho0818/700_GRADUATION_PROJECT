@@ -13,6 +13,8 @@ public struct EnemyInformation
     public bool attack_check;
     [Tooltip("애니메이션 공격 해당 프레임")]
     public int attack_frame;
+    [Tooltip("애니메이션 움직임 해당 프레임")]
+    public int walk_frame;
     [Tooltip("공격 대기 시간")]
     public int attack_coolTime;
     [Tooltip("총알 속도")]
@@ -89,6 +91,7 @@ public class Enemy : Entity
     {
         Coroutine walk_process = null;
         Coroutine ai_moving = null;
+        Coroutine state_change = null;
 
         Timer attack_coolTimer = new Timer();
         bool attackable = false;
@@ -101,11 +104,14 @@ public class Enemy : Entity
 
             enemy.animation.SetState("Walk");
 
-            walk_process = enemy.StartCoroutine(Walking());
+            enemy.animation.GetState().frames_actions[enemy.walk_frame] = () => { walk_process = enemy.StartCoroutine(Walking()); };
         }
 
         public override void Update()
         {
+            // 애니메이션 종료 중일 경우
+            if (state_change != null) return;
+
             // 플레이어 탐색과 이동 가능한 경우
             if (enemy.search_player && enemy.movable)
             {
@@ -114,7 +120,18 @@ public class Enemy : Entity
                 {
                     enemy.find_player = false;
 
-                    enemy.ChangeState("Idle");
+                    EnemyAnimation animation = enemy.animation;
+
+                    if (animation.GetState().wait)
+                    {
+                        state_change = enemy.StartCoroutine(StateChange("Idle"));
+                        return;
+                    }
+                    else
+                    {
+                        enemy.ChangeState("Idle");
+                        return;
+                    }
                 }
 
                 // 플레이어를 발견했을 경우
@@ -124,15 +141,38 @@ public class Enemy : Entity
 
                     StopWalking();
 
-                    enemy.MoveToPlayer();
+                    if (enemy.animation.GetState().index >= enemy.walk_frame)
+                        enemy.MoveToPlayer();
                 }
             }
 
             // 플레이어를 공격 가능한 경우
             if (enemy.AttackCheck() && attackable == true)
             {
-                enemy.ChangeState("Attack");
+                enemy.attack_check = true;
+
+                EnemyAnimation animation = enemy.animation;
+
+                if (animation.GetState().wait)
+                {
+                    state_change = enemy.StartCoroutine(StateChange("Attack"));
+                    return;
+                }
+                else
+                {
+                    enemy.ChangeState("Attack");
+                    return;
+                }
             }
+        }
+
+        IEnumerator StateChange(string name)
+        {
+            yield return enemy.StartCoroutine(enemy.animation.AnimEnd());
+
+            // 반복 중이던 애니메이션이 끝난 뒤에 애니메이션을 변경하도록 설정
+            var state = enemy.animation.GetState();
+            state.OnAnimationEnd = () => { enemy.ChangeState(name); };
         }
 
         public override void Release()
@@ -166,7 +206,10 @@ public class Enemy : Entity
             yield return ai_moving;
 
             // AI 기반 움직임을 마쳤을 경우 대기 상태
-            enemy.ChangeState("Idle");
+            if (enemy.animation.GetState().wait)
+                state_change = enemy.StartCoroutine(StateChange("Idle"));
+            else
+                enemy.ChangeState("Idle");
         }
     }
 
@@ -188,7 +231,7 @@ public class Enemy : Entity
             if (state.frames_actions.Length > 0)
             {
                 state.frames_actions[enemy.enemy.attack_frame] = attack;
-                state.frames_actions[state.frames_actions.Length - 1] = () => enemy.ChangeState("Idle");
+                state.OnAnimationEnd = () => enemy.ChangeState("Idle");
             }
         }
 
@@ -223,7 +266,7 @@ public class Enemy : Entity
             enemy.animation.SetState("Hit");
 
             EnemyAnimation.AnimState state = enemy.animation.GetState();
-            state.frames_actions[state.frames_actions.Length - 1] = () => enemy.ChangeState("Idle");
+            state.OnAnimationEnd = () => enemy.ChangeState("Idle");
         }
 
         public override void Update()
@@ -307,6 +350,10 @@ public class Enemy : Entity
     /// </summary>
     public int attack_frame { get => enemy.attack_frame; set => enemy.attack_frame = value; }
     /// <summary>
+    /// 애니메이션 움직임 해당 프레임
+    /// </summary>
+    public int walk_frame { get => enemy.walk_frame; set => enemy.walk_frame = value; }
+    /// <summary>
     /// 공격 대기 시간
     /// </summary>
     public int attack_coolTime { get => enemy.attack_coolTime; set => enemy.attack_coolTime = value; }
@@ -385,7 +432,14 @@ public class Enemy : Entity
 
         player = FindObjectOfType<Player>();
 
-        OnHit += KnockBack;
+        OnHit += (int damage) =>
+        {
+            if (super_armor == false)
+            {
+                KnockBack(damage);
+            }
+        };
+
         OnHit += (int damage) =>
         {
             if (super_armor == false)
@@ -414,7 +468,7 @@ public class Enemy : Entity
         }
 
         enemy_state?.Update();
-        enemyStateName = enemy_state.GetType().Name;
+        enemyStateName = enemy_state?.GetType().Name;
     }
 
     /// <summary>
@@ -476,16 +530,21 @@ public class Enemy : Entity
         {
             target = transform.position + new Vector3(Random.Range(-ai_moving_range, ai_moving_range), 0);
             hits = Physics2D.RaycastAll(target, Vector2.down, 1, LayerMask.GetMask("Ground"));
-            Debug.DrawRay(target, Vector2.down, Color.red, 0.5f);
+            Debug.DrawRay(target, Vector2.down, Color.red, 3);
+            FlipSprite(target.x > transform.position.x);
         } while (long_attack == true && hits.Length == 0);
 
         while (true)
         {
             yield return null;
 
+            if (movable == false)
+            {
+                continue;
+            }
+
             vec = ((target - transform.position).normalized * move_speed * Time.deltaTime);
             transform.position += (vec);
-            FlipSprite(vec.x > 0);
 
             hits = Physics2D.RaycastAll(transform.position, (target - transform.position).normalized, 2, LayerMask.GetMask("Wall"));
 
@@ -502,7 +561,7 @@ public class Enemy : Entity
     /// </summary>
     protected virtual void MoveToPlayer()
     {
-        transform.position += (Vector3)(move_speed * ((new Vector2(player.transform.position.x, 0) - new Vector2(transform.position.x, 0)).normalized) * Time.deltaTime);
+        transform.position += move_speed * (new Vector3(player.transform.position.x > transform.position.x ? 1 : -1, 0) * Time.deltaTime);
         FlipSprite();
     }
 
@@ -596,6 +655,15 @@ public class Enemy : Entity
         else
             transform.rotation = Quaternion.Euler(rot.x, 0, rot.y);
     }
+
+    /// <summary>
+    /// 현재 플레이어가 바라보고 있는 방향을 구하는 함수
+    /// </summary>
+    /// <returns></returns>
+    // protected int GetDirX()
+    // {
+    //     return transform.rotation.y != 0 ? 1 : -1;
+    // }
 
     public void Release()
     {

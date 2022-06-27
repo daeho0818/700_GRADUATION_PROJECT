@@ -14,13 +14,16 @@ public class EnemyAnimation : MonoBehaviour
         public Sprite[] frame_sprites;
         public System.Action[] frames_actions;
         [Tooltip("애니메이션 딜레이")]
-        public float delay;
+        public float[] delay;
         [Tooltip("애니메이션 반복")]
         public bool loop;
         [Tooltip("대기 후 애니메이션이 끝난 후 마지막 프레임 실행")]
         public bool wait;
         [Tooltip("대기할 인덱스")]
-        public int wait_index;
+        public int wait_index_start;
+        public int wait_index_end;
+
+        public System.Action OnAnimationEnd = null;
 
         protected Enemy model;
 
@@ -48,8 +51,18 @@ public class EnemyAnimation : MonoBehaviour
         {
             yield return null;
 
-            if (delay == 0)
-                delay = 0.01f;
+            if (delay.Length != frame_sprites.Length)
+            {
+                if (delay.Length > 0) Debug.Log("Delay array initializing");
+
+                delay = new float[frame_sprites.Length];
+            }
+
+            for (int i = 0; i < delay.Length; i++)
+            {
+                if (delay[i] == 0)
+                    delay[i] = 0.01f;
+            }
 
             // 애니메이션 프레임이 없을 경우 종료
             if (frame_sprites == null || frame_sprites.Length == 0)
@@ -63,23 +76,37 @@ public class EnemyAnimation : MonoBehaviour
                 if (index >= frame_sprites.Length)
                 {
                     if (loop == false)
+                    {
+                        OnAnimationEnd?.Invoke();
                         yield break;
+                    }
                     else index = 0;
                 }
                 // 실행이 끝날 때까지 대기
-                else if (anim_end && index == wait_index + 1)
+                else if (anim_end && index > wait_index_end)
                 {
                     yield return null;
-                    continue;
+                    index = wait_index_start;
                 }
 
                 model.renderer.sprite = frame_sprites[index];
 
-                frames_actions[index++]?.Invoke();
+                frames_actions[index]?.Invoke();
+                frames_actions[index] = null;
 
-                yield return new WaitForSeconds(delay);
+                yield return new WaitForSeconds(delay[index]);
 
+                index++;
             }
+        }
+
+        /// <summary>
+        /// 애니메이션의 현재 index 대기 시간을 반환하는 함수
+        /// </summary>
+        /// <returns></returns>
+        public float GetDelay()
+        {
+            return delay[index];
         }
     }
 

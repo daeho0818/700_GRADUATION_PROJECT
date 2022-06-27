@@ -38,7 +38,7 @@ public class Projectile_Guided : Projectile
         {
             // 일정 시간이 지나기 전까지 타겟을 유도
             if (Time.time - time > 1 && Time.time - time < 3 && target)
-                fire_direction = (target.position - transform.position).normalized;
+                fire_direction = Vector2.MoveTowards(fire_direction, (target.position - transform.position).normalized, 0.01f);
 
             transform.position += (Vector3)(fire_direction * Time.deltaTime * move_speed);
             transform.rotation = Quaternion.Euler(0, 0, 180 + (Mathf.Atan2(fire_direction.y, fire_direction.x) * Mathf.Rad2Deg));
