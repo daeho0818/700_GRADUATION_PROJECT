@@ -87,7 +87,8 @@ public class Crystal_0004_0005 : FlyingObject
         Vector2 fire_direction;
         float rad;
 
-        yield return new WaitForSeconds(5f);
+        float delay = animation.GetState().GetDelay();
+        yield return new WaitForSeconds(delay);
 
         for (int i = 0; i <= 360; i += 360 / FIRE_COUNT)
         {

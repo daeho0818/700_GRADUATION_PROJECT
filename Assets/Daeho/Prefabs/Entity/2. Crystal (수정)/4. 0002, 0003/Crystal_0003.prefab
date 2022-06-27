@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &238685467381190770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1155887669566926948}
+  m_Layer: 9
+  m_Name: Shoot Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1155887669566926948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238685467381190770}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2100470849479644724}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2100470849479644726
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,9 +59,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2100470849479644726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.97, y: 0.88, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1155887669566926948}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -120,10 +151,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.04496956, y: 0.9709004}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.41603658, y: 0.08150844}
     oldSize: {x: 3.72, y: 2.32}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -131,7 +162,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.33, y: 2.83}
+  m_Size: {x: 2.5997734, y: 2.32}
   m_EdgeRadius: 0
 --- !u!114 &947299806084047198
 MonoBehaviour:
@@ -154,9 +185,10 @@ MonoBehaviour:
     animation: {fileID: 0}
     attack_check: 0
     attack_frame: 1
+    walk_frame: 0
     attack_coolTime: 3
     bullet_speed: 3
-    attack_distance: 10
+    attack_distance: 5
     long_attack: 0
     super_armor: 0
   ai:
@@ -164,11 +196,12 @@ MonoBehaviour:
     ai_moving_range: 5
     delay_min: 3
     delay_max: 4
-    search_distance: 5
+    search_distance: 7
     unSearch_distance: 10
-    distance_with_player: 7
+    distance_with_player: 5
   enemyStateName: 
   projectile_prefab: {fileID: 4010206706921858180, guid: c8a72341e054d5243ad23e1c7d6a39f4, type: 3}
+  shoot_position: {fileID: 1155887669566926948}
 --- !u!114 &8055693626393840847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,39 +217,45 @@ MonoBehaviour:
   idle:
     frame_sprites:
     - {fileID: 21300000, guid: 946908492d04d5e44babf5e868cbcaa5, type: 3}
-    delay: 0
+    delay: []
     loop: 1
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   walk:
     frame_sprites:
     - {fileID: 21300000, guid: 946908492d04d5e44babf5e868cbcaa5, type: 3}
-    delay: 0
+    delay: []
     loop: 1
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   attack:
     frame_sprites:
     - {fileID: 21300000, guid: 92e9a1dcb9618be4f867cb17af46b34d, type: 3}
     - {fileID: 21300000, guid: a50cfcadd5086e347b3bea89b8af9278, type: 3}
-    - {fileID: 21300000, guid: a50cfcadd5086e347b3bea89b8af9278, type: 3}
-    delay: 1
+    delay:
+    - 1
+    - 1
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   hit:
     frame_sprites:
     - {fileID: 21300000, guid: 1baa21d4c64b8c048bc0bed810e6554b, type: 3}
-    - {fileID: 21300000, guid: 1baa21d4c64b8c048bc0bed810e6554b, type: 3}
-    delay: 0.5
+    delay:
+    - 1
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   dead:
     frame_sprites:
     - {fileID: 21300000, guid: 1baa21d4c64b8c048bc0bed810e6554b, type: 3}
-    - {fileID: 21300000, guid: 1baa21d4c64b8c048bc0bed810e6554b, type: 3}
-    delay: 1
+    delay:
+    - 1
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0

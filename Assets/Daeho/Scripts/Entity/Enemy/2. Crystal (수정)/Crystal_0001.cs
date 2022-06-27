@@ -42,6 +42,8 @@ public class Crystal_0001 : GroundObject
             // 3Å¸´Â ¾îÆÛÄÆ
             if (i == 2) force = new Vector2(0, 5);
 
+            rigid.velocity = Vector2.zero;
+
             rigid.AddForce(force, ForceMode2D.Impulse);
             FlipSprite();
 
@@ -68,7 +70,8 @@ public class Crystal_0001 : GroundObject
         StartCoroutine(animation.AnimEnd());
     }
 
-    protected override void MoveToPlayer()
+    protected override IEnumerator AIMoving()
     {
+        return base.AIMoving();
     }
 }
