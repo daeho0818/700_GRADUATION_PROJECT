@@ -468,7 +468,7 @@ public class Enemy : Entity
         }
 
         enemy_state?.Update();
-        enemyStateName = enemy_state.GetType().Name;
+        enemyStateName = enemy_state?.GetType().Name;
     }
 
     /// <summary>
