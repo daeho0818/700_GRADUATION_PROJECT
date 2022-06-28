@@ -77,7 +77,7 @@ public class Player : Entity
 
     bool orcDashSkillActive;
     bool crystalSkillActive;
-    Coroutine activeCoroutine;
+    Coroutine mpCoroutine;
 
     #region Component
     public Camera mainCam;
@@ -101,9 +101,29 @@ public class Player : Entity
 
     }
 
+    void MPRecover()
+    {
+        if (mpCoroutine != null) StopCoroutine(mpCoroutine);
+        mpCoroutine = StartCoroutine(MpRecoverCoroutine());
+    }
+
+    IEnumerator MpRecoverCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
+
+        while (Mp < MaxMp)
+        {
+            Mp += Time.deltaTime;
+            yield return null;
+        }
+
+        Mp = MaxMp;
+        yield break;
+    }
+
     void CrystalSkill()
     {
-        if(Input.GetKeyDown(KeyCode.S) && !isSkill && !crystalSkillActive && GameManager.Instance.CurSceneIdx == 2)
+        if(Input.GetKeyDown(KeyCode.S) && !isSkill && !crystalSkillActive && GameManager.Instance.CurSceneIdx == 2 && Mp >= 15f)
         {
             isSkill = true;
             crystalSkillActive = true;
@@ -121,7 +141,8 @@ public class Player : Entity
             crystalSkillActive = false;
             yield break;
         }
-
+        Mp -= 15f;
+        MPRecover();
         ANIM.SetInteger("SkillKind", 1);
         ANIM.SetTrigger("SkillTrigger");
         ANIM.SetBool("IsSkill", isSkill);
@@ -149,6 +170,7 @@ public class Player : Entity
         while (curTime <= timer)
         {
             float fillAmount = curTime / timer;
+            InGameUIManager.Instance.SetIconFill(1, 1 - fillAmount);
             curTime += Time.deltaTime;
             yield return null;
         }
@@ -159,7 +181,7 @@ public class Player : Entity
 
     void OrcDashSkill()
     {
-        if (Input.GetKeyDown(KeyCode.A) && !isSkill && isGround && !orcDashSkillActive)
+        if (Input.GetKeyDown(KeyCode.A) && !isSkill && isGround && !orcDashSkillActive && Mp >= 20f)
         {
             isSkill = true;
             orcDashSkillActive = true;
@@ -172,7 +194,8 @@ public class Player : Entity
         ANIM.SetInteger("SkillKind", 0);
         ANIM.SetTrigger("SkillTrigger");
         ANIM.SetBool("IsSkill", isSkill);
-
+        Mp -= 20f;
+        MPRecover();
         yield return new WaitForSeconds(1f);
 
         ANIM.SetTrigger("SkillActive");
@@ -212,6 +235,7 @@ public class Player : Entity
         while (curTime <= timer)
         {
             float fillAmount = curTime / timer;
+            InGameUIManager.Instance.SetIconFill(0, 1 - fillAmount);
             curTime += Time.deltaTime;
             yield return null;
         }
@@ -330,6 +354,7 @@ public class Player : Entity
 
         SetExpUI();
         InGameUIManager.Instance.SetHpBar(hp, max_hp);
+        InGameUIManager.Instance.SetMpBar(Mp, MaxMp);
     }
 
     void DashLogic()

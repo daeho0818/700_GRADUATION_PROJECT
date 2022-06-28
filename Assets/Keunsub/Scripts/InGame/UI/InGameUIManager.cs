@@ -10,6 +10,9 @@ public class InGameUIManager : Singleton<InGameUIManager>
     public Image HpBarContainer;
     public Image HpBar;
 
+    public Image MpBar;
+    public Image[] SkillIcons;
+
     void Start()
     {
         
@@ -18,6 +21,16 @@ public class InGameUIManager : Singleton<InGameUIManager>
     void Update()
     {
         
+    }
+
+    public void SetIconFill(int idx, float fillAmount)
+    {
+        SkillIcons[idx].fillAmount = fillAmount;
+    }
+
+    public void SetMpBar(float mp, float maxMp)
+    {
+        MpBar.fillAmount = mp / maxMp;
     }
 
     public void SetHpBar(float hp, float maxHp)
