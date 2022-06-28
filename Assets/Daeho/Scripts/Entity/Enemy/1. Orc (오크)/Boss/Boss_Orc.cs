@@ -6,6 +6,129 @@ public class Boss_Orc : GroundObject
 {
     [SerializeField] GameObject rock_prefab;
     [SerializeField] GameObject fragment_prefab;
+
+    [SerializeField] int attack1_frame;
+    [SerializeField] int attack2_frame;
+
+    public new class WalkState : EnemyState
+    {
+        Boss_Orc boss;
+
+        public WalkState(Enemy enemy)
+        {
+            this.enemy = enemy;
+
+            boss = ((Boss_Orc)enemy);
+        }
+
+        public override void Update()
+        {
+            if (boss.AttackCheck())
+            {
+                boss.ChangeState("Attack2");
+            }
+        }
+
+        public override void Release()
+        {
+        }
+    }
+
+    public class Attack1State : EnemyState
+    {
+        Boss_Orc boss;
+
+        public Attack1State(Enemy enemy)
+        {
+            this.enemy = enemy;
+
+            boss = ((Boss_Orc)enemy);
+
+            enemy.animation.SetState("Attack1");
+
+            boss.FlipSprite();
+
+            var state = enemy.animation.GetState();
+            System.Action action = () => { enemy.StartCoroutine(boss.AttackPattern1(20)); };
+
+            state.frames_actions[boss.attack1_frame] = action;
+            state.OnAnimationEnd = () => { boss.ChangeState("Idle"); };
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+
+    public class Attack2State : EnemyState
+    {
+        Boss_Orc boss;
+
+        public Attack2State(Enemy enemy)
+        {
+            this.enemy = enemy;
+
+            boss = ((Boss_Orc)enemy);
+
+            boss.animation.SetState("Attack2");
+
+            Vector3 dir = boss.player.transform.position.x > boss.transform.position.x ? Vector3.right : Vector3.left;
+            boss.FlipSprite();
+
+            var state = enemy.animation.GetState();
+            System.Action action = () => { enemy.StartCoroutine(boss.AttackPattern2(20, dir)); };
+
+            state.frames_actions[boss.attack2_frame] = action;
+            state.OnAnimationEnd = () => { boss.ChangeState("Attack1"); };
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+
+    protected override void ChangeState(string state)
+    {
+        switch (state)
+        {
+            case string s when nameof(IdleState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new IdleState(this);
+                break;
+            case string s when nameof(WalkState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new WalkState(this);
+                break;
+            case string s when nameof(Attack1State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack1State(this);
+                break;
+            case string s when nameof(Attack2State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack2State(this);
+                break;
+            case string s when nameof(HitState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new HitState(this);
+                break;
+            case string s when nameof(DeadState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new DeadState(this);
+                break;
+            default:
+                Debug.Assert(false);
+                return;
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -14,29 +137,28 @@ public class Boss_Orc : GroundObject
     protected override void Start()
     {
         base.Start();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
 
         OnDestroy = () =>
         {
             enabled = false;
 
             renderer.color = Color.red;
-
-            OnDestroy = null;
         };
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            StartCoroutine(AttackPattern1(20));
+    protected override void Update()
+    {
+        base.Update();
+    }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-            StartCoroutine(AttackPattern2(30, Vector3.right));
+    protected override bool AttackCheck()
+    {
+        return true;
+    }
 
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            StartCoroutine(AttackPattern2(30, Vector3.left));
+    protected override IEnumerator AIMoving()
+    {
+        yield return null;
     }
 
     /// <summary>
@@ -75,8 +197,6 @@ public class Boss_Orc : GroundObject
             // 시작 지점과 목표 지점 x 죄표 사이의 거리
             Vector2.Distance(transform.position * Vector2.right, target * Vector2.right);
 
-        FlipSprite(dir_is_right == false);
-
         // 포물선 그리며 점프
         #region
         while (transform.position.x != target.x)
@@ -90,11 +210,13 @@ public class Boss_Orc : GroundObject
             height = moved_distance * move_distance;
 
             transform.position = new Vector2(transform.position.x, start_position.y +
-                                                      (target.y > start_position.y ? (height / (distance / 2)) * 2.5f : height / (distance / 2))); // 더 위로 점프해야할 경우
+                                                      (target.y > start_position.y ? (height / (distance * 2)) * 2.5f : height / (distance * 2))); // 더 위로 점프해야할 경우
         }
 
         Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[1], CapsuleDirection2D.Horizontal, 0);
+        p?.OnHit?.Invoke(1);
 
+        animation.AnimEnd();
         yield return new WaitForSeconds(0.5f);
 
         #endregion
@@ -109,7 +231,7 @@ public class Boss_Orc : GroundObject
 
         rock.transform.position = spawn_position;
 
-        Vector2 rock_target_position = new Vector2(rock.transform.position.x, player.transform.position.y);
+        Vector2 rock_target_position = new Vector2(rock.transform.position.x, transform.position.y);
         while (Vector2.Distance(rock.transform.position, rock_target_position) >= 0.01f)
         {
             rock.transform.position = Vector2.MoveTowards(rock.transform.position, rock_target_position, 0.05f);
@@ -121,27 +243,36 @@ public class Boss_Orc : GroundObject
         #region
         var fragment = Instantiate(fragment_prefab);
         fragment.transform.position = rock_target_position;
+        var collider = fragment.GetComponent<BoxCollider2D>();
 
         RaycastHit2D[] hits;
         Vector2 origin;
-        Vector2 direction = dir_is_right ? Vector2.left : Vector2.right;
+        Vector3 direction = dir_is_right ? Vector3.left : Vector3.right;
         do
         {
             origin = fragment.transform.position + new Vector3(fragment.transform.localScale.x * direction.x, 0);
             hits = Physics2D.RaycastAll(origin, Vector2.down, 3, LayerMask.GetMask("Ground"));
-            Debug.DrawRay(origin, Vector2.down * 3, Color.red, 0.1f);
 
-            fragment.transform.Translate(direction * fragment_speed * Time.deltaTime);
+            if (hits.Length == 0)
+                break;
+
+            hits = Physics2D.RaycastAll(fragment.transform.position, direction, 1, LayerMask.GetMask("Wall"));
+
+            if (hits.Length > 0)
+                break;
+
+            p = CheckCollision(fragment.transform.position, collider, 0);
+            p?.OnHit.Invoke(1);
+
+            fragment.transform.position += direction * fragment_speed * Time.deltaTime;
             yield return null;
         }
-        while (hits.Length > 0);
+        while (true);
         #endregion
 
         Destroy(fragment);
 
-        yield return new WaitForSeconds(2);
-
-        Destroy(rock);
+        Destroy(rock, 2);
     }
 
     /// <summary>
@@ -155,31 +286,31 @@ public class Boss_Orc : GroundObject
         RaycastHit2D[] hits;
         Vector2 origin;
 
-        // 공격 대기 시간
-        yield return new WaitForSeconds(2);
-
-        FlipSprite(direction.x < 0);
-        Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[2], CapsuleDirection2D.Horizontal, 0);
+        Player p; 
         do
         {
-            origin = transform.position + direction * 5;
+            origin = transform.position + direction * 3;
 
             hits = Physics2D.RaycastAll(origin, Vector2.down, 5, LayerMask.GetMask("Ground"));
             Debug.DrawRay(origin, Vector2.down * 5, Color.red, 0.1f);
 
             if (hits.Length == 0) break; // 낭떠러지일 때
 
-            hits = Physics2D.RaycastAll(transform.position, Vector2.right, 3, LayerMask.GetMask("Wall"));
-            Debug.DrawRay(origin, Vector2.right * 3, Color.red, 0.1f);
+            hits = Physics2D.RaycastAll(transform.position, direction, 2, LayerMask.GetMask("Wall"));
+            Debug.DrawRay(origin, direction * 2, Color.red, 0.1f);
 
             if (hits.Length > 0) break; // 앞에 벽이 있을 때
 
-            transform.Translate(direction * move_speed * Time.deltaTime);
+            transform.position += direction * move_speed * Time.deltaTime;
+            p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[2], CapsuleDirection2D.Horizontal, 0);
+            p?.OnHit?.Invoke(1);
+
             yield return null;
         } while (true);
 
-        p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[3], CapsuleDirection2D.Vertical, 0);
+        animation.AnimEnd();
 
-        yield return new WaitForSeconds(0.5f);
+        p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[3], CapsuleDirection2D.Vertical, 0);
+        p?.OnHit?.Invoke(1);
     }
 }
