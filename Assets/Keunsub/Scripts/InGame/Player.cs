@@ -109,11 +109,11 @@ public class Player : Entity
 
     IEnumerator MpRecoverCoroutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(MpCool);
 
         while (Mp < MaxMp)
         {
-            Mp += Time.deltaTime;
+            Mp += Time.deltaTime * 25;
             yield return null;
         }
 
@@ -307,6 +307,18 @@ public class Player : Entity
         HpAmount = 1f;
 
         Mp = MaxMp;
+        MpCool = 5f;
+
+        dashCool = 1f;
+        dashDelay = 0.2f;
+
+        HpAmount = 1f;
+        damageIncrease = 1f;
+        defenseIncrease = 1f;
+        skillDamageIncrease = 1f;
+        moneyIncrease = 1f;
+        dodge = 10f;
+
     }
 
     void OnHitAction(int damage)

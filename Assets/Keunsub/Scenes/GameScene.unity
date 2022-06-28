@@ -7130,6 +7130,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7966685811938002661, guid: f8eb73943816078488e839b8cfcd073b, type: 3}
+      propertyPath: MpCool
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7966685811938002661, guid: f8eb73943816078488e839b8cfcd073b, type: 3}
       propertyPath: mainCam
       value: 
       objectReference: {fileID: 1186945511}
