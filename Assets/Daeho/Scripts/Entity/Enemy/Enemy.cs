@@ -49,7 +49,7 @@ public struct AIInformation
 public class Enemy : Entity
 {
     #region Enemy States
-    abstract class EnemyState
+    public abstract class EnemyState
     {
         protected Enemy enemy = null;
         protected Entity player = null;
@@ -58,7 +58,7 @@ public class Enemy : Entity
         abstract public void Release();
     }
 
-    class IdleState : EnemyState
+    public class IdleState : EnemyState
     {
         public IdleState(Enemy enemy)
         {
@@ -87,7 +87,7 @@ public class Enemy : Entity
         }
     }
 
-    class WalkState : EnemyState
+    public class WalkState : EnemyState
     {
         Coroutine walk_process = null;
         Coroutine ai_moving = null;
@@ -168,11 +168,13 @@ public class Enemy : Entity
 
         IEnumerator StateChange(string name)
         {
-            yield return enemy.StartCoroutine(enemy.animation.AnimEnd());
+            enemy.animation.AnimEnd();
 
             // 반복 중이던 애니메이션이 끝난 뒤에 애니메이션을 변경하도록 설정
             var state = enemy.animation.GetState();
             state.OnAnimationEnd = () => { enemy.ChangeState(name); };
+
+            yield return null;
         }
 
         public override void Release()
@@ -213,13 +215,15 @@ public class Enemy : Entity
         }
     }
 
-    class AttackState : EnemyState
+    public class AttackState : EnemyState
     {
         Coroutine attack = null;
         public AttackState(Enemy enemy)
         {
             this.enemy = enemy;
             player = enemy.player;
+
+            Debug.Log("응애..?");
 
             enemy.animation.SetState("Attack");
 
@@ -256,7 +260,7 @@ public class Enemy : Entity
         }
     }
 
-    class HitState : EnemyState
+    public class HitState : EnemyState
     {
         public HitState(Enemy enemy)
         {
@@ -278,7 +282,7 @@ public class Enemy : Entity
         }
     }
 
-    class DeadState : EnemyState
+    public class DeadState : EnemyState
     {
         public DeadState(Enemy enemy)
         {
@@ -301,9 +305,9 @@ public class Enemy : Entity
         }
     }
 
-    EnemyState enemy_state = null;
+    protected EnemyState enemy_state = null;
 
-    protected void ChangeState(string state)
+    protected virtual void ChangeState(string state)
     {
         switch (state)
         {

@@ -112,37 +112,37 @@ public class EnemyAnimation : MonoBehaviour
 
     // 기본 상태
     [SB]
-    class IdleState : AnimState
+    public class IdleState : AnimState
     {
     }
 
     // 움직임 상태
     [SB]
-    class WalkState : AnimState
+    public class WalkState : AnimState
     {
     }
 
     // 공격 상태
     [SB]
-    class AttackState : AnimState
+    public class AttackState : AnimState
     {
     }
 
     // 피격 상태
     [SB]
-    class HitState : AnimState
+    public class HitState : AnimState
     {
     }
 
     // 죽음 상태
     [SB]
-    class DeadState : AnimState
+    public class DeadState : AnimState
     {
     }
     #endregion
 
-    Enemy _model;
-    Enemy model
+    private Enemy _model;
+    protected Enemy model
     {
         get
         {
@@ -155,18 +155,19 @@ public class EnemyAnimation : MonoBehaviour
         }
     }
 
-    [SerializeField] IdleState idle;
     [Space(10)]
-    [SerializeField] WalkState walk;
+    [SerializeField] protected IdleState idle;
     [Space(10)]
-    [SerializeField] AttackState attack;
+    [SerializeField] protected WalkState walk;
     [Space(10)]
-    [SerializeField] HitState hit;
+    [SerializeField] protected AttackState attack;
     [Space(10)]
-    [SerializeField] DeadState dead;
+    [SerializeField] protected HitState hit;
+    [Space(10)]
+    [SerializeField] protected DeadState dead;
 
     private AnimState _state;
-    private AnimState state
+    protected AnimState state
     {
         get => _state;
         set
@@ -182,7 +183,7 @@ public class EnemyAnimation : MonoBehaviour
         }
     }
 
-    private string s_state = "";
+    protected string s_state = "";
 
     void Start()
     {
@@ -192,7 +193,7 @@ public class EnemyAnimation : MonoBehaviour
     /// Animation 현재 State 변경 함수
     /// </summary>
     /// <param name="name">변경할 State 이름</param>
-    public void SetState(string name)
+    public virtual void SetState(string name)
     {
         switch (name)
         {
@@ -224,9 +225,9 @@ public class EnemyAnimation : MonoBehaviour
     /// wait이 true로 설정되었을 경우 호출 가능, 패턴 실행이 종료되었음을 통지하는 함수
     /// </summary>
     /// <returns></returns>
-    public IEnumerator AnimEnd()
+    public void AnimEnd()
     {
-        if (state.wait == false) yield break;
+        if (state.wait == false) return;
 
         state.anim_end = false;
     }

@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 682127549891155793}
   - component: {fileID: 3664881142973874006}
   - component: {fileID: 682127549891155797}
-  - component: {fileID: -3541510763321698038}
+  - component: {fileID: 1945750208}
   m_Layer: 9
   m_Name: Boss_Orc
   m_TagString: Monster
@@ -302,10 +302,12 @@ MonoBehaviour:
     animation: {fileID: 0}
     attack_check: 0
     attack_frame: 0
+    walk_frame: 0
     attack_coolTime: 0
     bullet_speed: 0
     attack_distance: 0
     long_attack: 0
+    super_armor: 1
   ai:
     search_player: 1
     ai_moving_range: 0
@@ -317,7 +319,9 @@ MonoBehaviour:
   enemyStateName: 
   rock_prefab: {fileID: 7215665660045949021, guid: e9951240cc4afb042b677319e8c8fd48, type: 3}
   fragment_prefab: {fileID: 844190010478968155, guid: 5b2b32d75d2d2414d83f810a12600624, type: 3}
---- !u!114 &-3541510763321698038
+  attack1_frame: 0
+  attack2_frame: 0
+--- !u!114 &1945750208
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -326,36 +330,94 @@ MonoBehaviour:
   m_GameObject: {fileID: 682127549891155794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00da6ed9f30fef94a89cadb0ac6f7043, type: 3}
+  m_Script: {fileID: 11500000, guid: e3717c5cbfff3ff47894aafc827d2583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   idle:
-    frame_sprites: []
-    delay: 0
-    loop: 0
+    frame_sprites:
+    - {fileID: 21300000, guid: 28f92da37bb01e84f970468fa62e34c7, type: 3}
+    delay: []
+    loop: 1
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   walk:
-    frame_sprites: []
-    delay: 0
-    loop: 0
+    frame_sprites:
+    - {fileID: 21300000, guid: 28f92da37bb01e84f970468fa62e34c7, type: 3}
+    delay: []
+    loop: 1
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   attack:
     frame_sprites: []
-    delay: 0
+    delay: []
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   hit:
-    frame_sprites: []
-    delay: 0
+    frame_sprites:
+    - {fileID: 21300000, guid: 28f92da37bb01e84f970468fa62e34c7, type: 3}
+    delay:
+    - 1
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
   dead:
-    frame_sprites: []
-    delay: 0
+    frame_sprites:
+    - {fileID: 21300000, guid: 0c8af6cf047013a409c3b90b9328aa0e, type: 3}
+    delay:
+    - 1
     loop: 0
     wait: 0
-    wait_index: 0
+    wait_index_start: 0
+    wait_index_end: 0
+  attack1:
+    frame_sprites:
+    - {fileID: 21300000, guid: 5b797f1c7c0efbc418ac7f844729bb8e, type: 3}
+    - {fileID: 21300000, guid: f03d6c37b4f135548bdd1ade9b2181bc, type: 3}
+    - {fileID: 21300000, guid: 3b1e7597ff1b57441bb0b41b40fc033a, type: 3}
+    delay:
+    - 1
+    - 1
+    - 2
+    loop: 0
+    wait: 0
+    wait_index_start: 0
+    wait_index_end: 0
+  attack2:
+    frame_sprites:
+    - {fileID: 21300000, guid: 7d0e766b0fa68364caf7f9148877b6d5, type: 3}
+    - {fileID: 21300000, guid: 474e49015f50e73438a38d621d18c57b, type: 3}
+    - {fileID: 21300000, guid: d754efdab3663c042ba6405f635a5a6c, type: 3}
+    delay:
+    - 1
+    - 0
+    - 1
+    loop: 0
+    wait: 1
+    wait_index_start: 1
+    wait_index_end: 1
+  attack3:
+    frame_sprites: []
+    delay: []
+    loop: 0
+    wait: 0
+    wait_index_start: 0
+    wait_index_end: 0
+  attack4:
+    frame_sprites: []
+    delay: []
+    loop: 0
+    wait: 0
+    wait_index_start: 0
+    wait_index_end: 0
+  attack5:
+    frame_sprites: []
+    delay: []
+    loop: 0
+    wait: 0
+    wait_index_start: 0
+    wait_index_end: 0

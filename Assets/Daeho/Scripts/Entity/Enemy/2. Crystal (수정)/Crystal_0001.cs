@@ -67,7 +67,7 @@ public class Crystal_0001 : GroundObject
             yield return null;
 
         super_armor = false;
-        StartCoroutine(animation.AnimEnd());
+        animation.AnimEnd();
     }
 
     protected override IEnumerator AIMoving()
