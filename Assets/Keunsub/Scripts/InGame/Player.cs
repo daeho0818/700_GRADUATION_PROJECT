@@ -56,6 +56,7 @@ public class Player : Entity
     public float SkillDamage;
     [SerializeField] Transform skillAtkPos;
     [SerializeField] Transform skillGroundPos;
+    [SerializeField] HomingCrystal crystalBall;
 
     #region AnimatorState
     bool isRunning;
@@ -75,6 +76,7 @@ public class Player : Entity
     bool obstructionCool = false;
 
     bool orcDashSkillActive;
+    bool crystalSkillActive;
     Coroutine activeCoroutine;
 
     #region Component
@@ -99,6 +101,62 @@ public class Player : Entity
 
     }
 
+    void CrystalSkill()
+    {
+        if(Input.GetKeyDown(KeyCode.S) && !isSkill && !crystalSkillActive && GameManager.Instance.CurSceneIdx == 2)
+        {
+            isSkill = true;
+            crystalSkillActive = true;
+            StartCoroutine(CrystalSkillCoroutine());
+        }
+    }
+
+    IEnumerator CrystalSkillCoroutine()
+    {
+        var monsters = InGameManager.Instance.nowWave.Monsters;
+
+        if(monsters.Count <= 0)
+        {
+            isSkill = false;
+            crystalSkillActive = false;
+            yield break;
+        }
+
+        ANIM.SetInteger("SkillKind", 1);
+        ANIM.SetTrigger("SkillTrigger");
+        ANIM.SetBool("IsSkill", isSkill);
+        NoGravity();
+        yield return new WaitForSeconds(1f);
+
+        ANIM.SetTrigger("SkillActive");
+
+        foreach (var item in InGameManager.Instance.nowWave.Monsters)
+        {
+            HomingCrystal ball = Instantiate(crystalBall, skillAtkPos.position, Quaternion.identity);
+            ball.Init(skillAtkPos, item.transform, 2, 6, 3, this);
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        yield return new WaitForSeconds(0.5f); // 공격 후 반동
+
+        isSkill = false;
+        ANIM.SetBool("IsSkill", isSkill);
+        YesGravity();
+
+        float timer = 15f;
+        float curTime = 0f;
+
+        while (curTime <= timer)
+        {
+            float fillAmount = curTime / timer;
+            curTime += Time.deltaTime;
+            yield return null;
+        }
+
+        crystalSkillActive = false;
+
+    }
+
     void OrcDashSkill()
     {
         if (Input.GetKeyDown(KeyCode.A) && !isSkill && isGround && !orcDashSkillActive)
@@ -115,7 +173,7 @@ public class Player : Entity
         ANIM.SetTrigger("SkillTrigger");
         ANIM.SetBool("IsSkill", isSkill);
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
 
         ANIM.SetTrigger("SkillActive");
         do
@@ -148,7 +206,16 @@ public class Player : Entity
         isSkill = false;
         ANIM.SetBool("IsSkill", isSkill);
 
-        yield return new WaitForSeconds(20f); // skill delay
+        float timer = 20f;
+        float curTime = 0f;
+
+        while (curTime <= timer)
+        {
+            float fillAmount = curTime / timer;
+            curTime += Time.deltaTime;
+            yield return null;
+        }
+
         orcDashSkillActive = false;
     }
 
@@ -176,6 +243,19 @@ public class Player : Entity
         {
             _damage *= 2f;
         }
+        Exp += _damage * ExpAmount;
+        return (int)_damage;
+    }
+
+    public int ReturnSkillDamage()
+    {
+        float _damage = SkillDamage * skillDamageIncrease;
+
+        if (Random.Range(0, 100) < criticalChance)
+        {
+            _damage *= 2f;
+        }
+
         Exp += _damage * ExpAmount;
         return (int)_damage;
     }
@@ -244,6 +324,7 @@ public class Player : Entity
 
             JumpLogic();
             OrcDashSkill();
+            CrystalSkill();
             AnimatorLogic();
         }
 

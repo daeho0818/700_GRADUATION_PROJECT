@@ -6758,6 +6758,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7966685811938002661, guid: f8eb73943816078488e839b8cfcd073b, type: 3}
+      propertyPath: crystalBall
+      value: 
+      objectReference: {fileID: 5827774315565500342, guid: 569e0405c05ba9d4ebcbaa3ff4716c01, type: 3}
+    - target: {fileID: 7966685811938002661, guid: f8eb73943816078488e839b8cfcd073b, type: 3}
       propertyPath: skillAtkPos
       value: 
       objectReference: {fileID: 1453934058}
