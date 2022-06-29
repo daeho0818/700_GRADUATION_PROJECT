@@ -135,19 +135,24 @@ public class Player : Entity
     {
         if (Input.GetKeyDown(KeyCode.S) && !isSkill && !crystalSkillActive && GameManager.Instance.CurSceneIdx == 2)
         {
-            var monsters = FindObjectsOfType(typeof(Enemy)).ToList();
+            var monsters = FindObjectsOfType<Enemy>().ToList();
+
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                if (monsters[i].IsDestroy) monsters.Remove(monsters[i]);
+            }
+
             if (monsters.Count * 10f <= Mp)
             {
                 isSkill = true;
                 crystalSkillActive = true;
-                StartCoroutine(CrystalSkillCoroutine());
+                StartCoroutine(CrystalSkillCoroutine(monsters));
             }
         }
     }
 
-    IEnumerator CrystalSkillCoroutine()
+    IEnumerator CrystalSkillCoroutine(List<Enemy> monsters)
     {
-        var monsters = FindObjectsOfType<Enemy>().ToList();
 
         if (monsters.Count <= 0)
         {
