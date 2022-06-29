@@ -79,7 +79,13 @@ public class Player : Entity
     bool crystalSkillActive;
     Coroutine mpCoroutine;
 
+    [Header("Particle Effects")]
+    [SerializeField] ParticleSystem VFX_MpHealing;
+    public ParticleSystem VFX_H_Slash;
+    public ParticleSystem VFX_V_Slash;
+
     #region Component
+    [Header("Cam")]
     public Camera mainCam;
     public CameraFollow camFollow;
     Rigidbody2D RB;
@@ -103,6 +109,7 @@ public class Player : Entity
 
     void MPRecover()
     {
+        VFX_MpHealing.Stop();
         if (mpCoroutine != null) StopCoroutine(mpCoroutine);
         mpCoroutine = StartCoroutine(MpRecoverCoroutine());
     }
@@ -110,24 +117,28 @@ public class Player : Entity
     IEnumerator MpRecoverCoroutine()
     {
         yield return new WaitForSeconds(MpCool);
-
+        VFX_MpHealing.Play();
         while (Mp < MaxMp)
         {
             Mp += Time.deltaTime * 25;
             yield return null;
         }
-
+        VFX_MpHealing.Stop();
         Mp = MaxMp;
         yield break;
     }
 
     void CrystalSkill()
     {
-        if(Input.GetKeyDown(KeyCode.S) && !isSkill && !crystalSkillActive && GameManager.Instance.CurSceneIdx == 2 && Mp >= 15f)
+        if (Input.GetKeyDown(KeyCode.S) && !isSkill && !crystalSkillActive && GameManager.Instance.CurSceneIdx == 2)
         {
-            isSkill = true;
-            crystalSkillActive = true;
-            StartCoroutine(CrystalSkillCoroutine());
+            var monsters = InGameManager.Instance.nowWave.Monsters;
+            if (monsters.Count * 10f <= Mp)
+            {
+                isSkill = true;
+                crystalSkillActive = true;
+                StartCoroutine(CrystalSkillCoroutine());
+            }
         }
     }
 
@@ -135,13 +146,13 @@ public class Player : Entity
     {
         var monsters = InGameManager.Instance.nowWave.Monsters;
 
-        if(monsters.Count <= 0)
+        if (monsters.Count <= 0)
         {
             isSkill = false;
             crystalSkillActive = false;
             yield break;
         }
-        Mp -= 15f;
+        Mp -= 10f * monsters.Count;
         MPRecover();
         ANIM.SetInteger("SkillKind", 1);
         ANIM.SetTrigger("SkillTrigger");
@@ -225,7 +236,7 @@ public class Player : Entity
 
         Physics2D.OverlapCircleAll(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity")).ToList().ForEach(item => item.GetComponent<Entity>().OnHit((int)(SkillDamage * skillDamageIncrease * 2f)));
         yield return new WaitForSeconds(0.5f); // 공격 후 반동
-        
+
         isSkill = false;
         ANIM.SetBool("IsSkill", isSkill);
 
@@ -268,6 +279,22 @@ public class Player : Entity
             _damage *= 2f;
         }
         Exp += _damage * ExpAmount;
+
+        switch (attackState)
+        {
+            case 0:
+            case 1:
+                VFX_H_Slash.Play();
+                break;
+            case 2:
+                VFX_V_Slash.Play();
+                break;
+            case 3:
+                VFX_V_Slash.Play();
+                VFX_H_Slash.Play();
+                break;
+        }
+
         return (int)_damage;
     }
 

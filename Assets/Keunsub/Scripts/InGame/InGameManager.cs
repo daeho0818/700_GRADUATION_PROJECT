@@ -129,7 +129,6 @@ public class InGameManager : Singleton<InGameManager>
         Upgrades.Add(new UpgradeDashCool());
         Upgrades.Add(new UpgradeEXP());
         Upgrades.Add(new UpgradeMP());
-        Upgrades.Add(new UpgradeHP());
         Upgrades.Add(new UpgradeMoveSpeed());
 
         Upgrades.ForEach(item => item.Init(GameManager.Instance.player));

@@ -127,14 +127,14 @@ public class UpgradeEXP : UpgradeClass
 {
     public override int maxLevel => 10;
 
-    public override string Desc => "경험치 획득량이 0.15% 더 증가합니다";
+    public override string Desc => "경험치 획득량이 30% 더 증가합니다";
 
     public override UpgradeClass Upgrade()
     {
         if(level < maxLevel)
         {
             level++;
-            player.ExpAmount += 0.15f;
+            player.ExpAmount += 0.3f;
         }
         return this;
     }
@@ -144,33 +144,16 @@ public class UpgradeMP : UpgradeClass
 {
     public override int maxLevel => 5;
 
-    public override string Desc => "MP 회복 쿨타임이 0.25초 감소합니다";
+    public override string Desc => "MP 회복 쿨타임이 0.2초 감소합니다";
 
     public override UpgradeClass Upgrade()
     {
         if(level < maxLevel)
         {
             level++;
-            player.MpCool -= 0.25f;
+            player.MpCool -= 0.2f;
         }
 
-        return this;
-    }
-}
-
-public class UpgradeHP : UpgradeClass
-{
-    public override int maxLevel => 5;
-
-    public override string Desc => "체력 회복량이 0.15%만큼 더 증가합니다";
-
-    public override UpgradeClass Upgrade()
-    {
-        if(level < maxLevel)
-        {
-            player.HpAmount += 0.15f;
-            level++;
-        }
         return this;
     }
 }
@@ -179,13 +162,13 @@ public class UpgradeMoveSpeed : UpgradeClass
 {
     public override int maxLevel => 5;
 
-    public override string Desc => "이동 속도가 1만큼 더 증가합니다";
+    public override string Desc => "이동 속도가 2만큼 더 증가합니다";
 
     public override UpgradeClass Upgrade()
     {
         if(level < maxLevel)
         {
-            player.moveSpeed += 1f;
+            player.moveSpeed += 2f;
             level++;
         }
         return this;
