@@ -44,7 +44,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1, y: 0.8}
+  m_Offset: {x: -1, y: 0.8}
   m_Size: {x: 5.5, y: 1.5}
   m_Direction: 1
 --- !u!1 &682127548910200333
@@ -91,7 +91,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.4, y: 2.1}
+  m_Offset: {x: -2.4, y: 2.1}
   m_Size: {x: 2, y: 4}
   m_Direction: 0
 --- !u!1 &682127549579603507
@@ -221,7 +221,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 28f92da37bb01e84f970468fa62e34c7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -311,16 +311,16 @@ MonoBehaviour:
   ai:
     search_player: 1
     ai_moving_range: 0
-    delay_min: 0
-    delay_max: 0
+    delay_min: 3
+    delay_max: 4
     search_distance: 0
     unSearch_distance: 0
     distance_with_player: 0
   enemyStateName: 
   rock_prefab: {fileID: 7215665660045949021, guid: e9951240cc4afb042b677319e8c8fd48, type: 3}
   fragment_prefab: {fileID: 844190010478968155, guid: 5b2b32d75d2d2414d83f810a12600624, type: 3}
-  attack1_frame: 0
-  attack2_frame: 0
+  attack1_frame: 1
+  attack2_frame: 1
 --- !u!114 &1945750208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,9 +384,9 @@ MonoBehaviour:
     - 1
     - 2
     loop: 0
-    wait: 0
-    wait_index_start: 0
-    wait_index_end: 0
+    wait: 1
+    wait_index_start: 1
+    wait_index_end: 1
   attack2:
     frame_sprites:
     - {fileID: 21300000, guid: 7d0e766b0fa68364caf7f9148877b6d5, type: 3}
