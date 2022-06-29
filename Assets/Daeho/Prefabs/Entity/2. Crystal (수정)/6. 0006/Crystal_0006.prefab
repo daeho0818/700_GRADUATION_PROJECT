@@ -299,10 +299,12 @@ MonoBehaviour:
   attack1:
     frame_sprites:
     - {fileID: 21300000, guid: 5aafd6d1fcb217746ab15643c00150f4, type: 3}
+    - {fileID: 21300000, guid: 5aafd6d1fcb217746ab15643c00150f4, type: 3}
     delay:
     - 1
+    - 1
     loop: 0
-    wait: 0
+    wait: 1
     wait_index_start: 0
     wait_index_end: 0
   attack2:
