@@ -147,7 +147,7 @@ public class Player : Entity
 
     IEnumerator CrystalSkillCoroutine()
     {
-        var monsters = FindObjectsOfType(typeof(Enemy)).ToList();
+        var monsters = FindObjectsOfType<Enemy>().ToList();
 
         if (monsters.Count <= 0)
         {
@@ -166,7 +166,7 @@ public class Player : Entity
 
         ANIM.SetTrigger("SkillActive");
 
-        foreach (var item in InGameManager.Instance.nowWave.Monsters)
+        foreach (var item in monsters)
         {
             HomingCrystal ball = Instantiate(crystalBall, skillAtkPos.position, Quaternion.identity);
             ball.Init(skillAtkPos, item.transform, 2, 6, 3, this);
