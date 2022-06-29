@@ -37,10 +37,27 @@ public class HomingCrystal : MonoBehaviour
 
     void Update()
     {
+        try
+        {
+            TargetInfo.GetComponent<Transform>();
+        }
+        catch (MissingReferenceException e)
+        {
+            ParticleSystem temp = Instantiate(VFX_Explosion, transform.position, Quaternion.identity);
+
+            Destroy(temp.gameObject, 1f);
+            Destroy(gameObject);
+            return;
+        }
+
         if(curTime > timer)
         {
             TargetInfo?.OnHit(player.ReturnSkillDamage());
-            Instantiate(VFX_Explosion, TargetInfo.transform.position, Quaternion.identity);
+
+
+            ParticleSystem temp = Instantiate(VFX_Explosion, TargetInfo.transform.position, Quaternion.identity);
+            Destroy(temp.gameObject, 1f);
+
             Destroy(gameObject);
             return;
         }
