@@ -222,8 +222,6 @@ public class Enemy : Entity
         Coroutine attack = null;
         public AttackState(Enemy enemy)
         {
-            Debug.Log("¼³¸¶..?");
-
             this.enemy = enemy;
             player = enemy.player;
 
