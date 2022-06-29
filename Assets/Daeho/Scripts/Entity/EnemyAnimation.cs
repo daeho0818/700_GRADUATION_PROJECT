@@ -128,6 +128,33 @@ public class EnemyAnimation : MonoBehaviour
     {
     }
 
+    #region 공격 패턴이 여러개일 때
+    [SB]
+    public class Attack1State : AnimState
+    {
+    }
+
+    [SB]
+    public class Attack2State : AnimState
+    {
+    }
+
+    [SB]
+    public class Attack3State : AnimState
+    {
+    }
+
+    [SB]
+    public class Attack4State : AnimState
+    {
+    }
+
+    [SB]
+    public class Attack5State : AnimState
+    {
+    }
+    #endregion
+
     // 피격 상태
     [SB]
     public class HitState : AnimState
@@ -142,7 +169,7 @@ public class EnemyAnimation : MonoBehaviour
     #endregion
 
     private Enemy _model;
-    protected Enemy model
+    Enemy model
     {
         get
         {
@@ -156,15 +183,27 @@ public class EnemyAnimation : MonoBehaviour
     }
 
     [Space(10)]
-    [SerializeField] protected IdleState idle;
+    [SerializeField] IdleState idle;
     [Space(10)]
-    [SerializeField] protected WalkState walk;
+    [SerializeField] WalkState walk;
     [Space(10)]
-    [SerializeField] protected AttackState attack;
+    [SerializeField] AttackState attack;
+    #region 공격 패턴이 여러개일 때
     [Space(10)]
-    [SerializeField] protected HitState hit;
+    [SerializeField] Attack1State attack1;
     [Space(10)]
-    [SerializeField] protected DeadState dead;
+    [SerializeField] Attack2State attack2;
+    [Space(10)]
+    [SerializeField] Attack3State attack3;
+    [Space(10)]
+    [SerializeField] Attack4State attack4;
+    [Space(10)]
+    [SerializeField] Attack5State attack5;
+    #endregion
+    [Space(10)]
+    [SerializeField] HitState hit;
+    [Space(10)]
+    [SerializeField] DeadState dead;
 
     private AnimState _state;
     protected AnimState state
@@ -183,7 +222,7 @@ public class EnemyAnimation : MonoBehaviour
         }
     }
 
-    protected string s_state = "";
+    string s_state = "";
 
     void Start()
     {
@@ -193,7 +232,7 @@ public class EnemyAnimation : MonoBehaviour
     /// Animation 현재 State 변경 함수
     /// </summary>
     /// <param name="name">변경할 State 이름</param>
-    public virtual void SetState(string name)
+    public void SetState(string name)
     {
         switch (name)
         {
@@ -209,6 +248,23 @@ public class EnemyAnimation : MonoBehaviour
             case string n when nameof(AttackState).Contains(n):
                 state = attack;
                 break;
+            #region 공격 패턴이 여러개일 때
+            case string n when nameof(Attack1State).Contains(n):
+                state = attack1;
+                break;
+            case string n when nameof(Attack2State).Contains(n):
+                state = attack2;
+                break;
+            case string n when nameof(Attack3State).Contains(n):
+                state = attack3;
+                break;
+            case string n when nameof(Attack4State).Contains(n):
+                state = attack4;
+                break;
+            case string n when nameof(Attack5State).Contains(n):
+                state = attack5;
+                break;
+            #endregion
             case string n when nameof(DeadState).Contains(n):
                 state = dead;
                 break;

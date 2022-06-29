@@ -4,6 +4,121 @@ using UnityEngine;
 
 public class Crystal_0000 : GroundObject
 {
+    public new class AttackState : EnemyState
+    {
+        Crystal_0000 crystal;
+        public AttackState(Enemy enemy)
+        {
+            crystal = ((Crystal_0000)enemy);
+
+            float distance = Vector2.Distance(crystal.transform.position, crystal.player.transform.position);
+
+            if (distance <= crystal.attack_distance)
+                crystal.ChangeState("Attack1");
+            else
+                crystal.ChangeState("Attack2");
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+
+    public new class Attack1State : EnemyState
+    {
+        Crystal_0000 crystal;
+        public Attack1State(Enemy enemy)
+        {
+            crystal = ((Crystal_0000)enemy);
+
+            crystal.animation.SetState("Attack1");
+
+            int attack_frame = crystal.attack_frames[0];
+            System.Action action = () => { crystal.StartCoroutine(crystal.SmashAttack()); };
+
+            var state = crystal.animation.GetState();
+            state.frames_actions[attack_frame] = action;
+            state.OnAnimationEnd = () => { crystal.ChangeState("Idle"); };
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+    public new class Attack2State : EnemyState
+    {
+        Crystal_0000 crystal;
+        public Attack2State(Enemy enemy)
+        {
+            crystal = ((Crystal_0000)enemy);
+
+            crystal.animation.SetState("Attack2");
+
+            int attack_frame = crystal.attack_frames[1];
+            System.Action action = () => { crystal.StartCoroutine(crystal.DashAttack()); };
+
+            var state = crystal.animation.GetState();
+            state.frames_actions[attack_frame] = action;
+            state.OnAnimationEnd = () => { crystal.ChangeState("Idle"); };
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+
+    protected override void ChangeState(string state)
+    {
+        switch (state)
+        {
+            case string s when nameof(IdleState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new IdleState(this);
+                break;
+            case string s when nameof(WalkState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new WalkState(this);
+                break;
+            case string s when nameof(AttackState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new AttackState(this);
+                break;
+            case string s when nameof(Attack1State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack1State(this);
+                break;
+            case string s when nameof(Attack2State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack2State(this);
+                break;
+            case string s when nameof(HitState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new HitState(this);
+                break;
+            case string s when nameof(DeadState).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new DeadState(this);
+                break;
+            default:
+                Debug.Assert(false);
+                return;
+        }
+
+        enemyStateName = state;
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -28,23 +143,15 @@ public class Crystal_0000 : GroundObject
 
     protected override bool AttackCheck() => true;
 
-    /// <summary>
-    /// 플레이어를 향해 할퀴거나 돌진하는 공격 스킬
-    /// </summary>
     protected override IEnumerator BaseAttack()
     {
-        float distance = Vector2.Distance(transform.position, player.transform.position);
-        IEnumerator enumerator;
-
-        if (distance <= attack_distance)
-            enumerator = SmashAttack();
-        else
-            enumerator = DashAttack();
-
-        p = null;
-
-        yield return StartCoroutine(enumerator);
+        yield return null;
     }
+
+    /// <summary>
+    /// 플레이어를 향해 돌진하는 공격 패턴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator DashAttack()
     {
         yield return null;
@@ -75,7 +182,7 @@ public class Crystal_0000 : GroundObject
     }
 
     /// <summary>
-    /// 할퀴기 공격
+    /// 플레이어를 할퀴는 공격 패턴
     /// </summary>
     IEnumerator SmashAttack()
     {
@@ -83,7 +190,7 @@ public class Crystal_0000 : GroundObject
 
         var collider = (BoxCollider2D)colliders[1];
 
-        Player p = CheckCollision(transform.position, collider, 0);
+        Player p = CheckCollision(transform.position, collider, 0, 0.6f);
         p?.OnHit?.Invoke(1);
     }
 
