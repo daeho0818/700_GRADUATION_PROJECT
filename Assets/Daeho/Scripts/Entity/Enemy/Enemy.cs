@@ -13,6 +13,8 @@ public struct EnemyInformation
     public bool attack_check;
     [Tooltip("애니메이션 공격 해당 프레임")]
     public int attack_frame;
+    [Tooltip("애니메이션 공격 해당 프레임 (공격 패턴이 여러개일 경우)")]
+    public int[] attack_frames;
     [Tooltip("애니메이션 움직임 해당 프레임")]
     public int walk_frame;
     [Tooltip("공격 대기 시간")]
@@ -220,10 +222,10 @@ public class Enemy : Entity
         Coroutine attack = null;
         public AttackState(Enemy enemy)
         {
+            Debug.Log("설마..?");
+
             this.enemy = enemy;
             player = enemy.player;
-
-            Debug.Log("응애..?");
 
             enemy.animation.SetState("Attack");
 
@@ -235,8 +237,8 @@ public class Enemy : Entity
             if (state.frames_actions.Length > 0)
             {
                 state.frames_actions[enemy.enemy.attack_frame] = attack;
-                state.OnAnimationEnd = () => enemy.ChangeState("Idle");
             }
+            state.OnAnimationEnd = () => enemy.ChangeState("Idle");
         }
 
         public override void Update()
@@ -259,6 +261,79 @@ public class Enemy : Entity
             }
         }
     }
+
+    #region 공격 패턴이 여러개일 때
+    public class Attack1State : EnemyState
+    {
+        public Attack1State(Enemy enemy)
+        {
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+    public class Attack2State : EnemyState
+    {
+        public Attack2State(Enemy enemy)
+        {
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+    public class Attack3State : EnemyState
+    {
+        public Attack3State(Enemy enemy)
+        {
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+    public class Attack4State : EnemyState
+    {
+        public Attack4State(Enemy enemy)
+        {
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+    public class Attack5State : EnemyState
+    {
+        public Attack5State(Enemy enemy)
+        {
+        }
+
+        public override void Update()
+        {
+        }
+
+        public override void Release()
+        {
+        }
+    }
+    #endregion
 
     public class HitState : EnemyState
     {
@@ -323,6 +398,28 @@ public class Enemy : Entity
                 enemy_state?.Release();
                 enemy_state = new AttackState(this);
                 break;
+            #region 공격 패턴이 여러개일 때
+            case string s when nameof(Attack1State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack1State(this);
+                break;
+            case string s when nameof(Attack2State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack2State(this);
+                break;
+            case string s when nameof(Attack3State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack3State(this);
+                break;
+            case string s when nameof(Attack4State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack4State(this);
+                break;
+            case string s when nameof(Attack5State).Contains(s):
+                enemy_state?.Release();
+                enemy_state = new Attack5State(this);
+                break;
+            #endregion
             case string s when nameof(HitState).Contains(s):
                 enemy_state?.Release();
                 enemy_state = new HitState(this);
@@ -335,6 +432,8 @@ public class Enemy : Entity
                 Debug.Assert(false);
                 return;
         }
+
+        enemyStateName = state;
     }
     #endregion
 
@@ -353,6 +452,10 @@ public class Enemy : Entity
     /// 애니메이션 공격 해당 프레임
     /// </summary>
     public int attack_frame { get => enemy.attack_frame; set => enemy.attack_frame = value; }
+    /// <summary>
+    /// 애니메이션 공격 해당 프레임 (공격 패턴이 여러개일 경우)
+    /// </summary>
+    public int[] attack_frames { get => enemy.attack_frames; set => enemy.attack_frames = value; }
     /// <summary>
     /// 애니메이션 움직임 해당 프레임
     /// </summary>
@@ -422,7 +525,7 @@ public class Enemy : Entity
     protected Player player;
 
     [Space(10)]
-    [SerializeField] string enemyStateName;
+    [SerializeField] protected string enemyStateName;
     protected override void Awake()
     {
         hp = max_hp;
@@ -472,7 +575,6 @@ public class Enemy : Entity
         }
 
         enemy_state?.Update();
-        enemyStateName = enemy_state?.GetType().Name;
     }
 
     /// <summary>
@@ -581,7 +683,7 @@ public class Enemy : Entity
         Vector2 offset = collider.offset;
         if (transform.rotation.y != 0) offset *= Vector2.left;
 
-        var hits = Physics2D.BoxCastAll(position + (offset * size), collider.size, rot, Vector2.zero, 0, LayerMask.GetMask("Entity"));
+        var hits = Physics2D.BoxCastAll(position + (offset * size), collider.size * size, rot, Vector2.zero, 0, LayerMask.GetMask("Entity"));
 
         foreach (var hit in hits)
         {

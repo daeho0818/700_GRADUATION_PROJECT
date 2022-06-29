@@ -7,9 +7,6 @@ public class Boss_Orc : GroundObject
     [SerializeField] GameObject rock_prefab;
     [SerializeField] GameObject fragment_prefab;
 
-    [SerializeField] int attack1_frame;
-    [SerializeField] int attack2_frame;
-
     public new class WalkState : EnemyState
     {
         Boss_Orc boss;
@@ -34,7 +31,7 @@ public class Boss_Orc : GroundObject
         }
     }
 
-    public class Attack1State : EnemyState
+    public new class Attack1State : EnemyState
     {
         Boss_Orc boss;
 
@@ -51,7 +48,7 @@ public class Boss_Orc : GroundObject
             var state = enemy.animation.GetState();
             System.Action action = () => { enemy.StartCoroutine(boss.AttackPattern1(20)); };
 
-            state.frames_actions[boss.attack1_frame] = action;
+            state.frames_actions[boss.attack_frames[0]] = action;
             state.OnAnimationEnd = () => { boss.ChangeState("Idle"); };
         }
 
@@ -64,7 +61,7 @@ public class Boss_Orc : GroundObject
         }
     }
 
-    public class Attack2State : EnemyState
+    public new class Attack2State : EnemyState
     {
         Boss_Orc boss;
 
@@ -82,7 +79,7 @@ public class Boss_Orc : GroundObject
             var state = enemy.animation.GetState();
             System.Action action = () => { enemy.StartCoroutine(boss.AttackPattern2(20, dir)); };
 
-            state.frames_actions[boss.attack2_frame] = action;
+            state.frames_actions[boss.attack_frames[1]] = action;
             state.OnAnimationEnd = () => { boss.ChangeState("Attack1"); };
         }
 
