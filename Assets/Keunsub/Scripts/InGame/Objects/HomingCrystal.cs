@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HomingCrystal : MonoBehaviour
 {
-
+    [SerializeField] ParticleSystem VFX_Explosion;
     Vector3[] points = new Vector3[4];
 
     float timer = 0f;
@@ -40,10 +40,12 @@ public class HomingCrystal : MonoBehaviour
         if(curTime > timer)
         {
             TargetInfo?.OnHit(player.ReturnSkillDamage());
+            Instantiate(VFX_Explosion, TargetInfo.transform.position, Quaternion.identity);
             Destroy(gameObject);
             return;
         }
 
+        points[3] = TargetInfo.transform.position;
         curTime += Time.deltaTime * speed;
 
         transform.position = new Vector3(

@@ -81,6 +81,9 @@ public class Player : Entity
 
     [Header("Particle Effects")]
     [SerializeField] ParticleSystem VFX_MpHealing;
+    [SerializeField] ParticleSystem VFX_Orc_Dash_End;
+    [SerializeField] ParticleSystem VFX_Orc_Dash_Dashing;
+    [SerializeField] ParticleSystem VFX_Crystal_Charge;
     public ParticleSystem VFX_H_Slash;
     public ParticleSystem VFX_V_Slash;
 
@@ -132,7 +135,7 @@ public class Player : Entity
     {
         if (Input.GetKeyDown(KeyCode.S) && !isSkill && !crystalSkillActive && GameManager.Instance.CurSceneIdx == 2)
         {
-            var monsters = InGameManager.Instance.nowWave.Monsters;
+            var monsters = FindObjectsOfType(typeof(Enemy)).ToList();
             if (monsters.Count * 10f <= Mp)
             {
                 isSkill = true;
@@ -144,7 +147,7 @@ public class Player : Entity
 
     IEnumerator CrystalSkillCoroutine()
     {
-        var monsters = InGameManager.Instance.nowWave.Monsters;
+        var monsters = FindObjectsOfType(typeof(Enemy)).ToList();
 
         if (monsters.Count <= 0)
         {
@@ -158,7 +161,8 @@ public class Player : Entity
         ANIM.SetTrigger("SkillTrigger");
         ANIM.SetBool("IsSkill", isSkill);
         NoGravity();
-        yield return new WaitForSeconds(1f);
+        VFX_Crystal_Charge.Play();
+        yield return new WaitForSeconds(1.2f);
 
         ANIM.SetTrigger("SkillActive");
 
@@ -208,7 +212,7 @@ public class Player : Entity
         Mp -= 20f;
         MPRecover();
         yield return new WaitForSeconds(1f);
-
+        VFX_Orc_Dash_Dashing.Play();
         ANIM.SetTrigger("SkillActive");
         do
         {
@@ -233,7 +237,8 @@ public class Player : Entity
 
         } while (true);
 
-
+        VFX_Orc_Dash_Dashing.Stop();
+        VFX_Orc_Dash_End.Play();
         Physics2D.OverlapCircleAll(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity")).ToList().ForEach(item => item.GetComponent<Entity>().OnHit((int)(SkillDamage * skillDamageIncrease * 2f)));
         yield return new WaitForSeconds(0.5f); // 공격 후 반동
 
@@ -283,6 +288,8 @@ public class Player : Entity
         switch (attackState)
         {
             case 0:
+                VFX_H_Slash.Play();
+                break;
             case 1:
                 VFX_H_Slash.Play();
                 break;
