@@ -84,8 +84,9 @@ public class Player : Entity
     [SerializeField] ParticleSystem VFX_Orc_Dash_End;
     [SerializeField] ParticleSystem VFX_Orc_Dash_Dashing;
     [SerializeField] ParticleSystem VFX_Crystal_Charge;
-    public ParticleSystem VFX_H_Slash;
-    public ParticleSystem VFX_V_Slash;
+    [SerializeField] ParticleSystem VFX_H_Slash;
+    [SerializeField] ParticleSystem VFX_V_Slash;
+    [SerializeField] ParticleSystem VFX_Slash;
 
     #region Component
     [Header("Cam")]
@@ -120,6 +121,7 @@ public class Player : Entity
     IEnumerator MpRecoverCoroutine()
     {
         yield return new WaitForSeconds(MpCool);
+        VFX_MpHealing.Clear();
         VFX_MpHealing.Play();
         while (Mp < MaxMp)
         {
@@ -166,6 +168,7 @@ public class Player : Entity
         ANIM.SetTrigger("SkillTrigger");
         ANIM.SetBool("IsSkill", isSkill);
         NoGravity();
+        VFX_Crystal_Charge.Clear();
         VFX_Crystal_Charge.Play();
         yield return new WaitForSeconds(1.2f);
 
@@ -218,6 +221,7 @@ public class Player : Entity
         MPRecover();
         yield return new WaitForSeconds(1f);
         VFX_Orc_Dash_Dashing.Play();
+        List<Entity> enemies = new List<Entity>();
         ANIM.SetTrigger("SkillActive");
         do
         {
@@ -237,12 +241,19 @@ public class Player : Entity
 
             transform.Translate(Vector3.right * Time.deltaTime * dashSpeed);
 
-            Physics2D.OverlapCircle(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity"))?.GetComponent<Entity>()?.OnHit((int)(SkillDamage * skillDamageIncrease));
+
+            Entity temp = Physics2D.OverlapCircle(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity"))?.GetComponent<Entity>();
+            if (!enemies.Contains(temp))
+            {
+                temp.OnHit(ReturnSkillDamage());
+                enemies.Add(temp);
+            }
             yield return null;
 
         } while (true);
 
         VFX_Orc_Dash_Dashing.Stop();
+        VFX_Orc_Dash_End.Clear();
         VFX_Orc_Dash_End.Play();
         Physics2D.OverlapCircleAll(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity")).ToList().ForEach(item => item.GetComponent<Entity>().OnHit((int)(SkillDamage * skillDamageIncrease * 2f)));
         yield return new WaitForSeconds(0.5f); // 공격 후 반동
@@ -290,6 +301,14 @@ public class Player : Entity
         }
         Exp += _damage * ExpAmount;
 
+        Vector2 middlePos = (transform.position + monster.transform.position) / 2;
+        VFX_Slash.transform.position = middlePos + new Vector2(0, 1);
+
+        VFX_Slash.Clear();
+        VFX_Slash.Play();
+
+        VFX_V_Slash.Clear();
+        VFX_H_Slash.Clear();
         switch (attackState)
         {
             case 0:
@@ -302,8 +321,7 @@ public class Player : Entity
                 VFX_V_Slash.Play();
                 break;
             case 3:
-                VFX_V_Slash.Play();
-                VFX_H_Slash.Play();
+                VFX_V_Slash.Clear();
                 break;
         }
 
@@ -312,7 +330,7 @@ public class Player : Entity
 
     public int ReturnSkillDamage()
     {
-        float _damage = SkillDamage * skillDamageIncrease;
+        float _damage = (SkillDamage + damage) * skillDamageIncrease;
 
         if (Random.Range(0, 100) < criticalChance)
         {

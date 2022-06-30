@@ -39,7 +39,8 @@ public class HomingCrystal : MonoBehaviour
     {
         try
         {
-            TargetInfo.GetComponent<Transform>();
+            if (TargetInfo != null)
+                TargetInfo.GetComponent<Transform>();
         }
         catch (MissingReferenceException e)
         {
@@ -50,7 +51,7 @@ public class HomingCrystal : MonoBehaviour
             return;
         }
 
-        if(curTime > timer)
+        if (curTime > timer)
         {
             TargetInfo?.OnHit(player.ReturnSkillDamage());
 
