@@ -13,8 +13,9 @@ public class HomingCrystal : MonoBehaviour
 
     Entity TargetInfo;
     Player player;
+    float damage;
 
-    public void Init(Transform _start, Transform _target, float _speed, float _distanceStart, float _distanceEnd, Player player)
+    public void Init(Transform _start, Transform _target, float _speed, float _distanceStart, float _distanceEnd, Player player, float damage)
     {
         speed = _speed;
         TargetInfo = _target.GetComponent<Entity>();
@@ -33,6 +34,8 @@ public class HomingCrystal : MonoBehaviour
         points[3] = _target.position;
 
         transform.position = points[0];
+
+        this.damage = damage;   
     }
 
     void Update()
@@ -53,7 +56,7 @@ public class HomingCrystal : MonoBehaviour
 
         if (curTime > timer)
         {
-            TargetInfo?.OnHit(player.ReturnSkillDamage());
+            TargetInfo?.OnHit((int)damage);
 
 
             ParticleSystem temp = Instantiate(VFX_Explosion, TargetInfo.transform.position, Quaternion.identity);

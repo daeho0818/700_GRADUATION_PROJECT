@@ -13,14 +13,20 @@ public class SoundManager : Singleton<SoundManager>
     Dictionary<string, AudioClip> Effect_Clips = new Dictionary<string, AudioClip>();
     Dictionary<string, AudioClip> UI_Clips = new Dictionary<string, AudioClip>();
 
+    AudioSource[] BackgroundAudio;
+    int curBGIdx = 0;
+    int nextBGIdx = 1;
+    public float changeDuration = 0.25f;
+
     private void Awake()
     {
         Init();
+        BackgroundAudio = GetComponents<AudioSource>();
     }
 
     void Init()
     {
-        foreach(var item in Resources.LoadAll<AudioClip>(BackGround_Path))
+        foreach (var item in Resources.LoadAll<AudioClip>(BackGround_Path))
         {
             Background_Clips.Add(item.name, item);
             Debug.Log(item.name);
@@ -39,6 +45,31 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
+    public void PlayBackground(string key)
+    {
+        StartCoroutine(ChangeBackground(changeDuration, key));
+    }
+
+    IEnumerator ChangeBackground(float duration, string key)
+    {
+        yield return null;
+
+        float timer = duration;
+        BackgroundAudio[nextBGIdx].clip = Background_Clips[key];
+        BackgroundAudio[nextBGIdx].Play();
+
+        if (BackgroundAudio[curBGIdx].clip != null)
+            do
+            {
+                BackgroundAudio[curBGIdx].volume = timer / duration;
+                BackgroundAudio[nextBGIdx].volume = (1 - timer) / duration;
+                timer -= Time.deltaTime;
+                yield return null;
+            } while (timer >= 0f);
 
 
+        int temp = curBGIdx;
+        curBGIdx = nextBGIdx;
+        nextBGIdx = temp;
+    }
 }

@@ -173,11 +173,12 @@ public class Player : Entity
         yield return new WaitForSeconds(1.2f);
 
         ANIM.SetTrigger("SkillActive");
+        float damage = (ReturnSkillDamage() * 5) / monsters.Count;
 
         foreach (var item in monsters)
         {
             HomingCrystal ball = Instantiate(crystalBall, skillAtkPos.position, Quaternion.identity);
-            ball.Init(skillAtkPos, item.transform, 2, 6, 3, this);
+            ball.Init(skillAtkPos, item.transform, 2, 6, 3, this, damage);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -243,7 +244,7 @@ public class Player : Entity
 
 
             Entity temp = Physics2D.OverlapCircle(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity"))?.GetComponent<Entity>();
-            if (!enemies.Contains(temp))
+            if (temp != null && !enemies.Contains(temp))
             {
                 temp.OnHit(ReturnSkillDamage());
                 enemies.Add(temp);
@@ -302,7 +303,9 @@ public class Player : Entity
         Exp += _damage * ExpAmount;
 
         Vector2 middlePos = (transform.position + monster.transform.position) / 2;
-        VFX_Slash.transform.position = middlePos + new Vector2(0, 1);
+        Vector2 tempPos = VFX_Slash.transform.position;
+        tempPos.x = middlePos.x;
+        VFX_Slash.transform.position = tempPos;
 
         VFX_Slash.Clear();
         VFX_Slash.Play();

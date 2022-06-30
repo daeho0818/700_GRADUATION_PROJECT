@@ -24,6 +24,7 @@ public class CrystalWave : WaveBase
 
     IEnumerator Wave1Coroutine()
     {
+        SoundManager.Instance.PlayBackground("Crystal_Battle");
         Monsters.Add(SpawnMonster(MagicianCrystal, new Vector2(-10f, -3f), EntitySize.Medium));
         Monsters.Add(SpawnMonster(MagicianCrystal, new Vector2(10f, -3f), EntitySize.Medium));
 
@@ -114,6 +115,7 @@ public class CrystalWave : WaveBase
 
     IEnumerator Wave6Coroutine()
     {
+        SoundManager.Instance.PlayBackground("Crystal_Climax");
         Platforms.Add(SpawnPlatform(new Vector2(-3.75f, -3f)));
         Platforms.Add(SpawnPlatform(new Vector2(-1.25f, -3f)));
         Platforms.Add(SpawnPlatform(new Vector2(1.25f, -3f)));
