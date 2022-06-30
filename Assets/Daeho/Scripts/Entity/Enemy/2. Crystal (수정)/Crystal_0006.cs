@@ -37,7 +37,12 @@ public class Crystal_0006 : GroundObject
             crystal = (Crystal_0006)enemy;
 
             int attack_frame = crystal.attack_frames[0];
-            System.Action action = () => { crystal.StartCoroutine(crystal.AttackPattern1()); };
+            System.Action action = () =>
+            {
+                crystal.StartCoroutine(crystal.AttackPattern1());
+
+                crystal.attack_particles[0].Play();
+            };
 
             var state = crystal.animation.GetState();
             state.frames_actions[attack_frame] = action;
@@ -61,7 +66,12 @@ public class Crystal_0006 : GroundObject
             crystal = (Crystal_0006)enemy;
 
             int attack_frame = crystal.attack_frames[1];
-            System.Action action = () => { crystal.StartCoroutine(crystal.AttackPattern2()); };
+            System.Action action = () =>
+            {
+                crystal.StartCoroutine(crystal.AttackPattern2());
+
+                crystal.attack_particles[1].Play();
+            };
 
             var state = crystal.animation.GetState();
             state.frames_actions[attack_frame] = action;

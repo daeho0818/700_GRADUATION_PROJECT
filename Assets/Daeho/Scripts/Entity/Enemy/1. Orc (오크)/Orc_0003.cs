@@ -69,6 +69,8 @@ public class Orc_0003 : GroundObject
         super_armor = true;
 
         animation.AnimEnd();
+
+        attack_particle.Play();
     }
 
     protected override bool AttackCheck()
