@@ -194,21 +194,27 @@ public class Boss_Orc : GroundObject
             // 시작 지점과 목표 지점 x 죄표 사이의 거리
             Vector2.Distance(transform.position * Vector2.right, target * Vector2.right);
 
+        colliders[0].isTrigger = true;
         // 포물선 그리며 점프
         #region
-        while (transform.position.x != target.x)
+        float progress = 0;
+
+        Vector3 center = (transform.position + player.transform.position) * 0.5f;
+        center.y -= 3;
+
+        Vector3 pos1 = transform.position - center;
+        Vector3 pos2 = player.transform.position - center;
+
+        while (progress < 1)
         {
+            transform.position = Vector3.Slerp(pos1, pos2, progress);
+            transform.position += center;
+
+            progress += Time.deltaTime;
             yield return null;
-
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(target.x, transform.position.y), 0.1f);
-
-            moved_distance = Mathf.Abs(start_position.x - transform.position.x);
-            move_distance = new Vector2(distance, 0).x - Mathf.Abs(start_position.x - transform.position.x);
-            height = moved_distance * move_distance;
-
-            transform.position = new Vector2(transform.position.x, start_position.y +
-                                                      (target.y > start_position.y ? (height / (distance * 2)) * 2.5f : height / (distance * 2))); // 더 위로 점프해야할 경우
         }
+
+        colliders[0].isTrigger = false;
 
         Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[1], CapsuleDirection2D.Horizontal, 0);
         p?.OnHit?.Invoke(1);
@@ -283,13 +289,14 @@ public class Boss_Orc : GroundObject
         RaycastHit2D[] hits;
         Vector2 origin;
 
-        Player p; 
+        Player p;
+
         do
         {
             origin = transform.position + direction * 3;
 
             hits = Physics2D.RaycastAll(origin, Vector2.down, 5, LayerMask.GetMask("Ground"));
-            Debug.DrawRay(origin, Vector2.down * 5, Color.red, 0.1f);
+            Debug.DrawRay(origin, Vector2.down * 2, Color.red, 0.1f);
 
             if (hits.Length == 0) break; // 낭떠러지일 때
 
