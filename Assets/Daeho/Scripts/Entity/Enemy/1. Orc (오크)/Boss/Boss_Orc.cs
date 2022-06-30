@@ -187,14 +187,10 @@ public class Boss_Orc : GroundObject
             new Vector2(transform.localScale.x / 2 * (dir_is_right ? 4 : -4), 0); // ② 에서 구한 맨 끝에서 조금 안쪽으로 이동 (플랫폼에 절반만 걸친 상태이기 때문) - - - ③
 
         Vector2 start_position = transform.position;
-        float moved_distance;
-        float move_distance;
-        float height;
         float distance =
             // 시작 지점과 목표 지점 x 죄표 사이의 거리
             Vector2.Distance(transform.position * Vector2.right, target * Vector2.right);
 
-        colliders[0].isTrigger = true;
         // 포물선 그리며 점프
         #region
         float progress = 0;
@@ -205,6 +201,8 @@ public class Boss_Orc : GroundObject
         Vector3 pos1 = transform.position - center;
         Vector3 pos2 = player.transform.position - center;
 
+        colliders[0].isTrigger = true;
+        attack_particles[0].Play();
         while (progress < 1)
         {
             transform.position = Vector3.Slerp(pos1, pos2, progress);
@@ -213,8 +211,9 @@ public class Boss_Orc : GroundObject
             progress += Time.deltaTime;
             yield return null;
         }
-
+        attack_particles[1].Play();
         colliders[0].isTrigger = false;
+
 
         Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[1], CapsuleDirection2D.Horizontal, 0);
         p?.OnHit?.Invoke(1);
@@ -251,6 +250,8 @@ public class Boss_Orc : GroundObject
         RaycastHit2D[] hits;
         Vector2 origin;
         Vector3 direction = dir_is_right ? Vector3.left : Vector3.right;
+
+        attack_particles[2].Play();
         do
         {
             origin = fragment.transform.position + new Vector3(fragment.transform.localScale.x * direction.x, 0);

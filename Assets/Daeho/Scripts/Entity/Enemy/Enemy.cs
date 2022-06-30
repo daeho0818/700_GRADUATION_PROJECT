@@ -230,7 +230,12 @@ public class Enemy : Entity
             enemy.FlipSprite();
 
             EnemyAnimation.AnimState state = enemy.animation.GetState();
-            System.Action attack = () => { this.attack = enemy.StartCoroutine(enemy.BaseAttack()); };
+            System.Action attack = () =>
+            {
+                this.attack = enemy.StartCoroutine(enemy.BaseAttack());
+
+                enemy.attack_particle?.Play();
+            };
 
             if (state.frames_actions.Length > 0)
             {
@@ -479,6 +484,7 @@ public class Enemy : Entity
     /// </summary>
     public bool super_armor { get => enemy.super_armor; set => enemy.super_armor = value; }
     #endregion
+
     [Header("AI Moving Information")]
     [SerializeField] protected AIInfo ai;
     #region Properties
@@ -521,6 +527,9 @@ public class Enemy : Entity
     public bool find_player { get; set; }
 
     protected Player player;
+
+    [SerializeField] protected ParticleSystem attack_particle;
+    [SerializeField] protected ParticleSystem[] attack_particles;
 
     [Space(10)]
     [SerializeField] protected string enemyStateName;
