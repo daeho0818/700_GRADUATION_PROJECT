@@ -87,6 +87,9 @@ public class Player : Entity
     [SerializeField] ParticleSystem VFX_H_Slash;
     [SerializeField] ParticleSystem VFX_V_Slash;
     [SerializeField] ParticleSystem VFX_Slash;
+    [SerializeField] ParticleSystem VFX_Jump;
+    [SerializeField] ParticleSystem VFX_Double_Jump;
+    [SerializeField] ParticleSystem VFX_LevelUP;
 
     #region Component
     [Header("Cam")]
@@ -109,6 +112,18 @@ public class Player : Entity
     void OnDestroyAction()
     {
 
+    }
+
+    [HideInInspector] public bool levelUpActive;
+
+    void LevelUpEffect()
+    {
+        if(Exp >= MaxExp && !levelUpActive)
+        {
+            VFX_LevelUP.Clear();
+            VFX_LevelUP.Play();
+            levelUpActive = true;
+        }
     }
 
     void MPRecover()
@@ -301,6 +316,7 @@ public class Player : Entity
             _damage *= 2f;
         }
         Exp += _damage * ExpAmount;
+        LevelUpEffect();
 
         Vector2 middlePos = (transform.position + monster.transform.position) / 2;
         Vector2 tempPos = VFX_Slash.transform.position;
@@ -341,6 +357,7 @@ public class Player : Entity
         }
 
         Exp += _damage * ExpAmount;
+        LevelUpEffect();
         return (int)_damage;
     }
 
@@ -534,6 +551,9 @@ public class Player : Entity
             isAttack = false;
             isRunAble = true;
             attackState = 0;
+
+            VFX_Jump.Clear();
+            VFX_Jump.Play();
         }
 
         if (Input.GetKeyUp(KeyCode.Z) && isJumping)
@@ -551,6 +571,9 @@ public class Player : Entity
             doubleJumpAble = false;
             RB.velocity = Vector2.zero;
             RB.AddForce(JumpForce * 2, ForceMode2D.Impulse);
+
+            VFX_Double_Jump.Clear();
+            VFX_Double_Jump.Play();
         }
 
         isGround = Physics2D.OverlapCircle(FeetPos.position, checkRadius, GroundMask);

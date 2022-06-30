@@ -109,7 +109,11 @@ public abstract class WaveBase : MonoBehaviour
 
             bool isUpgrade = GameManager.Instance.player.Exp > GameManager.Instance.player.MaxExp;
 
-            if (isUpgrade && curWaveIdx != WaveFuncList.Count - 1) yield return StartCoroutine(manager.UpgradePause());
+            if (isUpgrade && curWaveIdx != WaveFuncList.Count - 1)
+            {
+                yield return StartCoroutine(manager.UpgradePause());
+                GameManager.Instance.player.levelUpActive = false;
+            }
 
             yield return new WaitForSeconds(2f);
             curWaveIdx++;
