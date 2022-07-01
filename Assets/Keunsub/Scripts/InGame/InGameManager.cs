@@ -17,6 +17,7 @@ public class InGameManager : Singleton<InGameManager>
     public UpgradeUI upgradeUI;
 
     public GameObject Sharp;
+    public ParticleSystem SharpSmoke;
     Collider2D SharpCollider;
 
     void Start()
@@ -51,7 +52,10 @@ public class InGameManager : Singleton<InGameManager>
     IEnumerator SpawnSharpCoroutine()
     {
         yield return Sharp.transform.DOLocalMoveY(-6.9f, 0.2f);
-        //yield return Sharp.transform.DOShakePosition(3f, 0.2f, 30, 90, false, false);
+
+        SharpSmoke.Play();
+        yield return new WaitForSeconds(3f);
+        SharpSmoke.Stop();
 
         yield return Sharp.transform.DOLocalMoveY(-6.0f, 0.2f);
         SharpCollider.enabled = true;
