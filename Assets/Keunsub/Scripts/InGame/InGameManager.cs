@@ -50,17 +50,17 @@ public class InGameManager : Singleton<InGameManager>
 
     IEnumerator SpawnSharpCoroutine()
     {
-        yield return Sharp.transform.DOMoveY(-6.9f, 0.2f);
-        yield return Sharp.transform.DOShakePosition(3f, 0.2f, 30, 90, false, false);
+        yield return Sharp.transform.DOLocalMoveY(-6.9f, 0.2f);
+        //yield return Sharp.transform.DOShakePosition(3f, 0.2f, 30, 90, false, false);
 
-        yield return Sharp.transform.DOMoveY(-6.0f, 0.2f);
+        yield return Sharp.transform.DOLocalMoveY(-6.0f, 0.2f);
         SharpCollider.enabled = true;
     }
 
     public void RemoveSharp()
     {
         SharpCollider.enabled = false;
-        Sharp.transform.DOMoveY(-8f, 0.25f);
+        Sharp.transform.DOLocalMoveY(-8f, 0.25f);
     }
 
     public void SetRoof(float y)
