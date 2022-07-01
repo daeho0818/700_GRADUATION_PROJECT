@@ -118,7 +118,7 @@ public class Player : Entity
 
     void LevelUpEffect()
     {
-        if(Exp >= MaxExp && !levelUpActive)
+        if (Exp >= MaxExp && !levelUpActive)
         {
             VFX_LevelUP.Clear();
             VFX_LevelUP.Play();
@@ -156,7 +156,7 @@ public class Player : Entity
 
             for (int i = 0; i < monsters.Count; i++)
             {
-                if (monsters[i].IsDestroy) monsters.Remove(monsters[i]);
+                if (monsters[i].IsDestroy) monsters[i] = null;
             }
 
             if (monsters.Count * 10f <= Mp)
@@ -192,9 +192,12 @@ public class Player : Entity
 
         foreach (var item in monsters)
         {
-            HomingCrystal ball = Instantiate(crystalBall, skillAtkPos.position, Quaternion.identity);
-            ball.Init(skillAtkPos, item.transform, 2, 6, 3, this, damage);
-            yield return new WaitForSeconds(0.1f);
+            if (item != null)
+            {
+                HomingCrystal ball = Instantiate(crystalBall, skillAtkPos.position, Quaternion.identity);
+                ball.Init(skillAtkPos, item.transform, 2, 6, 3, this, damage);
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         yield return new WaitForSeconds(0.5f); // 공격 후 반동
