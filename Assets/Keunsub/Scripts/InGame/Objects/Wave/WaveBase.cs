@@ -70,11 +70,13 @@ public abstract class WaveBase : MonoBehaviour
     protected void SpawnSharp()
     {
         // 바닥 가시 소환
+        InGameManager.Instance.SpawnSharp();
     }
 
     protected void RemoveSharp()
     {
         // 바닥 가시 제거
+        InGameManager.Instance.RemoveSharp();
     }
         
     protected void RemovePlatform(List<Platform> platforms)
