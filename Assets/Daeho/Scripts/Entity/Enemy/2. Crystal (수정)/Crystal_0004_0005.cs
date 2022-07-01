@@ -80,6 +80,7 @@ public class Crystal_0004_0005 : FlyingObject
     protected override IEnumerator BaseAttack()
     {
         StopCoroutine(attack);
+        StopCoroutine(fly_animation);
 
         const int FIRE_COUNT = 8;
 
@@ -88,8 +89,25 @@ public class Crystal_0004_0005 : FlyingObject
         float rad;
 
         float delay = animation.GetState().GetDelay();
-        yield return new WaitForSeconds(delay);
+        float time = Time.time;
 
+        float rand_x;
+        float rand_y;
+        float force = 1;
+        do
+        {
+            rand_x = Random.Range(-0.1f, 0.1f) * force;
+            rand_y = Random.Range(-0.1f, 0.1f) * force;
+
+            force += 0.1f;
+
+            transform.position += new Vector3(rand_x, rand_y) * Time.deltaTime;
+            yield return null;
+            transform.position -= new Vector3(rand_x, rand_y) * Time.deltaTime;
+        }
+        while (Time.time - time <= delay);
+
+        attack_particles[0].Play();
         for (int i = 0; i <= 360; i += 360 / FIRE_COUNT)
         {
             rad = i * Mathf.Deg2Rad;

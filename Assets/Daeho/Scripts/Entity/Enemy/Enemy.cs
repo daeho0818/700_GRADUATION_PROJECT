@@ -234,7 +234,8 @@ public class Enemy : Entity
             {
                 this.attack = enemy.StartCoroutine(enemy.BaseAttack());
 
-                enemy.attack_particle?.Play();
+                if (enemy.attack_particle)
+                    enemy.attack_particle.Play();
             };
 
             if (state.frames_actions.Length > 0)

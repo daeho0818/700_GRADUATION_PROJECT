@@ -41,6 +41,9 @@ public class Orc_0003 : GroundObject
 
         super_armor = true;
 
+        attack_particles[0].Play();
+        attack_particles[1].Play();
+
         do
         {
             hits = Physics2D.RaycastAll(transform.position, dir, 2f, LayerMask.GetMask("Wall"));
@@ -66,11 +69,12 @@ public class Orc_0003 : GroundObject
 
         } while (true);
 
-        super_armor = true;
-
         animation.AnimEnd();
 
-        attack_particle.Play();
+        attack_particles[0].Play();
+        attack_particles[1].Stop();
+
+        super_armor = false;
     }
 
     protected override bool AttackCheck()
