@@ -85,7 +85,6 @@ public class EnemyAnimation : MonoBehaviour
                 // 실행이 끝날 때까지 대기
                 else if (anim_end && index > wait_index_end)
                 {
-                    yield return null;
                     index = wait_index_start;
                 }
 

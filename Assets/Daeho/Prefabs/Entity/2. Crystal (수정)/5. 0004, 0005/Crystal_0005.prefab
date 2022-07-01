@@ -68587,8 +68587,9 @@ MonoBehaviour:
     search_distance: 0
     unSearch_distance: 0
     distance_with_player: 0
-  attack_particle: {fileID: 84129205}
-  attack_particles: []
+  attack_particle: {fileID: 0}
+  attack_particles:
+  - {fileID: 84129205}
   enemyStateName: 
   proj_prefab: {fileID: 7928072327248792864, guid: 83b1b708006806a4db74f777ebe129d6, type: 3}
 --- !u!114 &4854812385687300956

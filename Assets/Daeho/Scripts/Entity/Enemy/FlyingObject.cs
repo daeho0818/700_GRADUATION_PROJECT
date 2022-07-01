@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FlyingObject : Enemy
 {
+    protected Coroutine fly_animation;
     protected override void Awake()
     {
         base.Awake();
@@ -13,7 +14,7 @@ public class FlyingObject : Enemy
     {
         base.Start();
 
-        StartCoroutine(FlyAnimation());
+        fly_animation = StartCoroutine(FlyAnimation());
     }
 
     protected override void Update()
