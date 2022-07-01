@@ -67,9 +67,63 @@ public class SoundManager : Singleton<SoundManager>
                 yield return null;
             } while (timer >= 0f);
 
-
         int temp = curBGIdx;
         curBGIdx = nextBGIdx;
         nextBGIdx = temp;
+    }
+
+    public AudioSource PlayUISound(string key)
+    {
+        AudioSource audio = SpawnAudio(UI_Clips[key]);
+
+        audio.Play();
+
+        Destroy(audio.gameObject, audio.clip.length);
+
+        return audio;
+    }
+
+    public AudioSource PlayEffectSound(string key, Vector3 pos, bool loop = false)
+    {
+        AudioSource audio = SpawnAudio(Effect_Clips[key]);
+
+        audio.transform.position = pos;
+
+        audio.spatialBlend = 1.0f;
+        audio.maxDistance = 7.0f;
+        audio.loop = loop;
+        audio.Play();
+
+        if (!loop && audio != null) Destroy(audio.gameObject, audio.clip.length);
+
+        return audio;
+    }
+
+    public AudioSource PlayEffectSound(string key, Transform parent, bool loop = false)
+    {
+        AudioSource audio = SpawnAudio(Effect_Clips[key]);
+
+        audio.transform.SetParent(parent);
+        audio.transform.localPosition = Vector3.zero;
+
+        audio.spatialBlend = 1.0f;
+        audio.maxDistance = 7.0f;
+        audio.loop = loop;
+        audio.Play();
+
+        if (!loop && audio != null) Destroy(audio.gameObject, audio.clip.length);
+
+        return audio;
+    }
+
+    AudioSource SpawnAudio(AudioClip clip)
+    {
+        GameObject obj = new GameObject(clip.name);
+        AudioSource audio = obj.AddComponent<AudioSource>();
+
+        audio.clip = clip;
+        audio.volume = 1.0f;
+
+        return audio;
     }
 }
