@@ -16,6 +16,9 @@ public class InGameManager : Singleton<InGameManager>
     public List<UpgradeClass> Upgrades = new List<UpgradeClass>();
     public UpgradeUI upgradeUI;
 
+    public GameObject Sharp;
+    Collider2D SharpCollider;
+
     void Start()
     {
         Waves = GetComponents<WaveBase>();
@@ -32,6 +35,16 @@ public class InGameManager : Singleton<InGameManager>
                 StartCoroutine(WaveCoroutine());
             }
         }
+    }
+
+    public void SpawnSharp()
+    {
+
+    }
+
+    public void RemoveSharp()
+    {
+
     }
 
     public void SetRoof(float y)
