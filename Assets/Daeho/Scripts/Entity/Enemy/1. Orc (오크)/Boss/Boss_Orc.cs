@@ -296,7 +296,7 @@ public class Boss_Orc : GroundObject
         {
             origin = transform.position + direction * 3;
 
-            hits = Physics2D.RaycastAll(origin, Vector2.down, 5, LayerMask.GetMask("Ground"));
+            hits = Physics2D.RaycastAll(origin, Vector2.down, 2, LayerMask.GetMask("Ground"));
             Debug.DrawRay(origin, Vector2.down * 2, Color.red, 0.1f);
 
             if (hits.Length == 0) break; // 낭떠러지일 때
