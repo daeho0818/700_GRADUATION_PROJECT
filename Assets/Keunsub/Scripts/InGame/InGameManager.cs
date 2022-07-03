@@ -78,8 +78,8 @@ public class InGameManager : Singleton<InGameManager>
 
     public void RemoveWall()
     {
-        Wall_left.transform.DOMoveX(21f, 0.5f).SetEase(Ease.Linear);
-        Wall_right.transform.DOMoveX(-21f, 0.5f).SetEase(Ease.Linear);
+        Wall_left.transform.DOMoveX(20.5f, 0.5f).SetEase(Ease.Linear);
+        Wall_right.transform.DOMoveX(-20.5f, 0.5f).SetEase(Ease.Linear);
     }
 
     public void SetRoof(float y)
