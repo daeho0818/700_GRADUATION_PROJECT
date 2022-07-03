@@ -20,6 +20,7 @@ public class InGameManager : Singleton<InGameManager>
 
     public Collider2D Wall_left;
     public Collider2D Wall_right;
+    public ParticleSystem dir_arrow;
     Collider2D SharpCollider;
 
     void Start()
@@ -67,6 +68,18 @@ public class InGameManager : Singleton<InGameManager>
     {
         SharpCollider.enabled = false;
         Sharp.transform.DOLocalMoveY(-8f, 0.25f);
+    }
+
+    public void SetWall(float x)
+    {
+        Wall_left.transform.DOMoveX(x, 0.5f).SetEase(Ease.Linear);
+        Wall_right.transform.DOMoveX(-x, 0.5f).SetEase(Ease.Linear);
+    }
+
+    public void RemoveWall()
+    {
+        Wall_left.transform.DOMoveX(21f, 0.5f).SetEase(Ease.Linear);
+        Wall_right.transform.DOMoveX(-21f, 0.5f).SetEase(Ease.Linear);
     }
 
     public void SetRoof(float y)
@@ -152,6 +165,8 @@ public class InGameManager : Singleton<InGameManager>
         for (int i = 0; i < platforms.Length; i++)
             Destroy(platforms[i].gameObject);
 
+        Wall_right.enabled = true;
+        dir_arrow.Stop();
         Upgrades.Clear();
 
         Upgrades.Add(new UpgradeATKSpeed());
@@ -170,6 +185,7 @@ public class InGameManager : Singleton<InGameManager>
     public void GameEnd()
     {
         // -3.5,  -11
-
+        dir_arrow.Play();
+        Wall_right.enabled = false;
     }
 }
