@@ -5,7 +5,7 @@ using UnityEngine;
 public class SingleAnimation : MonoBehaviour
 {
 
-    public float frameDelay;
+    public float frameDelay = 0.02f;
     public Sprite[] frame;
     SpriteRenderer SR;
 

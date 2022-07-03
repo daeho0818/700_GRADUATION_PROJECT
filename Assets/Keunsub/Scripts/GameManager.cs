@@ -37,7 +37,7 @@ public class GameManager : Singleton<GameManager>
     {
         ItemList.ForEach(item => item.Init(player));
 
-        MoveToScene(2, 0);
+        MoveToScene(0, 0);
     }
 
     public void MoveToScene(int nextScene, int nextDoor)
