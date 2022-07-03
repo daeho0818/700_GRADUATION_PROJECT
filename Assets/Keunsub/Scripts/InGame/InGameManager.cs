@@ -18,6 +18,9 @@ public class InGameManager : Singleton<InGameManager>
 
     public GameObject Sharp;
     public ParticleSystem SharpSmoke;
+
+    public Transform Wall_left;
+    public Transform Wall_right;
     Collider2D SharpCollider;
 
     void Start()
@@ -51,13 +54,13 @@ public class InGameManager : Singleton<InGameManager>
 
     IEnumerator SpawnSharpCoroutine()
     {
-        yield return Sharp.transform.DOLocalMoveY(-6.9f, 0.2f);
+        yield return Sharp.transform.DOLocalMoveY(-6.51f, 0.2f);
 
         SharpSmoke.Play();
         yield return new WaitForSeconds(3f);
         SharpSmoke.Stop();
 
-        yield return Sharp.transform.DOLocalMoveY(-6.0f, 0.2f);
+        yield return Sharp.transform.DOLocalMoveY(-5.0f, 0.2f);
         SharpCollider.enabled = true;
     }
 
@@ -74,7 +77,7 @@ public class InGameManager : Singleton<InGameManager>
 
     public void RemoveRoof()
     {
-        Roof.DOLocalMoveY(8.2f, 0.5f).SetEase(Ease.InSine);
+        Roof.DOLocalMoveY(15f, 0.5f).SetEase(Ease.InSine);
     }
 
     IEnumerator WaveCoroutine()
@@ -150,7 +153,6 @@ public class InGameManager : Singleton<InGameManager>
         for (int i = 0; i < platforms.Length; i++)
             Destroy(platforms[i].gameObject);
 
-        Door.position = new Vector2(-14f, -3.5f);
 
         Upgrades.Clear();
 
@@ -171,6 +173,5 @@ public class InGameManager : Singleton<InGameManager>
     {
         // -3.5,  -11
 
-        Door.DOMoveY(-11f, 5f).SetEase(Ease.Linear);
     }
 }
