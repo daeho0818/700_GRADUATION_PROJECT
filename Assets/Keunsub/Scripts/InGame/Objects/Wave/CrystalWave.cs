@@ -231,4 +231,17 @@ public class CrystalWave : WaveBase
         RemoveRoof();
         RemoveWall();
     }
+
+    void BossWave()
+    {
+        StartCoroutine(BossWaveCoroutine());
+    }
+
+    IEnumerator BossWaveCoroutine()
+    {
+
+
+
+        yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
+    }
 }
