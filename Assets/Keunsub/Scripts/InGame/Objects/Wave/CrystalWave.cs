@@ -220,10 +220,15 @@ public class CrystalWave : WaveBase
 
     IEnumerator Wave10Coroutine()
     {
-        Monsters.Add(SpawnMonster(FistCrystal, new Vector2(-9.5f, -5f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(WolfCrystal, new Vector2(10f, -5.5f), EntitySize.Medium));
+        SpawnRoof(3.5f);
+        SpawnWall(7f);
+        Monsters.Add(SpawnMonster(FistCrystal, new Vector2(-6f, -5f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(WolfCrystal, new Vector2(6f, -5.5f), EntitySize.Medium));
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
         waveEnd = true;
+
+        RemoveRoof();
+        RemoveWall();
     }
 }
