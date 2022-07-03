@@ -18,8 +18,8 @@ public class InGameManager : Singleton<InGameManager>
     public GameObject Sharp;
     public ParticleSystem SharpSmoke;
 
-    public Transform Wall_left;
-    public Transform Wall_right;
+    public Collider2D Wall_left;
+    public Collider2D Wall_right;
     Collider2D SharpCollider;
 
     void Start()
@@ -151,7 +151,6 @@ public class InGameManager : Singleton<InGameManager>
 
         for (int i = 0; i < platforms.Length; i++)
             Destroy(platforms[i].gameObject);
-
 
         Upgrades.Clear();
 
