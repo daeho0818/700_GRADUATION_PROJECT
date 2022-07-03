@@ -156,6 +156,7 @@ public class CrystalWave : WaveBase
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
         RemovePlatform(Platforms);
         RemoveSharp();
+        RemoveWall();
         waveEnd = true;
     }
 
