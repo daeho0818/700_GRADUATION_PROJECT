@@ -323,6 +323,7 @@ public class OrcWave : WaveBase
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
 
         RemovePlatform(Platforms);
+        RemoveSharp();
         waveEnd = true;
     }
 
@@ -342,6 +343,7 @@ public class OrcWave : WaveBase
 
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
+        waveEnd = true;
     }
 
     void Wave16()
@@ -357,6 +359,7 @@ public class OrcWave : WaveBase
         Monsters.Add(SpawnMonster(PistolOrc, new Vector2(-12f, -6.5f), EntitySize.Small));
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
+        waveEnd = true;
 
         RemoveRoof();
     }
@@ -368,7 +371,9 @@ public class OrcWave : WaveBase
 
     IEnumerator BossWaveCoroutine()
     {
+
         SoundManager.Instance.PlayBackground("Orc_Boss");
+        SpawnSharp();
         Platforms.Add(SpawnPlatform(new Vector2(-11, 0)));
         Platforms.Add(SpawnPlatform(new Vector2(-8.5f, 0)));
         Platforms.Add(SpawnPlatform(new Vector2(-6, 0)));

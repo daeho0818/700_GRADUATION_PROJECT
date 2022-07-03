@@ -12,6 +12,6 @@ public class Scene3_InGame : SceneContainer
         GameManager.Instance.player.StateInit();
         manager = GetComponent<InGameManager>();
         manager.GameInit();
-        Bound = new CameraBound(Vector3.zero, 5f, 3f, 5f);
+        Bound = new CameraBound(Vector3.zero, 5f, 2.7f, 5f);
     }
 }
