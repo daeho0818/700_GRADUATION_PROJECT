@@ -6,7 +6,6 @@ using DG.Tweening;
 public class InGameManager : Singleton<InGameManager>
 {
     public Transform Pivot;
-    public Transform Door;
     public Transform Roof;
     public bool isGameActive;
     public WaveBase nowWave;
