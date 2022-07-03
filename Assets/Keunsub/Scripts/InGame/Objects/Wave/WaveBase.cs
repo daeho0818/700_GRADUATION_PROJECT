@@ -78,6 +78,16 @@ public abstract class WaveBase : MonoBehaviour
         // 바닥 가시 제거
         InGameManager.Instance.RemoveSharp();
     }
+
+    protected void SpawnWall(float x)
+    {
+        InGameManager.Instance.SetWall(x);
+    }
+
+    protected void RemoveWall()
+    {
+        InGameManager.Instance.RemoveWall();
+    }
         
     protected void RemovePlatform(List<Platform> platforms)
     {

@@ -146,9 +146,12 @@ public class CrystalWave : WaveBase
 
     IEnumerator Wave7Coroutine()
     {
+        SpawnWall(14f);
+        yield return new WaitForSeconds(2f);
+
         Monsters.Add(SpawnMonster(CubeCrystal, new Vector2(0, 2.5f), EntitySize.Small));
-        Monsters.Add(SpawnMonster(MagicianCrystal, new Vector2(8f, 6f), EntitySize.Medium));
-        Monsters.Add(SpawnMonster(MagicianCrystal, new Vector2(-7.5f, -2.5f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(MagicianCrystal, new Vector2(6f, 6f), EntitySize.Medium));
+        Monsters.Add(SpawnMonster(MagicianCrystal, new Vector2(-6f, -2.5f), EntitySize.Medium));
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
         RemovePlatform(Platforms);
