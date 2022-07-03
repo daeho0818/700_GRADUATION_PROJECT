@@ -11,10 +11,11 @@ public class CrystalWave : WaveBase
     public Entity[] MagicianCrystal;
     public Entity[] CubeCrystal;
     public Entity GolemCrystal;
+    public Entity BossCrystal;
 
     private void Awake()
     {
-        Init(Wave1, Wave2, Wave3, Wave4, Wave5, Wave6, Wave7, Wave8, Wave9, Wave10);
+        Init(Wave1, Wave2, Wave3, Wave4, Wave5, Wave6, Wave7, Wave8, Wave9, Wave10, BossWave);
     }
 
     void Wave1()
@@ -240,7 +241,23 @@ public class CrystalWave : WaveBase
     IEnumerator BossWaveCoroutine()
     {
 
+        Platforms.Add(SpawnPlatform(new Vector2(0, 2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(2.5f, 2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-2.5f, 2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-7.25f, -2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-9.75f, -2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(-12.25f, -2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(7.25f, -2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(9.75f, -2f)));
+        Platforms.Add(SpawnPlatform(new Vector2(12.25f, -2f)));
 
+        yield return new WaitForSeconds(3f);
+
+        SpawnSharp();
+
+        yield return new WaitForSeconds(3f);
+
+        Monsters.Add(SpawnMonster(BossCrystal, new Vector2(0, 3f), EntitySize.Big));
 
         yield return StartCoroutine(WaitUntilMonsterDie(Monsters));
     }
