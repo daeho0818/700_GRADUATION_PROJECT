@@ -74,7 +74,7 @@ public class GameManager : Singleton<GameManager>
         Camera.main.DOOrthoSize(1f, duration);
         while (timer >= 0)
         {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, player.transform.position - new Vector3(0, 1f, 10f), duration * Time.deltaTime);
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, player.transform.position - new Vector3(0, 0f, 10f), duration * Time.deltaTime);
             timer -= Time.deltaTime;
             yield return null;
         }
