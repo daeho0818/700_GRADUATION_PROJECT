@@ -6,7 +6,7 @@ public class Scene1_Market : SceneContainer
 {
     public override void Init()
     {
-        Bound = new CameraBound(Vector3.zero, 20f, 2f, 5f);
+        Bound = new CameraBound(Vector3.zero, 30f, 7f, 5f);
     }
 
 }

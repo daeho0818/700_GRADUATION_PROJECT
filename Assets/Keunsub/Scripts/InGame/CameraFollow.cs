@@ -35,21 +35,21 @@ public class CameraFollow : MonoBehaviour
     {
         Vector3 vec = transform.position;
 
-        if (vec.x < Bound.rect.right)
+        if (vec.x < Bound.rect.right - Bound.Size)
         {
-            vec.x = Bound.rect.right;
+            vec.x = Bound.rect.right - Bound.Size;
         }
-        if (vec.x > Bound.rect.left)
+        if (vec.x > Bound.rect.left + Bound.Size)
         {
-            vec.x = Bound.rect.left;
+            vec.x = Bound.rect.left + Bound.Size;
         }
-        if (vec.y < Bound.rect.down)
+        if (vec.y < Bound.rect.down + Bound.Size)
         {
-            vec.y = Bound.rect.down;
+            vec.y = Bound.rect.down + Bound.Size;
         }
-        if (vec.y > Bound.rect.up)
+        if (vec.y > Bound.rect.up - Bound.Size)
         {
-            vec.y = Bound.rect.up;
+            vec.y = Bound.rect.up - Bound.Size;
         }
 
         transform.position = vec;
