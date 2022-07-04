@@ -70,8 +70,14 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator GameOverCoroutine(float duration)
     {
-        Camera.main.transform.DOMove(player.transform.position - new Vector3(0, 1f, 10f), duration);
-        yield return Camera.main.DOOrthoSize(1f, duration);
+        float timer = duration;
+        Camera.main.DOOrthoSize(1f, duration);
+        while (timer >= 0)
+        {
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, player.transform.position - new Vector3(0, 1f, 10f), timer / duration * Time.deltaTime);
+            timer -= Time.deltaTime;
+            yield return null;
+        }
         
         yield return new WaitForSeconds(3f);
 
