@@ -585,6 +585,30 @@ public class Enemy : Entity
         enemy_state?.Update();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Obstruction"))
+        {
+            InvokeRepeating(nameof(DotDamage),0, 1);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstruction"))
+        {
+            CancelInvoke(nameof(DotDamage));
+        }
+    }
+
+    /// <summary>
+    /// 가시를 밟았을 때 일정 시간마다 데미지를 주는 함수
+    /// </summary>
+    void DotDamage()
+    {
+        hp -= 10;
+    }
+
     /// <summary>
     /// 피격 시 넉백당하는 함수
     /// </summary>

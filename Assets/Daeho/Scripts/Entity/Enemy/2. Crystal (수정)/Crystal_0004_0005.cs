@@ -43,6 +43,7 @@ public class Crystal_0004_0005 : FlyingObject
         return attack_distance >= distance;
     }
 
+    [SerializeField] int bullet_damage = 1;
     Coroutine attack = null;
     /// <summary>
     /// 사방으로 가시를 날리며 대기하는 패턴  
@@ -67,7 +68,7 @@ public class Crystal_0004_0005 : FlyingObject
             proj.transform.position = transform.position;
             proj.move_speed = bullet_speed;
             proj.fire_direction = dir;
-            proj.SetCollision((p) => { p?.OnHit?.Invoke(1); });
+            proj.SetCollision((p) => { p?.OnHit?.Invoke(bullet_damage); });
 
             yield return new WaitForSeconds(1);
         }
@@ -118,7 +119,7 @@ public class Crystal_0004_0005 : FlyingObject
             proj.transform.position = transform.position;
             proj.fire_direction = fire_direction;
             proj.move_speed = bullet_speed;
-            proj.SetCollision((p) => { p?.OnHit?.Invoke(1); });
+            proj.SetCollision((p) => { p?.OnHit?.Invoke(bullet_damage); });
         }
 
         hp = 0;

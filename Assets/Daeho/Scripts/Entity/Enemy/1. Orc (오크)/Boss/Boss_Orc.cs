@@ -158,6 +158,8 @@ public class Boss_Orc : GroundObject
         yield return null;
     }
 
+    [SerializeField] int jump_damage = 1;
+    [SerializeField] int fragment_damage = 1;
     /// <summary>
     /// '추격' 공격 패턴 (플레이어가 위치한 플랫폼의 끝으로 도약)
     /// </summary>
@@ -216,7 +218,7 @@ public class Boss_Orc : GroundObject
 
 
         Player p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[1], CapsuleDirection2D.Horizontal, 0);
-        p?.OnHit?.Invoke(1);
+        p?.OnHit?.Invoke(jump_damage);
 
         animation.AnimEnd();
         yield return new WaitForSeconds(0.5f);
@@ -265,8 +267,11 @@ public class Boss_Orc : GroundObject
             if (hits.Length > 0)
                 break;
 
-            p = CheckCollision(fragment.transform.position, collider, 0);
-            p?.OnHit.Invoke(1);
+            if (p == null)
+            {
+                p = CheckCollision(fragment.transform.position, collider, 0);
+                p?.OnHit.Invoke(fragment_damage);
+            }
 
             fragment.transform.position += direction * fragment_speed * Time.deltaTime;
             yield return null;
@@ -279,6 +284,8 @@ public class Boss_Orc : GroundObject
         Destroy(rock, 2);
     }
 
+    [SerializeField] int dash_damage = 1;
+    [SerializeField] int smash_damage = 1;
     /// <summary>
     /// '돌격' 공격 패턴 (플랫폼의 끝까지 돌진하며 공격, 돌진을 마친 후 무기를 휘두름)
     /// </summary>
@@ -290,11 +297,11 @@ public class Boss_Orc : GroundObject
         RaycastHit2D[] hits;
         Vector2 origin;
 
-        Player p;
+        Player p = null;
 
         do
         {
-            origin = transform.position + direction * 3;
+            origin = transform.position + direction * 2;
 
             hits = Physics2D.RaycastAll(origin, Vector2.down, 2, LayerMask.GetMask("Ground"));
             Debug.DrawRay(origin, Vector2.down * 2, Color.red, 0.1f);
@@ -307,8 +314,12 @@ public class Boss_Orc : GroundObject
             if (hits.Length > 0) break; // 앞에 벽이 있을 때
 
             transform.position += direction * move_speed * Time.deltaTime;
-            p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[2], CapsuleDirection2D.Horizontal, 0);
-            p?.OnHit?.Invoke(1);
+
+            if (p == null)
+            {
+                p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[2], CapsuleDirection2D.Horizontal, 0);
+                p?.OnHit?.Invoke(dash_damage);
+            }
 
             yield return null;
         } while (true);
@@ -316,6 +327,6 @@ public class Boss_Orc : GroundObject
         animation.AnimEnd();
 
         p = CheckCollision(transform.position, (CapsuleCollider2D)colliders[3], CapsuleDirection2D.Vertical, 0);
-        p?.OnHit?.Invoke(1);
+        p?.OnHit?.Invoke(smash_damage);
     }
 }

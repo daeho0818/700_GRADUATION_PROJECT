@@ -20,6 +20,7 @@ public class Orc_0000 : FlyingObject
         base.Update();
     }
 
+    [SerializeField] int attack_damage = 1;
     /// <summary>
     /// 플레이어를 향해 산탄총 발사하는 기본 공격 함수
     /// </summary>
@@ -44,7 +45,7 @@ public class Orc_0000 : FlyingObject
             bullet.transform.position = transform.position;
             bullet.fire_direction = dir;
             bullet.move_speed = bullet_speed;
-            bullet.SetCollision((p) => { p?.OnHit?.Invoke(1); });
+            bullet.SetCollision((p) => { p?.OnHit?.Invoke(attack_damage); });
         }
     }
 
