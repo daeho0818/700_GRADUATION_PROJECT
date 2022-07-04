@@ -8,7 +8,7 @@ public class CameraFollow : MonoBehaviour
     public Transform Target; //always player
     public float followSpeed;
     public CameraBound Bound;
-    float offset = 16 / 9;
+    public float offset = 16 / 9;
 
     void Start()
     {
