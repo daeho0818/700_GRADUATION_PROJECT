@@ -421,6 +421,10 @@ MonoBehaviour:
   enemyStateName: 
   rock_prefab: {fileID: 7215665660045949021, guid: e9951240cc4afb042b677319e8c8fd48, type: 3}
   fragment_prefab: {fileID: 844190010478968155, guid: 5b2b32d75d2d2414d83f810a12600624, type: 3}
+  jump_damage: 10
+  fragment_damage: 3
+  dash_damage: 15
+  smash_damage: 10
 --- !u!114 &1945750208
 MonoBehaviour:
   m_ObjectHideFlags: 0

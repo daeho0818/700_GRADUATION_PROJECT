@@ -68592,6 +68592,7 @@ MonoBehaviour:
   - {fileID: 586679037}
   enemyStateName: 
   proj_prefab: {fileID: 7928072327248792864, guid: 83b1b708006806a4db74f777ebe129d6, type: 3}
+  bullet_damage: 5
 --- !u!114 &-6083503348283682270
 MonoBehaviour:
   m_ObjectHideFlags: 0

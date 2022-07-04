@@ -176,6 +176,8 @@ MonoBehaviour:
   attack_particle: {fileID: 198121458656723018}
   attack_particles: []
   enemyStateName: 
+  dash_damage: 15
+  smash_damage: 3
 --- !u!114 &-629974802191857493
 MonoBehaviour:
   m_ObjectHideFlags: 0

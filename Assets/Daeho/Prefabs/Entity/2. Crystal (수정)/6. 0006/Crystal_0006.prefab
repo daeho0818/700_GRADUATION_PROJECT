@@ -14962,6 +14962,8 @@ MonoBehaviour:
   enemyStateName: 
   lazer_prefab: {fileID: 2749872155237545683, guid: 88c79794e1d92d042a4d66951427e448, type: 3}
   lazer_position: {fileID: 63566461}
+  lazer_damage: 10
+  punch_damage: 15
 --- !u!114 &5032077232429219444
 MonoBehaviour:
   m_ObjectHideFlags: 0

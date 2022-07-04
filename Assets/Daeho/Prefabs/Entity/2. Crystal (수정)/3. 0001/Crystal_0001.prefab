@@ -10061,6 +10061,7 @@ MonoBehaviour:
   attack_particle: {fileID: 2132721159}
   attack_particles: []
   enemyStateName: 
+  punch_damage: 06000000060000000f000000
 --- !u!114 &-2416449093421677309
 MonoBehaviour:
   m_ObjectHideFlags: 0
