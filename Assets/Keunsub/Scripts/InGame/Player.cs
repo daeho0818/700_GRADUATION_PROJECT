@@ -69,7 +69,7 @@ public class Player : Entity
     [SerializeField] int attackState;
     #endregion
 
-    bool gameOver;
+    public bool gameOver;
     bool isCombo;
     bool isSkill;
     bool doubleJumpAble = true;
