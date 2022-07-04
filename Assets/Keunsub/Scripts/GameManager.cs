@@ -70,7 +70,7 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator GameOverCoroutine(float duration)
     {
-        Camera.main.transform.DOMove(player.transform.position - new Vector3(0, 0, 10f), duration);
+        Camera.main.transform.DOMove(player.transform.position - new Vector3(0, 1f, 10f), duration);
         yield return Camera.main.DOOrthoSize(1f, duration);
         
         yield return new WaitForSeconds(3f);
