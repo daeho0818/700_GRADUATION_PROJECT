@@ -19,15 +19,15 @@ public class CameraFollow : MonoBehaviour
         if (!Target.GetComponent<Player>().gameOver)
         {
             CameraFollowLogic();
-            CameraBoundLogic();
         }
+        CameraBoundLogic();
     }
 
     void CameraFollowLogic()
     {
         Vector3 vec = Vector3.Lerp(transform.position, Target.position + new Vector3(0, 0, -10f), Time.deltaTime * followSpeed);
         Camera.main.orthographicSize = Bound.Size;
-        
+
         transform.position = vec;
     }
 
