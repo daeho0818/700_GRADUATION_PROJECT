@@ -13,6 +13,7 @@ public class InGameManager : Singleton<InGameManager>
 
     public bool upgradeTrigger;
     public List<UpgradeClass> Upgrades = new List<UpgradeClass>();
+    public List<Sprite> UpgradeIcons = new List<Sprite>();
     public UpgradeUI upgradeUI;
 
     public GameObject Sharp;
@@ -145,6 +146,7 @@ public class InGameManager : Singleton<InGameManager>
         }
 
         upgradeUI.InitButtons(Upgrades[rand[0]], Upgrades[rand[1]], Upgrades[rand[2]]);
+        upgradeUI.InitButtonsIcon(UpgradeIcons[rand[0]], UpgradeIcons[rand[1]], UpgradeIcons[rand[2]]);
     }
 
     public void UpgradeEnd()

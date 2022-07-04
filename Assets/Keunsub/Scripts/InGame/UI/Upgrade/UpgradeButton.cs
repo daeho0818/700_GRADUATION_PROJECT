@@ -22,6 +22,11 @@ public class UpgradeButton : MonoBehaviour
 
     }
 
+    public void InitIcon(Sprite icon)
+    {
+        Icon.sprite = icon;
+    }
+
     public void InitUpgrade(UpgradeClass upgrade)
     {
         thisUpgrade = upgrade;

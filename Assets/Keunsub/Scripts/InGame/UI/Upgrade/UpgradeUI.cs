@@ -61,6 +61,14 @@ public class UpgradeUI : MonoBehaviour
         }
     }
 
+    public void InitButtonsIcon(params Sprite[] icons)
+    {
+        for (int i = 0; i < icons.Length; i++)
+        {
+            Buttons[i].InitIcon(icons[i]);
+        }
+    }
+
     public void RemoveButtons()
     {
         for (int i = 0; i < Buttons.Length; i++)
