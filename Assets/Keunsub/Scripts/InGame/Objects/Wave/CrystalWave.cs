@@ -222,7 +222,7 @@ public class CrystalWave : WaveBase
     IEnumerator Wave10Coroutine()
     {
         SpawnRoof(3.5f);
-        SpawnWall(7f);
+        SpawnWall(15f);
         Monsters.Add(SpawnMonster(FistCrystal, new Vector2(-6f, -5f), EntitySize.Medium));
         Monsters.Add(SpawnMonster(WolfCrystal, new Vector2(6f, -5.5f), EntitySize.Medium));
 
