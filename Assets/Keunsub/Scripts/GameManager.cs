@@ -72,14 +72,14 @@ public class GameManager : Singleton<GameManager>
     {
         float timer = duration;
         Camera.main.DOOrthoSize(1f, duration);
-        while (timer >= 0)
+        while (timer > 0)
         {
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, player.transform.position - new Vector3(0, 0f, 10f), duration * Time.deltaTime);
             timer -= Time.deltaTime;
             yield return null;
         }
         
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
         yield return StartCoroutine(FadeIn(0.5f, () =>
         {
