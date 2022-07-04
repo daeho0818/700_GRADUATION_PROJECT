@@ -9,6 +9,7 @@ public class CameraFollow : MonoBehaviour
     public float followSpeed;
     public CameraBound Bound;
     public float offset = 16 / 9;
+    float ortho;
 
     void Start()
     {
@@ -17,6 +18,8 @@ public class CameraFollow : MonoBehaviour
 
     void FixedUpdate()
     {
+        ortho = Camera.main.orthographicSize;
+
         if (!Target.GetComponent<Player>().gameOver)
         {
             CameraFollowLogic();
@@ -36,21 +39,21 @@ public class CameraFollow : MonoBehaviour
     {
         Vector3 vec = transform.position;
 
-        if (vec.x > Bound.rect.right - Bound.Size * offset)
+        if (vec.x > Bound.rect.right - ortho * offset)
         {
-            vec.x = Bound.rect.right - Bound.Size * offset;
+            vec.x = Bound.rect.right - ortho * offset;
         }
-        if (vec.x < Bound.rect.left + Bound.Size * offset)
+        if (vec.x < Bound.rect.left + ortho * offset)
         {
-            vec.x = Bound.rect.left + Bound.Size * offset;
+            vec.x = Bound.rect.left + ortho * offset;
         }
-        if (vec.y < Bound.rect.down + Bound.Size)
+        if (vec.y < Bound.rect.down + ortho)
         {
-            vec.y = Bound.rect.down + Bound.Size;
+            vec.y = Bound.rect.down + ortho;
         }
-        if (vec.y > Bound.rect.up - Bound.Size)
+        if (vec.y > Bound.rect.up - ortho)
         {
-            vec.y = Bound.rect.up - Bound.Size;
+            vec.y = Bound.rect.up - ortho;
         }
 
         transform.position = vec;
