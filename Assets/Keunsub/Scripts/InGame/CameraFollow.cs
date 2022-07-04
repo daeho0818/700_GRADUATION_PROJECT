@@ -8,6 +8,7 @@ public class CameraFollow : MonoBehaviour
     public Transform Target; //always player
     public float followSpeed;
     public CameraBound Bound;
+    float offset = 16 / 9;
 
     void Start()
     {
@@ -35,13 +36,13 @@ public class CameraFollow : MonoBehaviour
     {
         Vector3 vec = transform.position;
 
-        if (vec.x < Bound.rect.right - Bound.Size)
+        if (vec.x < Bound.rect.right - Bound.Size * offset)
         {
-            vec.x = Bound.rect.right - Bound.Size;
+            vec.x = Bound.rect.right - Bound.Size * offset;
         }
-        if (vec.x > Bound.rect.left + Bound.Size)
+        if (vec.x > Bound.rect.left + Bound.Size * offset)
         {
-            vec.x = Bound.rect.left + Bound.Size;
+            vec.x = Bound.rect.left + Bound.Size * offset;
         }
         if (vec.y < Bound.rect.down + Bound.Size)
         {
