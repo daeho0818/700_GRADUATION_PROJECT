@@ -231,7 +231,9 @@ MonoBehaviour:
     unSearch_distance: 5
     distance_with_player: 3
   attack_particle: {fileID: 198106894462861372}
+  attack_particles: []
   enemyStateName: 
+  attack_damage: 10
 --- !u!114 &1131849869589340332
 MonoBehaviour:
   m_ObjectHideFlags: 0

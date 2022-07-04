@@ -68596,6 +68596,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c67ffb4bb6088b24ca4c804ca8ff5df3, type: 3}
   - {fileID: 21300000, guid: 60af1d45f8ff92b49a3a6cbd99a993b3, type: 3}
   - {fileID: 21300000, guid: b66e1c70d923d0542af7509aabd6d718, type: 3}
+  attack_damage: 10
   projectile_rot_speed: 1000
 --- !u!114 &-5073177708681448989
 MonoBehaviour:

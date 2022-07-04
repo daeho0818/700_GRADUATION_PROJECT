@@ -9490,6 +9490,7 @@ MonoBehaviour:
   - {fileID: 198121459398780103}
   - {fileID: 1605187074}
   enemyStateName: 
+  attack_damage: 15
 --- !u!114 &-7220509362808753927
 MonoBehaviour:
   m_ObjectHideFlags: 0

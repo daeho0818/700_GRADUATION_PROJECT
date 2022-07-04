@@ -172,8 +172,10 @@ MonoBehaviour:
     unSearch_distance: 15
     distance_with_player: 5
   attack_particle: {fileID: 198659755431709262}
+  attack_particles: []
   enemyStateName: 
   bullet_prefab: {fileID: 776741225428772139, guid: 79745eb9cd7986a4a95eb0a815817495, type: 3}
+  attack_damage: 3
 --- !u!114 &8886103008683020893
 MonoBehaviour:
   m_ObjectHideFlags: 0
