@@ -11,7 +11,7 @@ public class Scene2_Ready : SceneContainer
 
     public override void Init()
     {
-        Bound = new CameraBound(new Vector2(0, 0), 8.8f, 12f, 4.6f);
+        Bound = new CameraBound(new Vector2(0, 0), 8.26f, 12f, 4.6f);
     }
 
     public void MoveDown()
