@@ -36,11 +36,11 @@ public class CameraFollow : MonoBehaviour
     {
         Vector3 vec = transform.position;
 
-        if (vec.x < Bound.rect.right - Bound.Size * offset)
+        if (vec.x > Bound.rect.right - Bound.Size * offset)
         {
             vec.x = Bound.rect.right - Bound.Size * offset;
         }
-        if (vec.x > Bound.rect.left + Bound.Size * offset)
+        if (vec.x < Bound.rect.left + Bound.Size * offset)
         {
             vec.x = Bound.rect.left + Bound.Size * offset;
         }
@@ -73,7 +73,7 @@ public class CameraBound
         Height = _height;
         Size = _size;
 
-        rect = new BoundRect(Pos.x - Width, Pos.x + Width, Pos.y + Height, Pos.y - Height);
+        rect = new BoundRect(Pos.x + Width, Pos.x - Width, Pos.y + Height, Pos.y - Height);
     }
 }
 
