@@ -41,6 +41,7 @@ public class Crystal_0002_0003 : FlyingObject
     }
 
     [SerializeField] Transform shoot_position;
+    [SerializeField] int bullet_damage = 1;
     /// <summary>
     /// 플레이어를 향해 유도탄 발사
     /// </summary>
@@ -54,6 +55,6 @@ public class Crystal_0002_0003 : FlyingObject
         proj.transform.position = shoot_position.position;
         proj.move_speed = bullet_speed;
         proj.SetTarget(player.transform);
-        proj.SetCollision((p) => { p?.OnHit?.Invoke(1); });
+        proj.SetCollision((p) => { p?.OnHit?.Invoke(bullet_damage); });
     }
 }

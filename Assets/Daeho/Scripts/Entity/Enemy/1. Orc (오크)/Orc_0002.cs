@@ -22,6 +22,7 @@ public class Orc_0002 : GroundObject
         base.Update();
     }
 
+    [SerializeField] int attack_damage = 1;
     /// <summary>
     /// 플레이어를 향해 포물선을 그리며 투척물을 날리는 공격 함수
     /// </summary>
@@ -39,7 +40,7 @@ public class Orc_0002 : GroundObject
         bullet.GetComponent<SpriteRenderer>().sprite = sprite;
         bullet.move_speed = bullet_speed;
         bullet.SetArc(player.transform.position);
-        bullet.SetCollision((p) => { p?.OnHit?.Invoke(1); });
+        bullet.SetCollision((p) => { p?.OnHit?.Invoke(attack_damage); });
 
         StartCoroutine(RotateProjectile(bullet));
     }

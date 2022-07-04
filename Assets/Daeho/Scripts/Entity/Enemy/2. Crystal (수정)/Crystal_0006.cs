@@ -153,6 +153,7 @@ public class Crystal_0006 : GroundObject
         return true;
     }
 
+    [SerializeField] int lazer_damage = 1;
     /// <summary>
     /// 레이저 공격 패턴
     /// </summary>
@@ -175,7 +176,7 @@ public class Crystal_0006 : GroundObject
             lazer.transform.Translate(Vector3.right * 3 * Time.deltaTime);
 
             p = CheckCollision(lazer.transform.position, box, 0);
-            p?.OnHit?.Invoke(1);
+            p?.OnHit?.Invoke(lazer_damage);
 
             yield return null;
         }
@@ -183,6 +184,7 @@ public class Crystal_0006 : GroundObject
         animation.AnimEnd();
     }
 
+    [SerializeField] int punch_damage = 1;
     /// <summary>
     /// 정권지르기 공격 패턴
     /// </summary>
@@ -193,6 +195,6 @@ public class Crystal_0006 : GroundObject
 
         BoxCollider2D collider = (BoxCollider2D)colliders[1];
         Player p = CheckCollision(transform.position, collider, 0);
-        p?.OnHit?.Invoke(1);
+        p?.OnHit?.Invoke(punch_damage);
     }
 }

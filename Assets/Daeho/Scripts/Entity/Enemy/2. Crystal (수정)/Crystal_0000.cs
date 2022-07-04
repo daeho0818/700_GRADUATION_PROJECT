@@ -148,6 +148,7 @@ public class Crystal_0000 : GroundObject
         yield return null;
     }
 
+    [SerializeField] int dash_damage = 1;
     /// <summary>
     /// 플레이어를 향해 돌진하는 공격 패턴
     /// </summary>
@@ -172,7 +173,7 @@ public class Crystal_0000 : GroundObject
                 var collider = (BoxCollider2D)colliders[0];
 
                 p = CheckCollision(transform.position, collider, 0);
-                p?.OnHit?.Invoke(1);
+                p?.OnHit?.Invoke(dash_damage);
             }
 
             yield return null;
@@ -181,6 +182,7 @@ public class Crystal_0000 : GroundObject
         super_armor = false;
     }
 
+    [SerializeField] int smash_damage = 1;
     /// <summary>
     /// 플레이어를 할퀴는 공격 패턴
     /// </summary>
@@ -191,7 +193,7 @@ public class Crystal_0000 : GroundObject
         var collider = (BoxCollider2D)colliders[1];
 
         Player p = CheckCollision(transform.position, collider, 0, 0.6f);
-        p?.OnHit?.Invoke(1);
+        p?.OnHit?.Invoke(smash_damage);
     }
 
     protected override IEnumerator AIMoving()

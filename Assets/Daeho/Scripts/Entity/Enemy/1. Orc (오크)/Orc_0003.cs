@@ -23,6 +23,7 @@ public class Orc_0003 : GroundObject
         base.Update();
     }
 
+    [SerializeField] int attack_damage = 1;
     /// <summary>
     /// 벽이 나타날 때까지 돌진하는 공격 패턴
     /// </summary>
@@ -58,7 +59,7 @@ public class Orc_0003 : GroundObject
             if (p == null)
             {
                 p = CheckCollision(transform.position, (BoxCollider2D)colliders[0], 0);
-                p?.OnHit?.Invoke(1);
+                p?.OnHit?.Invoke(attack_damage);
             }
 
             // 플랫폼 끝에 도달했을 때

@@ -25,6 +25,11 @@ public class Orc_0004 : GroundObject
         return distance <= distance_with_player;
     }
 
+    [SerializeField] int attack_damage = 1;
+    /// <summary>
+    /// 땅을 내려치며 공격
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator BaseAttack()
     {
         BoxCollider2D collider;
@@ -37,7 +42,7 @@ public class Orc_0004 : GroundObject
         dir_x = player.transform.position.x > transform.position.x ? 1 : -1;
 
         p = CheckCollision(transform.position, collider, 0);
-        p?.OnHit?.Invoke(1);
+        p?.OnHit?.Invoke(attack_damage);
     }
 
     protected override IEnumerator AIMoving()

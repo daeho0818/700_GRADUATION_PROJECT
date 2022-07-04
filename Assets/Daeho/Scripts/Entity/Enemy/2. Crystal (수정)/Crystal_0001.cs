@@ -19,6 +19,7 @@ public class Crystal_0001 : GroundObject
         base.Update();
     }
 
+    [SerializeField] int[] punch_damage = new[] { 1, 1, 1 };
     /// <summary>
     /// 3연타 이동 펀치 (막타는 어퍼컷)
     /// </summary>
@@ -57,7 +58,7 @@ public class Crystal_0001 : GroundObject
             while (Time.time - count < delay)
             {
                 p = CheckCollision(transform.position, collider, 0);
-                p?.OnHit?.Invoke(1);
+                p?.OnHit?.Invoke(punch_damage[i]);
                 yield return null;
             }
         }

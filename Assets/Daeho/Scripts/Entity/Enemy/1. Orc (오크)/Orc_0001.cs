@@ -21,6 +21,7 @@ public class Orc_0001 : GroundObject
         base.Update();
     }
 
+    [SerializeField] int attack_damage = 1;
     int loop_count = 0;
     /// <summary>
     /// 플레이어를 향해 3번 연속 총알을 발사하는 공격 함수
@@ -53,7 +54,7 @@ public class Orc_0001 : GroundObject
         bullet.fire_direction = direction;
         bullet.move_speed = bullet_speed;
         bullet.GetComponent<SpriteRenderer>().flipX = direction.x > 0;
-        bullet.SetCollision((p) => { p.OnHit?.Invoke(1); });
+        bullet.SetCollision((p) => { p.OnHit?.Invoke(attack_damage); });
     }
 
     protected override bool AttackCheck()
