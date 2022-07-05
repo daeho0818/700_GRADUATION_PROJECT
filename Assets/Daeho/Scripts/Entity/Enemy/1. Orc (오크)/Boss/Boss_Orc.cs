@@ -134,13 +134,6 @@ public class Boss_Orc : GroundObject
     protected override void Start()
     {
         base.Start();
-
-        OnDestroy = () =>
-        {
-            enabled = false;
-
-            renderer.color = Color.red;
-        };
     }
 
     protected override void Update()

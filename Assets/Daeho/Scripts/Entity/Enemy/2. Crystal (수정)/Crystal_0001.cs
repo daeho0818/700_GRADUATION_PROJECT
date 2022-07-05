@@ -32,7 +32,7 @@ public class Crystal_0001 : GroundObject
         Vector2 force;
         float count;
         BoxCollider2D collider;
-        Player p;
+        Player p = null;
 
         super_armor = true;
 
@@ -50,15 +50,18 @@ public class Crystal_0001 : GroundObject
 
             count = Time.time;
 
-            collider = (BoxCollider2D)colliders[i];
+            collider = (BoxCollider2D)colliders[i + 1];
 
             delay = state.GetDelay();
 
             // 다음 공격까지 딜레이
             while (Time.time - count < delay)
             {
-                p = CheckCollision(transform.position, collider, 0);
-                p?.OnHit?.Invoke(punch_damage[i]);
+                if (p == null)
+                {
+                    p = CheckCollision(transform.position, collider, 0);
+                    p?.OnHit?.Invoke(punch_damage[i]);
+                }
                 yield return null;
             }
         }
