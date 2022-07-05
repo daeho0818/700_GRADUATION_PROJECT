@@ -268,14 +268,16 @@ public class Player : Entity
             {
                 temp.OnHit(ReturnSkillDamage());
                 enemies.Add(temp);
+                SoundManager.Instance.PlayEffectSound("Sword_Finish", transform.position);
             }
             yield return null;
-
+             
         } while (true);
 
         VFX_Orc_Dash_Dashing.Stop();
         VFX_Orc_Dash_End.Clear();
         VFX_Orc_Dash_End.Play();
+        SoundManager.Instance.PlayEffectSound("Sword_Hit3", transform.position);
         Physics2D.OverlapCircleAll(skillAtkPos.position, 0.4f, LayerMask.GetMask("Entity")).ToList().ForEach(item => item.GetComponent<Entity>().OnHit((int)(SkillDamage * skillDamageIncrease * 2f)));
         yield return new WaitForSeconds(0.5f); // 공격 후 반동
 
@@ -348,7 +350,7 @@ public class Player : Entity
                 VFX_V_Slash.Clear();
                 break;
         }
-
+        SoundManager.Instance.PlayEffectSound("Slash_Hit", transform.position);
         return (int)_damage;
     }
 
@@ -653,6 +655,7 @@ public class Player : Entity
     IEnumerator OverGroundAttackCoroutine()
     {
         isAttack = true;
+        SoundManager.Instance.PlayEffectSound("Slash_Miss", transform.position);
         yield return new WaitForSeconds(attackDelay / 2.5f);
         isAttack = false;
     }
@@ -663,6 +666,7 @@ public class Player : Entity
         isAttack = true;
         yield return new WaitForSeconds(attackDelay / 2 / 2);
         isRunAble = false;
+        SoundManager.Instance.PlayEffectSound("Slash_Miss", transform.position);
         yield return new WaitForSeconds(attackDelay / 2);
 
         isCombo = true;

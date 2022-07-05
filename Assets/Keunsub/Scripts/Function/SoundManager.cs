@@ -90,7 +90,8 @@ public class SoundManager : Singleton<SoundManager>
         audio.transform.position = pos;
 
         audio.spatialBlend = 1.0f;
-        audio.maxDistance = 7.0f;
+        audio.minDistance = 10f;
+        audio.maxDistance = 15f;
         audio.loop = loop;
         audio.Play();
 
@@ -107,7 +108,8 @@ public class SoundManager : Singleton<SoundManager>
         audio.transform.localPosition = Vector3.zero;
 
         audio.spatialBlend = 1.0f;
-        audio.maxDistance = 7.0f;
+        audio.minDistance = 10f;
+        audio.maxDistance = 15f;
         audio.loop = loop;
         audio.Play();
 
