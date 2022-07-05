@@ -11,6 +11,8 @@ public class Crystal_0006 : GroundObject
         {
             crystal = (Crystal_0006)enemy;
 
+            crystal.FlipSprite();
+
             float distance = Vector2.Distance(crystal.transform.position, crystal.player.transform.position);
 
             if (distance > crystal.attack_distance)
@@ -35,6 +37,8 @@ public class Crystal_0006 : GroundObject
         public Attack1State(Enemy enemy)
         {
             crystal = (Crystal_0006)enemy;
+
+            crystal.animation.SetState("Attack1");
 
             int attack_frame = crystal.attack_frames[0];
             System.Action action = () =>
@@ -64,6 +68,8 @@ public class Crystal_0006 : GroundObject
         public Attack2State(Enemy enemy)
         {
             crystal = (Crystal_0006)enemy;
+
+            crystal.animation.SetState("Attack2");
 
             int attack_frame = crystal.attack_frames[1];
             System.Action action = () =>
@@ -167,19 +173,39 @@ public class Crystal_0006 : GroundObject
 
         float time = Time.time;
 
-        Player p;
+        Player p = null;
         BoxCollider2D box = lazer.GetComponent<BoxCollider2D>();
 
-        while (Time.time - time <= 3)
+        // 레이저 발사 애니메이션
+        while (Time.time - time <= 1.5f)
         {
-            lazer.transform.localScale += Vector3.right * 6 * Time.deltaTime;
-            lazer.transform.Translate(Vector3.right * 3 * Time.deltaTime);
+            lazer.transform.localScale += Vector3.right * 8 * Time.deltaTime;
+            lazer.transform.Translate(Vector3.left * 4 * Time.deltaTime);
 
-            p = CheckCollision(lazer.transform.position, box, 0);
-            p?.OnHit?.Invoke(lazer_damage);
+            if (p == null)
+            {
+                p = CheckCollision(lazer.transform.position, box, 0);
+                p?.OnHit?.Invoke(lazer_damage);
+            }
 
             yield return null;
         }
+
+        // 레이저 사라지는 애니메이션
+        while (lazer.transform.localScale.x >= 0)
+        {
+            lazer.transform.localScale += Vector3.left * 10 * Time.deltaTime;
+            lazer.transform.Translate(Vector3.left * 5 * Time.deltaTime);
+
+            if (p == null)
+            {
+                p = CheckCollision(lazer.transform.position, box, 0);
+                p?.OnHit?.Invoke(lazer_damage);
+            }
+
+            yield return null;
+        }
+        Destroy(lazer);
 
         animation.AnimEnd();
     }
