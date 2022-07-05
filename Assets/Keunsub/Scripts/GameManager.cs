@@ -35,6 +35,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
+        Cursor.visible = false;
         ItemList.ForEach(item => item.Init(player));
 
         MoveToScene(0, 0);
