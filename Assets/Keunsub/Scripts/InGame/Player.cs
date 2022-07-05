@@ -181,13 +181,14 @@ public class Player : Entity
         MPRecover();
         ANIM.SetInteger("SkillKind", 1);
         ANIM.SetTrigger("SkillTrigger");
+        ANIM.SetInteger("SkillState", 0);
         ANIM.SetBool("IsSkill", isSkill);
         NoGravity();
         VFX_Crystal_Charge.Clear();
         VFX_Crystal_Charge.Play();
         yield return new WaitForSeconds(1.2f);
 
-        ANIM.SetTrigger("SkillActive");
+        ANIM.SetInteger("SkillState", 1);
         float damage = (ReturnSkillDamage() * 5) / monsters.Count;
 
         foreach (var item in monsters)
@@ -235,13 +236,14 @@ public class Player : Entity
     {
         ANIM.SetInteger("SkillKind", 0);
         ANIM.SetTrigger("SkillTrigger");
+        ANIM.SetInteger("SkillState", 0);
         ANIM.SetBool("IsSkill", isSkill);
         Mp -= 20f;
         MPRecover();
         yield return new WaitForSeconds(1f);
         VFX_Orc_Dash_Dashing.Play();
         List<Entity> enemies = new List<Entity>();
-        ANIM.SetTrigger("SkillActive");
+        ANIM.SetInteger("SkillState", 1);
         do
         {
             RaycastHit2D[] hit = Physics2D.RaycastAll(skillGroundPos.position, Vector3.down, 2f, LayerMask.GetMask("Ground"));

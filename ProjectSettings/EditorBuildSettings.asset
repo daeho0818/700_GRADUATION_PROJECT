@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Daeho/Scenes/1. Orc_Scene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Keunsub/Scenes/GameScene.unity
+    guid: 54ccfd0b650733c4db6ebf1dc1941050
   m_configObjects: {}
