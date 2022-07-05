@@ -274,6 +274,7 @@ public class Player : Entity
              
         } while (true);
 
+        ANIM.SetInteger("SkillState", 2);
         VFX_Orc_Dash_Dashing.Stop();
         VFX_Orc_Dash_End.Clear();
         VFX_Orc_Dash_End.Play();

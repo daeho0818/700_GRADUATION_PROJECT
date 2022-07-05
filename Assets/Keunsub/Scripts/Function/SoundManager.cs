@@ -47,7 +47,7 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlayBackground(string key)
     {
-        //StartCoroutine(ChangeBackground(changeDuration, key));
+        StartCoroutine(ChangeBackground(changeDuration, key));
     }
 
     IEnumerator ChangeBackground(float duration, string key)
